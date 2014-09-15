@@ -1,0 +1,315 @@
+Title   : Linux Basics
+Author  : Annie Christy, Lisa Goeller, Huting Lin, Jozi McKiernan, and Paige Rinnert
+MathJax : True
+Css     : ./writeup.css
+
+Heading Depth: 0 
+
+# Linux Basics, Part 1
+_Originally created by Annie Christy, Lisa Goeller, Huting Lin, Joži McKiernan, and Paige Rinnert_
+
+> You are about to enter a world of choices and performance...
+> --Gentoo Handbook
+
+Welcome to the Gentoo Linux operating system! The goal of this lab is to
+familiarize yourself with the Linux command line and other important
+tools for working in Linux systems. As you read through the lab, you
+should **highlight the tasks** you'll do (e.g., commands to run,
+questions to answer, etc.).
+
+For this lab, you should log onto your VM with the username you created
+for yourself last time (i.e., **don't log in as root**).
+
+## Navigating the Linux filesystem {#navigating-the-linux-filesystem}
+
+The first thing to understand is that Linux treats everything as a file.
+The filesystem is like a tree that consists of nested files and
+directories. It is important to be able to navigate this system so you
+can access and manipulate files.
+
+The general form of a linux command is as follows:
+```
+username@computername /your/current/directory $
+```
+
+### Moving around
+
+The `cd` command changes the directory. Using
+`cd` with the name of a directory as the
+argument moves you to that directory. For example,
+`cd /usr/bin` will take you to the directory /bin inside
+the /usr directory. If you are already in the /usr directory, you can
+simply type `cd bin`.
+
+The `.` symbol refers to your current working directory and
+the `..` symbol refers to the parent directory, the
+directory that is one level up. For example, running
+`cd ..` in /usr/bin will move you to the /usr directory.
+
+Using `cd ~` or just `cd` with no
+arguments will return you to your home directory. The symbol / refers to
+the root directory, so running `cd /` will take you to the
+root directory. Running `cd -` will return you to the
+directory you were in previously.
+
+The `pwd` command prints the path to your current working
+directory.
+
+### Listing files
+
+The `ls` command lists the files in the current directory
+(a directory is the linux equivalent of a folder). If the argument of
+`ls` is the name of a directory, it will list the files in that
+directory.
+
+  - Try navigating the filesystem on your machine. Some interesting
+directories are /etc, /bin, and /usr/bin.
+
+One common option to use with ls is -l (long), which gives you a list of
+not just the filenames but detailed information about the file
+permissions, owner, size, and date modified. Run `ls -l` in the current
+working directory, your home directory. Then run ls -l for the
+/LinuxBasics directory.
+
+```
+ls -l /LinuxBasics
+```
+
+### Common filetypes {#common-filetypes .unnumbered}
+Navigate to the `/LinuxBasics/filetypes` directory and run `ls -l`. This directory contains
+examples of the the most common types of files. These are the file types:
+
+ |--------|----------------------------------------------------------------------------------------------------------------|
+ | Symbol | Description                                                                                                    |
+ |--------|----------------------------------------------------------------------------------------------------------------|
+ | `-`    | a regular file                                                                                                 |
+ | `d`    | a directory                                                                                                    |
+ | `l`    | a symbolic link                                                                                                |
+ | `c`    | a character special file, which holds data as a stream of bytes                                                |
+ | `b`    | a block special file, which refers to a  device that handles data in blocks, like a CD-ROM drive or hard drive |
+ |--------|----------------------------------------------------------------------------------------------------------------|
+
+Some files are _hidden_ and don't show up when the `ls`
+command is run or even `ls -l`. The names of these files begin with `.`
+Running `ls -a` allows you to view hidden files.
+
+## Common commands {#common-commands .unnumbered}
+Here are some common commands for manipulating files and directories and for
+viewing files.
+
+### `less`
+This command lets you page through the contents of a text file. Run `less` followed
+by the filename and you can scroll through the document. 
+
+  - Navigate to the `/LinuxBasics` directory and use less to see what's in 
+  `treasureisland`. We will use this file in part 2 of the lab.
+
+### `cp`
+This is the command to copy a file or directory. The syntax is
+    `cp <target_file> <destination_file>.` If you want to copy the file to a
+    different directory, include the path to the directory in the new
+    filename. In order to copy a directory, you need to add -r (recursive)
+    to copy all the files contained in the directory. 
+
+  - Copy the `/LinuxBasics` directory to your home directory.
+
+### `mkdir`
+This command creates a directory. The syntax is `mkdir <directory_name>`. 
+
+  - Navigate to your copy of `LinuxBasics/filetypes` and create a directory named after your 
+favorite pirate ship.
+  - Make a copy of the directory named after your favorite pirate ship and name it after your
+favorite sea creature.
+
+### `touch`
+
+This command can be used to create files.[^1] Simply run
+`touch <filename>` and the new file will be created in your working
+directory. 
+
+  - Go into the directory you just created and make a file named
+after your favorite pirate.
+
+[^1]: Technically, `touch` updates the "last access" and "last modification" times of a file. But if the file doesn't exisit, `touch` creates it first.
+
+
+#### `mv`
+This command is used to move files (as the name suggests) and is
+also used to rename them. The syntax is similar to `cp`. To move a file to
+a different directory, you need to include the path to the new
+directory in the new filename. To rename a file, the syntax is
+`mv <old_filename> <new_filename>`. 
+
+  - Use `mv` to change the name of `ExampleSymLink` to a file named for your favorite treasure.
+
+#### `rm`
+This is the command to remove files. The syntax is
+`rm <filename>`. Be careful!! Once you remove a file it is exceedingly
+difficult to retrieve it. 
+
+  - Remove files fileA, fileB, and fileC from ExampleDirectory.
+
+#### `rmdir` 
+This command removes EMPTY directories. The syntax is similar
+to the command above, `rmdir <directory_name>`. If you want to remove a
+directory with files in it, you must first delete the files. 
+
+   - Delete ExampleDirectory.
+
+#### `echo` 
+
+The command `echo` repeats back to you the information you give it. Try
+it:
+
+```
+echo Shiver me timbers!
+```
+
+You can also use echo to find the value of variables. For instance, try
+these:
+```
+echo ~
+
+echo $USER
+```
+Now you are ready to begin your exploration of your Linux system!
+
+## man pages
+
+Linux systems have lots of commands for you to run, but the beginner
+system administrator does not always know what commands are avaliable
+and how they can be used. A good way to learn more about the commands on
+your machine is through man pages. There are manual pages for each
+command and they provide information about what a command does and ways
+to invoke various options for the command.
+
+You can access a man page from the command line by typing
+`man <command>`. To see what a man page looks like, try running
+`man ls`. You will see the name of the command and its function, its
+syntax (synopsis), a description of the command, and a list of its
+options. At the very bottom is the author, how to report bugs, and
+additional notes. To close the page when you are finished, press `q`.
+
+Open the man page for the command grep with the command:
+```
+man grep
+```
+
+  - Using `man` and the command line, answer the worksheet questions about 
+  `grep`, `cat`, and `diff`. (The files ~/LinuxBasics/treasureisland and 
+  ~/LinuxBasics/the_sea are good for testing commands.)
+
+As you hopefully have noticed, man pages contain lots of useful
+information! As you continue with this assignment and with future
+projects, remember that man pages are always a good way to look up
+commands that you don't understand or aren't completely comfortable with
+yet, to make sure that you are using them correctly.
+
+System administrators also need to be good at "judicious googling".
+Often, we need to look to the internet or a system wiki to learn about
+how to fix bugs or the best way to perform an operation. So don't be
+afraid to do more research about whatever you are working on! It is
+important to stay well informed and to know where you can find the
+answers to your questions.
+
+## Input, output, and error streams
+Programs such as `ls` produce output. Usually this output is printed to the
+screen, but Linux lets you *redirect* the output to another place, e.g., a file.
+
+The following command creates a file called ls-output.txt that contains
+the results (i.e., standard output) of the `ls -l /usr/bin` command, which
+happens to be a list of the files in /usr/bin with file details.
+```
+ls -l /usr/bin > ls-output.txt
+```
+
+The redirection character `>` overwrites the contents of a file, and `>>` appends
+text to the end of a file. In both cases, if the file does not exist it
+will be created.
+
+The error messages displayed on the command line can also be directed to
+a file. The following command creates a file called ls-error, which contains the
+errors message that results from the ls command:
+```
+ls -l ~/LinuxBasics/ninjas 2> ls-error
+```
+
+Typically a program reads input from the keyboard, but we can also redirect the
+input stream to come from another source. The following command redirects input
+to a file called newfile. After you enter the command, try typing some text. 
+(Type ctrl-D to indicate that you're done typing text.)
+```
+cat > newfile
+```
+Whatever you type after this command will be added to the file newfile! 
+(Type ctrl-D to indicate that you're done adding to the file.)
+
+## Pipes
+
+Pipes are a structure that join commands by connecting the
+output of one command to the input of another. They are useful for
+combining multiple commands to perform complex operations. To create a
+pipe, type two or more commands joined by the `|` symbol (found
+above the ENTER key).
+
+Some of the most common commands included in pipes are `less` and
+`grep`. `less` is useful because many commands generate a loooooong
+output, and putting that output into less allows the user to scroll
+through it. `grep` allows you to specify a pattern and will display only
+lines matching that pattern, which makes it useful for filtering results
+in pipes. With both `grep` and search commands like `find` or
+`locate` you can use regular expressions (regex) to specify a pattern to
+match (more on this later).
+
+
+### Examples 
+
+Simply running `ls -l /usr/bin` will allow you to see the files in
+/usr/bin but you may not be able to scroll through them. Adding less
+puts the output of ls -l /usr/bin (the list of files) into the less
+program to allow you to scroll through them.
+
+```
+ls -l /usr/bin | less
+```
+
+This command searches the root directory (/) for files that begin with
+the word "Example". Like in the first example, running find by itself
+will return the list of files matching the given criteria. However,
+piping through less lets you view the results through the less program.
+
+```
+find / -name "Example*" | less
+```
+
+This command creates a sorted list of the files in bin and /usr/bin that
+contain "zip" in the name with repeated files omitted.
+
+```
+ls /bin /usr/bin | sort | uniq | grep zip
+```
+
+This command makes a list of the files in /bin and /usr/bin without
+duplicates and then counts the number of lines in that list using `wc -l`,
+thereby returning the number of non-repeated files in both directories.
+```
+ls /bin /usr/bin | uniq | wc -l
+```
+
+### Exercises
+Write your responses to these questions on your worksheet.
+
+   1. Navigate to your LinuxBasics directory. Create a pipe to view all
+    the files (including file details) in `LinuxBasics/treasure_chest`
+    using less. (Look at all that gold!! ...I mean, files.)
+   1. Use pipes to count the number of files in `/etc`.
+   1. Create a file called arrr that lists all files in the LinuxBasics
+    directory that contain "pirate" in the name. (Hint: you will need
+    to do a recursive listing--try checking the manpage for `ls`.)
+   1. Inside the LinuxBasics directory, create a file called treasure. The
+    file treasure should list both the files in the
+    LinuxBasics/treasure_chest directory and the files in the
+    LinuxBasics/black_pearl directory.
+   1. Use the `cat` command to create a file in the `black_pearl`
+    directory called JackSparrow with the text *But why is the rum
+    gone?*

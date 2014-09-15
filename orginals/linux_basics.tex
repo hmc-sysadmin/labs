@@ -1,0 +1,674 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{xspace}
+
+\usepackage[margin=1in]{geometry}
+
+\usepackage{titling}
+\setlength{\droptitle}{-1in}
+
+\usepackage{courier}
+
+\newcommand{\code}[1]{\texttt{#1}\xspace}
+\newcommand{\cd}{\code{cd}}
+\newcommand{\ls}{\code{ls}}
+
+\setlength{\parindent}{0.2in}
+
+\title{System Administration Lab 1: Linux Basics\vspace{-2ex}}
+\author{Annie Christy, Lisa Goeller, Huting Lin, Jozi McKiernan, and Paige Rinnert}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\emph{``You are about to enter a world of choices and performance..."}
+\newline
+\null\hfill\hfill\emph{-Gentoo Handbook}
+
+
+
+\section{BASICS}
+
+Welcome to the Gentoo Linux operating system! The goal of this lab is to familiarize yourself with the Linux command line and other important tools for working in Linux systems. As you read through the lab, you should \textbf{highlight the tasks} you'll do (e.g., commands to run, questions to answer, etc.).
+
+\subsection*{Understanding the command prompt}
+
+\indent\indent When you log into your computer, you will see a command line where you can run commands. A user will be prompted to enter text with a \$, and if you are logged in as root, it will be a \#. Sometimes the command prompt includes information about the user, the machine, or the working directory. It may look something like this:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+username@computername /your/current/directory $
+\end{lstlisting}
+
+For this lab, you should log onto your VM with the username you created for yourself last time (i.e., don't log in as root).
+
+
+\subsection*{Navigating the Linux filesystem}
+
+\indent\indent The first thing to understand is that Linux treats everything as a file. The filesystem is like a tree that consists of nested files and directories. It is important to be able to navigate this system so you can access and manipulate files.
+
+The general form of a linux command is as follows:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+[command] [options] [arguments]
+\end{lstlisting}
+
+\paragraph{Moving around.}
+The \cd command changes the directory. Using \cd with the name of a directory as the argument moves you to that directory. For example, \code{\cd\ /usr/bin} will take you to the directory /bin inside the /usr directory. If you are already in the /usr directory, you can simply type \code{\cd bin}.
+
+The \code{.} symbol refers to your current working directory and the \code{..} symbol refers to the parent directory, the directory that is one level up. For example, running \code{\cd\ ..} in /usr/bin will move you to the /usr directory.
+
+Using \code{\cd\ \textasciitilde} or just \cd with no arguments will return you to your home directory. The symbol / refers to the root directory, so running \code{\cd\ /} will take you to the root directory. Running \code{\cd\ -} will return you to the directory you were in previously.
+
+The \code{pwd} command prints the path to your current working directory.
+
+Try navigating the filesystem on your machine. Some interesting directories are /etc, /bin, and /usr/bin.
+
+\paragraph{Listing files.}
+The \code{ls} command lists the files in the current directory (a directory is the linux equivalent of a folder). If the argument of \verb|ls| is the name of a directory, it will list the files in that directory.
+
+One common option to use with ls is -l (long), which gives you a list of not just the filenames but detailed information about the file permissions, owner, size, and date modified. Run \verb|ls -l| in the current working directory, your home directory. Then run ls -l for the LinuxBasics directory.
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+ls -l /LinuxBasics
+\end{lstlisting}
+
+
+\subsection*{Common filetypes}
+
+\indent\indent Navigate to the /filetypes directory and run ls -l. This directory contains the most common types of files. These are the file types:
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Symbol & Description \\
+\hline
+\hline
+- & a regular file\\
+\hline
+d & a directory\\
+\hline
+l & a symbolic link\\
+\hline
+c & a character special file, which holds \\
+  & data as a stream of bytes\\
+  \hline
+  & a block special file, which refers to a \\
+b & device that handles data in blocks, \\
+  & like a CD-ROM drive or hard drive\\
+  \hline
+\end{tabular}
+\end{center}
+
+Hidden files: Some files are hidden and don't show up when the ls command is run or even ls -l. The names of these files begin with `.' Running ls -a allows you to view hidden files.
+
+
+\subsection*{Common commands}
+
+\subsubsection*{Viewing files}
+
+\indent\indent \verb|less|: This is the easiest way to view a text file. Run \verb|less| followed by the filename and you can scroll through the document. Navigate to the LinuxBasics directory and use less to view treasureisland. We will use this file later.
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+less treasureisland
+\end{lstlisting}
+
+\subsubsection*{Creating files/directories}
+
+\indent\indent \verb|mkdir|: This command creates a directory. The syntax is \verb|mkdir <directory_name>|. Navigate back to filetypes and create a directory named after your favorite pirate ship, or something else. \\
+
+\verb|touch|: This command can be used to create files. Simply run \verb|touch <filename>| and the new file will be created in your working directory. Go into the directory you just created and make a file named after your favorite pirate.
+
+\subsubsection*{Manipulating files/directories}
+
+\indent\indent \verb|cp|: This is the command to copy a file or directory. The syntax is \\
+\verb|cp <target_file> <destination_file>.|
+If you want to copy the file to a different directory, include the path to the directory in the new filename. In order to copy a directory, you need to add -r (recursive) to copy all the files contained in the directory. Make a copy of the directory named after your favorite pirate ship and name it after your favorite sea creature. \\
+
+\verb|mv|: This command is used to move files (as the name suggests) and is also used to rename them. The syntax is similar to cp. To move a file to a different directory, you need to include the pathway to the new directory in the new filename. To rename a file, the syntax is \verb|mv <old_filename> <new_filename>|. Use mv to change the name of ExampleSymLink to a file named your favorite treasure.
+
+\subsubsection*{Removing files/directories}
+
+\indent\indent \verb|rm|: This is the command to remove files. The syntax is \verb|rm <filename>|. Be careful!! Once you remove a file it is exceedingly difficult to retrieve it. Remove files A, B, and C from ExampleDirectory. \\
+
+\verb|rmdir|: This command removes EMPTY directories. The syntax is similar to the command above, \verb|rmdir <directory_name>|. If you want to remove a directory with files in it, you must first delete the files. Delete ExampleDirectory.
+
+\subsubsection*{Echo}
+
+\indent\indent The command \verb|echo| repeats back to you the information you give it. Try it:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+echo Shiver me timbers!
+\end{lstlisting}
+
+You can also use echo to find the value of variables. For instance, try these:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+echo ~
+\end{lstlisting}
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+echo $USER
+\end{lstlisting}
+
+The first command prints the pathway to your home directory and the second one will show your username.
+
+Now you are ready to begin your exploration of your Linux system!
+
+
+
+\pagebreak
+
+\section{MAN PAGES}
+
+Linux systems have lots of commands for you to run, but the beginner system administrator does not always know what commands are avaliable and how they can be used. A good way to learn more about the commands on your machine is through man pages. There are manual pages for each command and they provide information about what a command does and ways to invoke various options for the command. \\
+
+You can access a man page from the command line by typing \verb|man <command>|. To see what a man page looks like, try running \verb|man ls|. You will see the name of the command and its function, its syntax (synopsis), a description of the command, and a list of its options. At the very bottom is the author, how to report bugs, and additional notes. To close the page when you are finished, press q. \\
+
+Open the man page for the command grep with the command:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+man grep
+\end{lstlisting}
+
+Answer the following questions about the grep command.
+
+\begin{enumerate}
+\item Describe, in your own words, what grep does.
+\newline
+\newline
+\item What does the -c flag do to the grep command?
+\newline
+\newline
+\item What is the output of the command grep -ni x file.txt?
+\newline
+\newline
+\newline
+\end{enumerate}
+
+Open the man page for the cat command and answer the following questions.
+
+\begin{enumerate}
+\item In your own words, describe what the cat command does.
+\newline
+\newline
+\item What happens when you run the command cat --help ?
+\newline
+\newline
+\item Which options would you run cat with to add a \$ at the end of each line, and begin each line with the line number?
+\newline
+\newline
+\newline
+\end{enumerate}
+
+Open the man page for the diff command and answer the following questions.
+
+\begin{enumerate}
+\item Describe, in your own words, what the diff command does.
+\newline
+\newline
+\item What do the -q and -s options do?
+\newline
+\newline
+\item Explain the different ways that diff can handle whitespace comparisons between files.
+\newline
+\newline
+\item What other resources does the diff man page point you to if you want more information?
+\newline
+\newline
+\newline
+\end{enumerate}
+
+As you hopefully have noticed, man pages contain lots of useful information! As you continue with this assignment and with future projects, remember that man pages are always a good way to look up commands that you don't understand or aren't completely comfortable with yet, to make sure that you are using them correctly.\\
+
+System administrators also need to be good at ``judicious googling." Often, we need to look to the internet or a system wiki to learn about how to fix bugs or the best way to perform an operation. So don't be afraid to do more research about whatever you are working on! It is important to stay well informed and to know where you can find the answers to your questions.
+
+
+
+\pagebreak
+
+\section{PIPELINES}
+
+\subsection*{How pipelines work}
+
+\indent\indent Pipelines are a structure that join commands by connecting the standard output of one command to the input of another. They are useful for combining multiple commands to perform complex operations. To create a pipeline, type two or more commands joined by the $\vert$ symbol (found above the ENTER key). \\
+
+Some of the most common commands included in pipelines are \verb|less| and \verb|grep|. \verb|Less| is useful because many commands generate a loooooong output, and putting that output into less allows the user to scroll through it. \verb|grep| allows you to specify a pattern and will display only lines matching that pattern, which makes it useful for filtering results in pipelines. With both \verb|grep| and search commands like \verb|find| or \verb|locate| you can use regular expressions (regex) to specify a pattern to match.
+
+
+\subsection*{Example pipes}
+
+\subsubsection*{Commands often combined with less}
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+ls -l /usr/bin | less
+\end{lstlisting}
+
+Simply running ls -l /usr/bin will allow you to see the files in /usr/bin but you may not be able to scroll through them. Adding less puts the output of ls -l /usr/bin (the list of files) into the less program to allow you to scroll through them.
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+find / -name "Example*" | less
+\end{lstlisting}
+
+This command searches your home directory (\textasciitilde) for files that begin with the word ``Example." Like in the first example, running find by itself will return the list of files matching the given criteria. However, piping through less lets you view the results through the less program.\\
+
+\subsubsection*{Pipelines with more than 2 commands}
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+ls /bin /usr/bin | sort | uniq | grep zip
+\end{lstlisting}
+
+This command creates a sorted list of the files in bin and /usr/bin that contain ``zip" in the name with repeated files  omitted.
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+ls /bin /usr/bin | uniq | wc -l
+\end{lstlisting}
+
+This command makes a list of the files in /bin and /usr/bin without duplicates and then counts the number of lines in that list using wc -l, thereby returning the number of non-repeated files in both directories.\\
+
+\subsection*{Pipelining i/o to different places}
+
+\indent\indent The commands \textgreater\ and \textgreater\textgreater\ direct standard output (o) to the desired
+location, usually a file. Standard output is the text that usually displays on the command line after a command has been run. Standard input (i) is the text you type on the command line. The redirection character \textgreater\ will overwrite the contents of a file and \textgreater\textgreater\ will append text to the end of a file. In both cases, if the file does not exist it will be created.
+
+\subsubsection*{Standard output}
+
+\indent The following command creates a file called ls-output.txt that contains the results (standard output) of the ls -l /usr/bin command, which happens to be a list of the files in /usr/bin with file details.
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+ls -l /usr/bin > ls-output.txt
+\end{lstlisting}
+
+\subsubsection*{Standard error}
+
+\indent The error messages displayed on the command line can also be directed to a file. The 2\textgreater\ tells the computer to redirect standard error instead of standard output. The file ls-error will now contain the error message that appears because \textasciitilde /LinuxBasics/ninjas is not a valid directory.
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+ls -l ~/LinuxBasics/ninjas 2> ls-error
+\end{lstlisting}
+
+\subsubsection*{Standard input}
+
+You can also direct standard input to files using cat. The cat command is most helpful when writing short text files. This command redirects standard input to newfile. What this means is that whatever you type after this command will be added to the file newfile. (Type ctrl-D when done adding to the file.)
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+cat > newfile
+\end{lstlisting}
+
+
+\subsection*{Questions}
+
+\indent\indent Please answer the following questions about pipelines. For each question, perform the action and write the pipeline you used.
+
+\begin{enumerate}
+
+\item Navigate to the LinuxBasics directory. Create a pipeline to view all the files (including file details) in \verb|LinuxBasics/treasure_chest| using less. (Look at all that gold!! ...I mean, files.) \\
+
+\vspace*{3\baselineskip}
+
+\item Create a pipeline to count the number of files in \verb|/etc|. \\
+
+\vspace*{3\baselineskip}
+
+\item Create a file called arrr listing all files in the LinuxBasics directory that contain ``pirate" in the name. (Hint: you will need to do a recursive listing -- try checking the manpage for \verb|ls|)\\
+
+\vspace*{3\baselineskip}
+
+\item Inside the LinuxBasics directory, create a file called treasure. The file treasure should list both the files in the \verb|LinuxBasics/treasure\_chest| directory and the files in the \verb|LinuxBasics/black\_pearl| directory. \\
+
+\vspace*{3\baselineskip}
+
+\item Use the \verb|cat| command to create a file in the \verb|black_pearl| directory called JackSparrow with the text ``But why is the rum gone?" (do not include the quotation marks).
+\end{enumerate}
+
+
+
+\pagebreak
+
+\section{PERMISSIONS}
+
+Every file has a ten character string that defines	its attributes. This string is listed first in the output of ls -l.\\
+	
+Here is one example from the output of ls -l:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+-rwxr--rw- 1 blackbeard users 3000 Jun 10 01:53 ocean.txt
+\end{lstlisting}
+
+The command ls -l shows other useful information, such as the creator of the file (blackbeard), the group that owns the file (users), and the size of the file in bytes (3000), but here we are just going to focus on the permissions.\\
+
+The first character in the string -rwxr--rw- gives its file type. The first character - tells us that this is a regular file.\\
+
+The other nine characters represent the file's mode. Characters two through four (rwx) represent the owner's permissions, five through seven (r - -) represent the owning group's permissions, and eight through ten (rw-) represent the world permissions, the permissions of everyone else. The permissions of the mode can be represented by three characters:\\
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Symbol & Description \\
+\hline
+\hline
+r  & allows a file to be opened and read\\
+\hline
+w & allows a file to be written but does not \\
+    & allow files to be renamed or deleted\\
+    \hline
+x  & allows a file to be treated as a program\\
+   &  and be executable\\
+ \hline
+\end{tabular}\\
+\end{center}
+
+ACTIVITY TIME! Look at a file in labDraft called the\_sea. You can do this by running the command:
+
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+ls -l the_sea
+\end{lstlisting}
+
+The first ten characters will be the file attributes of the\_sea. Can you determine who has permissions to the file?\\
+
+File modes can also be expressed in binary and octal representations. Let's see how this works:\\
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Octal & Binary & File Mode \\
+\hline
+0 & 000 & \-- \-- \-- \\
+1 & 001 & \-- \-- x \\
+2 & 010 & \-- w \-- \\
+3 & 011 & \-- w x \\
+4 & 100 & r \-- \-- \\
+5 & 101 & r \-- x \\
+6 & 110 & r w \-- \\
+7 & 111 &  r w x \\
+ \hline
+\end{tabular}\\
+\end{center}
+
+The permissions of a file will most often be 0 or 4-7 in the octal representation.\\
+
+ACTIVITY TIME! The umask command sets the default permissions given to newly created files. Running umask 0000 would set the default permissions for new files to rw\--rw\--rw\--. The 000 means that all files are world readable and writable (Ignore the first digit for now because it is only used for special modes). 
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+umask
+\end{lstlisting}
+
+Now run umask to see what the current default permissions are. Under these default permissions, what are world users allowed to do?\\
+
+OK, so now we know the default settings. But what if we wanted to change the permissions of an already existing file? There are several techniques for changing file permissions.
+
+\begin{enumerate}
+
+\item Using chmod
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+chmod <octal #> <filename>
+\end{lstlisting}
+
+Using octal representation, you can change the file's mode. For example, if you were to input:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+chmod 600 MINE.txt
+\end{lstlisting}
+			
+This would set the permissions of the file MINE.txt so that only the owner would be able to read and write the file.
+
+\item Using chown:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+chown <name> <filename>
+\end{lstlisting}
+
+This changes the ownership of the file to the specified user.
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+chown :<group> <filename>
+\end{lstlisting}
+			
+This command changes the group ownership to the group \textless group\textgreater. Note that you can use a combination of these two commands to change both individual and group owners at the same time:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+chown <name>:<group> <filename>
+\end{lstlisting}
+			
+\end{enumerate}
+
+
+\subsection*{SU and SUDO}
+
+\indent\indent If you try running chown or chmod on a file that you don't own, you'll notice that YOU CAN'T. The only way to do this is to become another user. To become another user, run the following command:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+su <user>
+\end{lstlisting}
+			
+You will then be prompted for the user's password. If you do not include a username, the command line will assume that you wish to become the superuser. The superuser has power over everything and can change all permissions.
+
+To stop being a user in su, simply type exit into the command line and hit enter.
+
+To run a single command using su, simply type:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+su -c <command>
+\end{lstlisting}
+	
+The sudo command also allows a user to get more privileges, but in a much more controlled way. Because the administrator configures sudo,  a user using sudo may not have full superuser powers. Sudo differs from su in that sudo usually requires a user's own password rather than the root's. Thus, sudo is a much safer command than su. The sudo syntax looks like this:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+sudo <command>
+\end{lstlisting}
+		 
+It is here that we as the CS Department remind you once again, ``With great power, comes great responsibility." Like Spiderman, when becoming the superuser you become more than the average human. We only hope that you continue to use your powers for good. \\
+
+ACTIVITY TIME! Remember the arrr file you made with \textgreater\ and \textgreater\textgreater\ in the pipelines section? Well, that was really just a sneaky way of telling you which files you're going to need for the next step, text editors. However, there is one small problem: you don't have all the permissions you need to access them! Change the permissions on the files listed in arrr so that you have rwx access. Then move on to text editors. (Hint: flags are your friend.)
+
+
+
+\pagebreak
+
+\section{TEXT EDITORS}
+
+Navigate to the directory \verb|pirate_editors| and run:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+vim dreadpirate_instructions
+\end{lstlisting}
+
+Then read the file and follow the directions to complete this part of the lab. \\
+
+
+
+\pagebreak
+
+\section{REGULAR EXPRESSIONS}
+
+\indent\indent Regular expressions are a powerful tool for pattern matching. In fact, you were already using regular expressions when you ran the grep command! If you learn how to use regular expressions, you can match much more than just words; you will be able to match patterns like every word that starts with a j, or every file that contains a number in its name. \\
+
+Two programs that are commonly used with regular expressions are awk and sed. Awk is an interpreted language that is very good at processing text with regular expressions. Sed stands for ``stream editor" and is a UNIX utility that allows the user to process files. The main difference between the two is that sed is simpler and easier to use to edit text while awk is a programming language in and of itself (vaguely similar to C) that can do a lot more than just edit text. If you are interested, you should research more about the history and use of awk and sed. \\
+
+In this lab, you will mostly be using the sed command. You are encouraged to read the sed man page to learn more about how the command works and to get comfortable with the available options. Two option flags you should definitely know about are -i and -e. The -e command will make the changes to the file and output the altered file to the command line without changing the saved version of the file. The -i option will edit the file in place. \\
+
+The regular expression metacharacters are \^{} * - [ ]  \textbackslash  \{ \} ? + ( ) . and $\vert$. \\
+
+They each have different meanings. For example, \^{} anchors the beginning of a line and \$ anchors the end of a line. The . is a character placeholder, so it could be replaced by any character. So, the regular expression \\
+
+\begin{center}
+\verb|'^q..x.$'|
+\end{center}
+
+\noindent will match with any word that is five characters long, starts with a q and whose second-to-last character is an x. Note that single quotes are used to designate the regular expression as separate from any command. If your pattern involves single quotes, you will want to surround your regular expression with double quotes instead. \\
+
+The [ ] characters allow you to designate multiple choices. So the expression
+
+\begin{center}
+\verb|'^[ABC]'|
+\end{center}
+
+\noindent will match any pattern that begins with a capital A, B, or C.\\
+
+Obviously, this handout does not cover all there is to know about regular expressions. It will just serve as an introduction. However, regular expressions are very powerful and useful, so it is definitely worth your time to learn more!\\
+
+The clue that will lead you to the next step in the series is hidden in the file treasureisland. To decode the message, you will need to follow the instructions exactly for the message to appear. It is recommended that you save copies of your text file at different steps so that you can go back if you make mistakes. Several .diff files have been provided so you can check your progress.\\
+
+Start by making a copy of the file treasureisland to work on so that you can keep a copy of the original for reference. (The file is located in the LinuxBasics directory.)
+
+\begin{enumerate}
+\item It is often useful to perform find and replace operations on text files. There is a simple sed command just for this purpose. Its basic form is:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+sed -i 's/<find>/<replace>/g' file.txt
+\end{lstlisting}
+
+The -i option tells sed to edit the file in place. Replace \textless find\textgreater with the pattern that you want to search for. This can be a character or word, or using regular expressions, we can ask it to search for many different patterns! Whatever should take the place of the patterns should go in the position of \textless replace\textgreater. The leading s stands for ``substitute" and the trailing g stands for ``global." If the g is left off, only the first instance of the pattern in each line will be replaced.\\
+
+So, to remove all the extraneous punctuation that are not single quotes or periods and replace them with a space, we could use the following command:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+sed -i 's/[?!,:;"-]/ /g' treasureisland
+\end{lstlisting}
+
+Run this command now. If you like, it might be a good idea to run it with the -e option first, so that you can see what will happen to your file without actually changing it.
+
+\item To remove apostrophes and replace them with spaces, we need to surround the regular expression with double quotes instead of single quotes.
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+sed -i "s/'/ /g" treasureisland
+\end{lstlisting}
+
+Run this command now.
+
+\item It is also useful to remove entire lines of a file by line number. If you want to quickly view the lines in a file, you can run \verb|cat -n <filename>| which will display all of the lines in a file by line number. It is also useful to pipe the cat command through less, so that you can go back and view all the lines in a long file. The regular expression that allows us to remove lines from a file has the general form:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+sed -i '<line number>d' <filename>
+\end{lstlisting}
+
+To remove multiple consecutive lines, the command looks like this:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+sed -i '<starting line number>, <ending line number>d' <filename>
+\end{lstlisting}
+
+It is even possible to remove several sets of consecutive lines by using semicolons to separate the groups of lines that you want to delete:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+sed -i '<line number>d;<starting line number>,<ending line number>d' <filename>
+\end{lstlisting}
+
+Note that a d is required after each grouping of lines that you want to delete.
+
+We want to remove lines 1-27 from treasureisland. Do this by running the following:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+sed -i '1,27d' treasureisland
+\end{lstlisting}
+
+\item Next, we will combine find-replace syntax with the delete command and some more regular expression pattern matching to remove all lines in the file that do not begin with uppercase or lowercase L, T, K, A, or O. Do this now.
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+sed -i '/^[lLtTkKaAoO]/!d' treasureisland
+\end{lstlisting}
+
+\item The next step is to change the file so that all the characters are lowercase. For this, it is easier to use awk. Awk does not have an option to change a file in place, so we need to file the output into a temporary file, then overwrite the old file with the contents of the temporary file. 
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+awk '{print tolower($0)}' treasureisland > tempfile && mv tempfile treasureisland
+\end{lstlisting}
+
+\item Next, delete all the periods in the file. You can use the find and replace command to do this, just make sure to replace with nothing, not with a space. Remember that a period is a metacharacter, so you will need to use the escape character to find it like this: \textbackslash.
+
+\item If we can remove specific lines, we should be able to add lines as well. The basic format of this regular expression is:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+sed -i '<line number>i <string>' <filename>
+\end{lstlisting}
+
+Try it out by inserting the string ``run" at line 9 in treasureisland. Do not include the double quotes.
+
+\item Now, insert the string ``/usr/local/" at line 8 in treasureisland. It includes the / character, so you will need to use the escape character within the string to access it.
+
+If you would like to check your work at this point, there is a file called step08check.txt stored in the directory. It contains the correct file contents after the first eight steps. Check it against your file using the diff command. Remember that you can read the diff man page again to learn more about the command.
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+diff 
+\end{lstlisting}
+
+\item Use the line removal command to remove lines 1-5, 11, 13-15, 17-34, and 37. Be careful! You will need to remove all the lines at the same time, or you might accidentally delete part of the clue.
+
+There is another check file, called step09check.txt to check your work after step 9.
+
+\item Now, separate the text file so that each word is on its own line. Do this by replacing whitespace with a newline. Sed recognizes \textbackslash s as whitespace and \textbackslash n as
+a newline.
+
+Once again, a file for checking your work after this step is in the directory at step10check.txt.
+
+\item Using the insertion syntax given above, insert a dash at line 74. Now insert a dash at line 100.
+
+\item Insert a period at line 149. Remember that a period is a metacharacter.
+
+\item Insert the character x at line 38.
+
+\item Next, remove the following lines: 1, 3-33, 35-36, 39-49, 51-58, 60-73, 76-87, 89-100, 102-120, and 122-149. Remember that you need to delete them all at once.
+
+There is a file for checking your work after this step called step14check.txt.
+
+\item Another useful regular expression will append two lines together:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+sed -i 'N;s/\n/ /' file.txt
+\end{lstlisting}
+
+This command is essentially replacing every newline character with a space. The N at the beginning of the regular expression will append the current line and the next line into the space of the pattern. Run the above command once on the treasureisland.txt file.
+
+\item Some whitespace snuck into the file. Replace all instances of the string ``local/ " with the string ``local/" using the global find and replace command.
+
+\item Run the command that will append two lines together \textit{three more times}.
+
+\item Now, replace all instances of the string `` - " with the string ``-".
+
+\item Replace all instances of the string `` . " with the string ``.".
+
+\item Recall that in regular expressions, the \$ character represents the end of a line and the . character represents one character. Use these to write a regular expression that will delete the last two characters from every line in the file.
+
+\item Now, replace any instance of ``sh" in the file with ``py".
+
+Open the file! If all went well, you will have a clue to send you to the final step in the lab.
+
+\end{enumerate}
+
+
+
+\pagebreak
+
+\section{EXECUTABLES}
+
+\indent\indent Now that you have found the location of the executable file, you should run it. We will cover shell scripting and executables in another lab so for now all you need to know is how to run a file. To run most shell scripts, you will need to be in the same directory in the script, or know a path to the script. Invoke the scripting language at the beginning of the command line then the file name. \\
+
+For instance, to run a shell script called swabthedeck.sh, you would run the command:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+sh swabthedeck.sh
+\end{lstlisting}
+
+Python and perl are also common scripting languages. To run a python script called coconut.py, you would run the command:
+
+\begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, breaklines=true]
+python coconut.py
+\end{lstlisting}
+          
+Try it out with the executable that you just discovered and see what happens!
+
+
+
+
+\end{document}
