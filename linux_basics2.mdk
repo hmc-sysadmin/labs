@@ -3,6 +3,8 @@ Author  : Annie Christy, Lisa Goeller, Huting Lin, Jozi McKiernan, and Paige Rin
 MathJax : True
 Css     : ./writeup.css
 
+Heading Depth: 0 
+
 # Linux Basics, Part 2
 _Originally created by Annie Christy, Lisa Goeller, Huting Lin, Jozi McKiernan, and Paige Rinnert_
 
@@ -13,7 +15,7 @@ string is listed first in the output of `ls -l`.
 
 Here is one example from the output of `ls -l`:
 ```
-    -rwxr--rw- 1 blackbeard users 3000 Jun 10 01:53 ocean.txt
+-rwxr--rw- 1 blackbeard users 3000 Jun 10 01:53 ocean.txt
 ```
 
 The command `ls -l` shows other useful information, such as the creator of
@@ -21,8 +23,8 @@ the file (blackbeard), the group that owns the file (users), and the
 size of the file in bytes (3000), but here we are just going to focus on
 the permissions.
 
-The first character in the string `-rwxr–rw-` gives its file type. The
-first character `-` tells us that this is a regular file.
+The first character in the string `-rwxr–rw-` gives its file type: 
+`-` tells us that this is a regular file.
 
 The other nine characters represent the file's mode. Characters two
 through four (rwx) represent the owner's permissions, five through seven
@@ -38,7 +40,7 @@ The permissions of the mode can be represented by three characters:
  | `x`     | allows a file to be treated as a program and be executable                    |
  | ------- | ----------------------------------------------------------------------------  |
 
-  - Look at the permissions for LinuxBasics/the_sea. Can
+  - Look at the permissions for ~/LinuxBasics/the_sea. Can
 you determine who has permissions to the file?
 
 File modes can also be expressed in binary and octal representations.
@@ -75,29 +77,29 @@ techniques for changing file permissions.
 
 1.  Using `chmod`
 ```
-        chmod <octal #> <filename>
+    chmod <octal #> <filename>
 ```
-    With octal representation, you can change the file's mode. For
+With octal representation, you can change the file's mode. For
     example, if you were to input:
 ```
-        chmod 600 MINE.txt
+    chmod 600 MINE.txt
 ```
-    This would set the permissions of the file MINE.txt so that only the
+This would set the permissions of the file MINE.txt so that only the
     owner would be able to read and write the file.
 
 2.  Using `chown`
 ```
-        chown <name> <filename>
+    chown <name> <filename>
 ```
-    This changes the ownership of the file to the specified user.
+This changes the ownership of the file to the specified user.
 ```
-        chown :<group> <filename>
+    chown :<group> <filename>
 ```
-    This command changes the group ownership to the group `<group>`.
+This command changes the group ownership to the group `<group>`.
     Note that you can use a combination of these two commands to change
     both individual and group owners at the same time:
 ```
-        chown <name>:<group> <filename>
+    chown <name>:<group> <filename>
 ```
 
 ## SU and SUDO {#su-and-sudo .unnumbered}
@@ -106,7 +108,7 @@ If you try running chown or chmod on a file that you don't own, you'll
 notice that *you can't*. The only way to do this is to become another
 user. To become another user, run the following command:
 ```
-    su <user>
+su <user>
 ```
 You will then be prompted for the user's password. If you do not include
 a username, the command line will assume that you wish to become the
@@ -118,7 +120,7 @@ hit enter.
 
 To run a single command using su, simply type:
 ```
-    su -c <command>
+su -c <command>
 ```
 The sudo command also allows a user to get more privileges, but in a
 much more controlled way. Because the administrator configures sudo, a
@@ -127,29 +129,35 @@ in that sudo usually requires a user's own password rather than the
 root's. Thus, sudo is a much safer command than su. The sudo syntax
 looks like this:
 ```
-    sudo <command>
+sudo <command>
 ```
 It is here that we as the CS Department remind you once again, ""With
 great power, comes great responsibility." Like Spiderman, when becoming
 the superuser you become more than the average human. We only hope that
 you continue to use your powers for good.
 
-   -  Remember the arrr file you made? Well, it contains the names of
+   -  Remember the ~/LinuxBasics/arrr file you made? Well, it contains the names of
 the files you're going to need for the next part of the lab.
 However, there is one small problem: you don't have all the permissions
-you need to access them! Change the permissions on the files listed in
+you need to modify them! Change the permissions on the files listed in
 arrr so that you have rwx access. (Hint:
 flags are your friend.)
 
 ## Text Editors
 Navigate to the directory `pirate_editors` and run:
 ```
-    vim dreadpirate_instructions
+vim dreadpirate_instructions
 ```
 Then read the file and follow the directions to complete this part of
 the lab.
 
-## Regular Expressions
+## Treasure Hunt!
+
+There is some treasure hidden on your machine, and we want to help you find it!
+In this part of the lab, we'll chart a course through a map to your treasure. 
+Each step along the way may requre the use of a new tool: regular expressions.
+
+### Regular Expressions
 
 Regular expressions are a powerful tool for pattern matching. In fact,
 you were already using regular expressions when you ran the grep
@@ -159,12 +167,12 @@ that starts with a j, or every file that contains a number in its name.\
 
 Two programs that are commonly used with regular expressions are awk and
 sed. Awk is an interpreted language that is very good at processing text
-with regular expressions. Sed stands for \`\`stream editor" and is a
+with regular expressions. Sed stands for "stream editor" and is a
 UNIX utility that allows the user to process files. The main difference
 between the two is that sed is simpler and easier to use to edit text
 while awk is a programming language in and of itself (vaguely similar to
 C) that can do a lot more than just edit text. If you are interested,
-you should research more about the history and use of awk and sed.\
+you can research more about the history and use of awk and sed.\
 
 In this lab, you will mostly be using the sed command. You are
 encouraged to read the sed man page to learn more about how the command
@@ -175,7 +183,7 @@ command line without changing the saved version of the file. The -i
 option will edit the file in place.\
 
 The regular expression metacharacters are \^ \* - [ ] \\{ } ? + ( ) .
-and $\vert$.\
+and |.\
 
 They each have different meanings. For example, \^ anchors the beginning
 of a line and \$ anchors the end of a line. The . is a character
@@ -202,7 +210,7 @@ regular expressions. It will just serve as an introduction. However,
 regular expressions are very powerful and useful, so it is definitely
 worth your time to learn more!\
 
-The clue that will lead you to the next step in the series is hidden in
+The clue that will lead you to the first step toward your treasure is hidden in
 the file treasureisland. To decode the message, you will need to follow
 the instructions exactly for the message to appear. It is recommended
 that you save copies of your text file at different steps so that you
@@ -211,7 +219,7 @@ so you can check your progress.\
 
 Start by making a copy of the file treasureisland to work on so that you
 can keep a copy of the original for reference. (The file is located in
-the LinuxBasics directory.)
+the ~/LinuxBasics directory.)
 
 1.  It is often useful to perform find and replace operations on text
     files. There is a simple sed command just for this purpose. Its
@@ -220,12 +228,12 @@ the LinuxBasics directory.)
         sed -i 's/<find>/<replace>/g' file.txt
 
     The -i option tells sed to edit the file in place. Replace
-    \<find\>with the pattern that you want to search for. This can be a
+    \<find\> with the pattern that you want to search for. This can be a
     character or word, or using regular expressions, we can ask it to
     search for many different patterns! Whatever should take the place
     of the patterns should go in the position of \<replace\>. The
-    leading s stands for \`\`substitute“ and the trailing g stands for
-    \`\`global.” If the g is left off, only the first instance of the
+    leading s stands for "substitute" and the trailing g stands for
+    "global." If the g is left off, only the first instance of the
     pattern in each line will be replaced.\
 
     So, to remove all the extraneous punctuation that are not single
@@ -299,15 +307,15 @@ the LinuxBasics directory.)
 
         sed -i '<line number>i <string>' <filename>
 
-    Try it out by inserting the string \`\`run" at line 9 in
+    Try it out by inserting the string "run" at line 9 in
     treasureisland. Do not include the double quotes.
 
-8.  Now, insert the string \`\`/usr/local/" at line 8 in treasureisland.
+8.  Now, insert the string "/usr/local/" at line 8 in treasureisland.
     It includes the / character, so you will need to use the escape
     character within the string to access it.
 
     If you would like to check your work at this point, there is a file
-    called step08check.txt stored in the directory. It contains the
+    called regex_checks/step08check.txt stored in the directory. It contains the
     correct file contents after the first eight steps. Check it against
     your file using the diff command. Remember that you can read the
     diff man page again to learn more about the command.
@@ -353,23 +361,26 @@ the LinuxBasics directory.)
     Run the above command once on the treasureisland.txt file.
 
 16. Some whitespace snuck into the file. Replace all instances of the
-    string \`\`local/ “ with the string \`\`local/” using the global
+    string `local/ ` with the string `local/` using the global
     find and replace command.
 
 17. Run the command that will append two lines together *three more
     times*.
 
-18. Now, replace all instances of the string \`\` - “ with the string
-    \`\`-”.
+18. Now, replace all instances of the string ` - ` with the string
+    `-`. (The original string has two spaces around it. The new string should 
+    have no spaces around it.)
 
-19. Replace all instances of the string \`\` . “ with the string \`\`.”.
+19. Replace all instances of the string ` . ` with the string `.`.
+    (The original string has two spaces around it. The new string should 
+    have no spaces around it.)
 
 20. Recall that in regular expressions, the \$ character represents the
     end of a line and the . character represents one character. Use
     these to write a regular expression that will delete the last two
     characters from every line in the file.
 
-21. Now, replace any instance of \`\`sh“ in the file with \`\`py”.
+21. Now, replace any instance of `sh` in the file with `py`.
 
     Open the file! If all went well, you will have a clue to send you to
     the final step in the lab.
@@ -395,4 +406,3 @@ script called coconut.py, you would run the command:
 
 Try it out with the executable that you just discovered and see what
 happens!
-
