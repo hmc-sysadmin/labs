@@ -269,7 +269,7 @@ the ~/LinuxBasics directory.)
 
     To remove multiple consecutive lines, the command looks like this:
 
-        sed -i '<starting line number>, <ending line number>d' <filename>
+        sed -i '<starting line number>,<ending line number>d' <filename>
 
     It is even possible to remove several sets of consecutive lines by
     using semicolons to separate the groups of lines that you want to
