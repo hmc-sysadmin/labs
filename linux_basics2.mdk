@@ -63,10 +63,13 @@ The permissions of a file will most often be 0 or 4-7 in the octal
 representation.
 
 The `umask` command sets the default permissions given to
-newly created files. Running `umask 0000` would set the default
-permissions for new files to rw-rw-rw-. The 000 means that all files are
-world readable and writable (Ignore the first digit for now because it
-is only used for special modes).
+newly created files. When files are created, the default permissions are 666.
+Running `umask 0000` would set the default permissions for new files to 666,
+which is rw-rw-rw-. The 000 means that none of the permissions are masked.
+(Ignore the first digit for now because it is only used for special modes).
+Changing the value of umask will mask permissions. For example, if you
+set umask to 0066, you will change the default file permissions to 600,
+which means that only the file creator can read, write, and execute the file.
 
    - Run `umask` to see what the current default permissions are. Under
 these default permissions, what are world users allowed to do?
