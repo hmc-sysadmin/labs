@@ -1,72 +1,103 @@
+[Hangman]: http://www.cs.hmc.edu/courses/2014/fall/sysadmin/hangman_lab
+[Dictionary]: http://www.cs.hmc.edu/courses/2014/fall/sysadmin/dict
+[Permissions]: https:www.cs.hmc.edu/courses/2014/fall/sysadmin/linux_basics2.html
+
 # Shell Scripting in Bash
 *Originally created by Lisa Goeller, Joži McKiernan, and Paige Rinnert*
 
+## TODO
+  - Double-check readings
 
 ## Readings
 
-Before beginning this lab, here are some readings you'll probably want to do.
-They come from the book *The Linux Command Line: A Complete Introduction* by
-William Shotts.
+Before beginning this lab, you'll probably want to do read up on shell
+scripting. These readings come from the book *The Linux Command Line: A Complete
+Introduction* by William Shotts.
 
 **Strongly recommended**
 
-  - Chapters 24-25 (p. 309-324) provide some background on setting and using 
+  - Chapters 24-25 (p. 309--324) provide some background on setting and using 
     variables.
-  - Chapters 26-29 (p. 325-362) discuss functions, if/else branching, keyboard 
+  - Chapters 26-29 (p. 325--362) discuss functions, if/else branching, keyboard 
     input, and while/until loops.
 
 *Additional reading*
 
-  - Chapter 31 (p. 375-380) talks about case branching, which will be useful 
+  - Chapter 31 (p. 375--380) talks about case branching, which will be useful 
     for the extra credit.
 
 ## Introduction
 
-
 The goal of this lab is to write a program in bash to play Hangman! **Pair
-programming is highly encouraged for this lab.** Bash is a scripting
-language. There are different kinds of shells (like sh, zsh, and csh)
-but we will just be working in bash, which stands for **b**ourne
-**a**gain **sh**ell. It is a replacement for sh, the original Bourne
-shell. The scripting language is defined at the top of a program with
-the "shebang" character: `#!`. Every program starts with a shebang!
-;)
+programming is highly encouraged for this lab.** 
 
-We hope you read the background information on shell scripting. To do
-this lab, you need to be familiar with constructing if/else statements
-and while/until loops. You should also be fairly comfortable with
-regular expressions. Don’t be afraid to use Google to look up syntax
-that you are unsure about! This is a helpful online resource:
-<http://www.johnstowers.co.nz/blog/pages/bash-cheat-sheet.html>
+Bash is a scripting language. There are different kinds of shells (like sh, zsh,
+and csh) but we will just be working in bash, which stands for **b**ourne
+**a**gain **sh**ell (so named because it replaced sh, the original Bourne
+shell).
 
-The file you will be editing is `hangman_lab`. Be sure to copy the file
-to your home directory. Also copy the file `dict` to your home
-directory. This is the file you will grab words from; each word is on a
-new line in the file. Go ahead and use less to view the dictionary file
-if you want.
+To do this lab, you need to be familiar with constructing if/else statements and
+while/until loops. You should also be fairly comfortable with regular
+expressions. Don't be afraid to use Google to look up syntax that you are unsure
+about! This  
+[Bash cheat sheet](http://www.johnstowers.co.nz/blog/pages/bash-cheat-sheet.html) might also help.
+
+## Materials
+
+You'll need two files: [`hangman_lab`][Hangman] and [`dict`][Dictionary].  The
+`hangman_lab` file contains the beginning of a script that implements hangman.
+You'll modify this file as part of the lab. The `dict` file contains words that
+the game can use; each line of the files contains a word.
+
+There are two ways to get the files onto your VM:
+
+Download the files directly to your VM.
+  : Log into your VM. In your home directory, use the `wget` command, along with
+    the file URLs. Click on the links for the files above to visit the URLS, then
+    copy the URL and run the command `wget <URL>`.
+
+Download the files to your computer, then upload them to your VM.
+  : Click the links for the files above, then save them to your computer. Use
+    the `scp` command to upload them from your machine to your VM, like so: `scp
+    <file> <username>@vm<#>.sys.cs.hmc.edu:~/`. This command will place the
+    files in your home directory on your VM. Note: Your browser might try to add
+    a .txt extension to the files. If so, you should remove the extension.
+
+Notice that the `hangman_lab` file starts with a *"shebang"*:
+```
+#! /bin/bash
+```
+This line describes how to execute it: using the bash shell.
 
 ## Running a script
 
+There are many ways to run a script or program in a *nix system. For this lab,
+we'll run the hangman script as an executable file. To do so:
 
-Before you start writing, here is how you run a script. You can run a
-script from the command line if it is in your path. The path is set by
-the `$PATH` variable in your environment. If the script is in a
-directory on your path, you will be able to run it by typing the name of
-the script on the command line.
+   1. Make sure the `hangman_lab` has executable permissions (see the [previous
+   lab][Permissions] if you need a reminder for how to do this).
+   1. Run the command `./hangman_lab`
 
+In general, to run an executable file, you run the filename as if it were a
+command. For example, `./hangman_lab` or `~/hangman_lab`. 
+
+You can avoid typing the full path to the program, if the program's directory 
+is in your path. The path is set by the `$PATH` variable in your environment. 
+If the script is in a directory on your path, you will be able to run it by 
+typing only the name of the script on the command line. For example, `ls`. 
 To find out what directories are part of your path, type `echo $PATH` on
 your command line. It will produce a colon-delimited list of directories
-on your path. Be sure to copy your hangman script to a directory on your
-path, preferably one tied to your user account, like `/usr/local/bin`.
+on your path. 
 
+<!--
 Throughout the process of writing the script, you can check periodically
 that it is working by running it and seeing if the behavior is what you
 expected. Be sure that any incomplete lines of code are commented out so
-they don’t return errors. Feel free to add print statements throughout
+they don't return errors. Feel free to add print statements throughout
 to help with debugging.
+-->
 
 ## Defining Variables
-
 
 Start off by completing the function `define` that defines the necessary
 variables. We have defined three of them for you: `word`, `length`, and
@@ -84,7 +115,7 @@ example we gave 8 lives to the player. `gl` is an empty array that will
 eventually contain the letters that the player has guessed. An array,
 which is similar to a list, is represented by parentheses: `()`. A note
 about setting variables is that bash cares about whitespace. There
-shouldn’t be any space between the variable and its value, like this:
+shouldn't be any space between the variable and its value, like this:
 `variable=value`.
 
 Remember that to refer to variables in bash, the syntax is `$variable`.
@@ -106,13 +137,13 @@ order they appear in the file, we encourage you to write them in the
 order they appear in this handout.) The main job of this function is to
 ask the user to input a letter. There are three parts to the function:
 first you print a string to tell the user what to enter, next comes the
-command to read the user’s input, and finally the function calls
+command to read the user's input, and finally the function calls
 `valid_letter` to determine if the input was valid.
 
 Remember the print command in bash is `echo`. The command to ask for
 user input is `read` and the syntax is `read <variable>`. In this case,
 we will call the variable `letter`. After adding code to a function,
-it’s okay to remove the `return` statements.
+it's okay to remove the `return` statements.
 
 ## Check that letter is valid
 
@@ -157,16 +188,16 @@ replace all characters in `$word` NOT found in the guessed letters list
 with underscores. This is slightly counterinuitive but it works. The
 syntax of the find and replace command for strings in bash is
 `${string//pattern/replacement}`. Use regex to specify the pattern.
-Don’t forget to include any text you want to display, like the newly
+Don't forget to include any text you want to display, like the newly
 updated board and the letters that have been guessed.
 
-For the `else` case, we don’t need to make any changes to `$wip` because
-the letter isn’t in the word. However, we do need to decrement the
+For the `else` case, we don't need to make any changes to `$wip` because
+the letter isn't in the word. However, we do need to decrement the
 number of lives. You will need to use double parentheses (( )) to create
 a math environment, with a \$ in front of them to mark it as a variable.
 You also need to call `check_lives` to determine whether the user still
 has lives left or if the game is over. (You will write this function
-later.) Don’t forget `fi`.
+later.) Don't forget `fi`.
 
 ## Write game function
 
@@ -194,12 +225,12 @@ variables need to be reset.
 ## Putting it all together
 
 
-Now that you’ve defined the functions, you should call them, assuming
+Now that you've defined the functions, you should call them, assuming
 that the user wants to play. (Hint: Try using a while loop!) Consider
 how all the functions can work together to allow the game to actually
 work.
 
-Now you’re ready to run the script and test your game!
+Now you're ready to run the script and test your game!
 
 ## Extra Credit :)
 
@@ -215,6 +246,6 @@ Also, if you are so inclined, you can try including ASCII art of a
 hangman (or something less grotesque) that updates throughout the game.
 Another idea is to create a cheating function that allows the player to
 search through the dictionary with regex for possible matches to the
-letters they’ve already guessed in the word. Play around, have fun, and
+letters they've already guessed in the word. Play around, have fun, and
 happy scripting!
 
