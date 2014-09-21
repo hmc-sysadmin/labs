@@ -9,10 +9,10 @@
 # on the command line.
 
 function define {
-word=$(shuf -n 1 dict)
-length=$(expr length "$word")
-wip=$(printf '%0.s_' $(seq 1 $length))
-
+  word=$(shuf -n 1 ./dict)
+  length=$(expr length "$word")
+  wip=$(printf '%0.s_' $(seq 1 $length))
+  # add your variables here
 }
 
 function check_lives {

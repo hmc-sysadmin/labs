@@ -50,7 +50,7 @@ You'll need two files: [`hangman_lab`][Hangman] and [`dict`][Dictionary].  The
 You'll modify this file as part of the lab. The `dict` file contains words that
 the game can use; each line of the files contains a word.
 
-There are two ways to get the files onto your VM:
+There are two ways to get the files on your VM:
 
 Download the files directly to your VM.
   : Log into your VM. In your home directory, use the `wget` command, along with
@@ -72,7 +72,7 @@ This line describes how to execute it: using the bash shell.
 
 ## Running a script
 
-There are many ways to run a script or program in a *nix system. For this lab,
+There are many ways to run a script or program on a *nix system. For this lab,
 we'll run the hangman script as an executable file. To do so:
 
    1. Make sure the `hangman_lab` has executable permissions (see the [previous
@@ -100,49 +100,61 @@ to help with debugging.
 
 ## Defining Variables
 
-Start off by completing the function `define` that defines the necessary
-variables. We have defined three of them for you: `word`, `length`, and
-`wip`. The `word` is selected randomly from the provided dictionary
-using the command `shuf`, which shuffles the dictionary and returns the
-first line (a single word). (NOTE: You need to add the pathway to the
-file `dict`!)The length of the word needs to be defined so that it can
-be referenced in `wip` (the word in progress). The word in progress
-begins as simply underscores representing each letter of the word, and
-this will become the "board" for the game.
+We'll start implementing hangman by defining some variables. Look at the
+function `define` in the `hangman_lab` file. This function defines some
+variables for the program; you'll define some more. Here are the variables
+already defined:
 
-The variables you need to add are `lives` and `gl`. `lives` will be the
-number of lives the player gets before they lose the game. In our
-example we gave 8 lives to the player. `gl` is an empty array that will
-eventually contain the letters that the player has guessed. An array,
-which is similar to a list, is represented by parentheses: `()`. A note
-about setting variables is that bash cares about whitespace. There
-shouldn't be any space between the variable and its value, like this:
-`variable=value`.
+\/`word`
+  : selected randomly from the provided dictionary using the command `shuf`,
+    which shuffles the dictionary and returns the first line (a single word).
 
-Remember that to refer to variables in bash, the syntax is `$variable`.
-If you want to include a character directly after the variable (for
-example a period at the end of a sentence), include curly brackets
-around the variable: `${variable}`. To reference arrays, in addition to
-the \$ and curly brackets, you need to tell the shell to look at all
-elements of the array: `${array[@]}`. If you are setting the results of
-a command to a variable, like in `word`, `length`, and `wip`, the
-command needs to be enclosed in parentheses and then preceded by a \$,
-like this: `variable=$(command)`.
+\/`length`
+  : the length of a word
+
+\/`wip`
+  : stands for "word in progress". It is the game board. It begins as a sequence
+    of underscores, each of which represents one letter of the word. The board
+    gets filled in over the course of the game.
+
+The variables you need to define are:
+
+\/`lives`
+  : the number of lives the player gets before they lose the game. In our
+    version, we gave eight lives to the player. 
+
+\/`gl`
+  : stands for "guessed letters". It's an empty array that will
+    eventually contain the letters that the player has guessed.
+
+A few reminders about values and variables in bash:
+
+  - An array, which is similar to a list, is represented by parentheses: `()`.
+  - Whitespace is significant in bash. There shouldn't be any space between the 
+    variable and its value, like this: `variable=value`.
+  - To refer to refer to variables in bash, the syntax is `$variable`. If you 
+    want to include a character directly after the variable (for
+    example a period at the end of a sentence), include curly brackets
+    around the variable: `${variable}`. 
+  - To assign the results of a command to a variable (see, e.g., `word`, 
+    `length`, and `wip`), the command needs to be enclosed in parentheses and 
+    then preceded by a \$, like this: `variable=$(command)`.
+  - To reference arrays, in addition to the \$ and curly brackets, you need to 
+    tell bash to look at all elements of the array: `${array[@]}`. 
 
 ## Get user input for letter
-
 
 The function you will write next is called `get_letter`. (Instead of
 writing the functions in the order they will be called, which is the
 order they appear in the file, we encourage you to write them in the
-order they appear in this handout.) The main job of this function is to
+order they appear in this lab description.) The main job of this function is to
 ask the user to input a letter. There are three parts to the function:
 first you print a string to tell the user what to enter, next comes the
 command to read the user's input, and finally the function calls
 `valid_letter` to determine if the input was valid.
 
 Remember the print command in bash is `echo`. The command to ask for
-user input is `read` and the syntax is `read <variable>`. In this case,
+user input is `read`, and the syntax is `read <variable>`. In this case,
 we will call the variable `letter`. After adding code to a function,
 it's okay to remove the `return` statements.
 
