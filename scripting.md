@@ -142,15 +142,14 @@ A few reminders about values and variables in bash:
   - To reference arrays, in addition to the \$ and curly brackets, you need to 
     tell bash to look at all elements of the array: `${array[@]}`. 
 
-## Get user input for letter
+## Write `get_letter` to ask the player for a letter
+_Note: Instead of writing the functions in the order they
+will be called, which is the order they appear in the file, we encourage you to
+write them in the order they appear in this lab description._
 
-The function you will write next is called `get_letter`. (Instead of
-writing the functions in the order they will be called, which is the
-order they appear in the file, we encourage you to write them in the
-order they appear in this lab description.) The main job of this function is to
-ask the user to input a letter. There are three parts to the function:
-first you print a string to tell the user what to enter, next comes the
-command to read the user's input, and finally the function calls
+The `get_letter` function should ask the user to input a letter. There are three
+parts to the function: first it prints a string to tell the user what to enter,
+next it reads the user's input, and finally the function calls
 `valid_letter` to determine if the input was valid.
 
 Remember the print command in bash is `echo`. The command to ask for
@@ -158,26 +157,18 @@ user input is `read`, and the syntax is `read <variable>`. In this case,
 we will call the variable `letter`. After adding code to a function,
 it's okay to remove the `return` statements.
 
-## Check that letter is valid
+## Write `valid_letter` to validate the player's letter
 
-
-The next function you should write is called `valid_letter` and
-(surprisingly) checks whether the user input for `letter` is valid.
 Valid inputs consist of lowercase Roman alphabet characters only. If the
-input is valid, the script should call the function `guessed_letter`.
-(We have written this function for you because the syntax is kind of
-obscure.) After the `if` condition include a semicolon followed by the
-word `then`.
+input is valid, the function should call the function `guessed_letter`.
+(which we have provided because the syntax is kind of obscure.) If the input is 
+invalid, the program should prompt the player for another letter, by calling 
+`get_letter`. You might consider printing some additional helpful information 
+for the player, such as a reminder of what letters have been guessed and what 
+the word looks like now. 
 
-If the input is invalid, there should be an `else` statement where the
-script prompts for another letter by calling `get_letter`. You might
-consider printing some additional helpful information for your user,
-such as a reminder of what letters have been guessed and what the word
-looks like now. At the end of the `else` statement, you need to type
-`fi` to close the entire if/else section.
-
-## Check if the letter has been guessed
-
+<!--
+## Write `guessed_letter` to check if the player's guess is new
 
 We wrote this function, `guessed_letter`, for you because the syntax is
 bizarre. The goal of this function is to check if the user has already
@@ -185,48 +176,37 @@ guessed the letter. If the user has guessed it, the function returns to
 `get_letter` to ask for a different letter. If not, the function adds
 the letter to the array `gl` which contains guessed letters, and it
 calls `letter_in_word` to determine whether the letter is in the word.
+-->
 
-## Check that the letter is in the word
+## Write `letter_in_word` to check the player's guess
 
+The `letter_in_word` function checks whether the letter is in the secret word.
+Use regular expressions to check whether the string `$word` contains the string
+`$letter`. If it does, update the variable `$wip` to include the newly guessed
+letter. To do this, you can use a slightly counterintuitive strategy: replace
+all characters in `$word` NOT found in the guessed letters list with
+underscores. The syntax of the find and replace command for strings in bash is
+`${string/pattern/replacement}`. Use a regular expression to specify the 
+pattern. When the player guesses a correct letter, you may also want to display
+other information, e.g., the newly updated board and the letters that have been 
+guessed.
 
-This function, `letter_in_word`, checks whether the letter is in the
-given word. There should be an `if` case for if the letter is in the
-word, and an `else` case for if it is not.
+If the player guesses a letter that's *not* in the word, the script should
+decrement the number of lives.  You also need to call `check_lives` to determine
+whether the user still has lives left or if the game is over. (You will write
+this function later.)
 
-For the `if` case, use regular expressions to check whether the string
-`$word` contains the string `$letter`. Inside this `if` statement,
-update the variable `$wip` to include the newly guessed letter. To do
-this, we will use a find and replace command within a string. We want to
-replace all characters in `$word` NOT found in the guessed letters list
-with underscores. This is slightly counterinuitive but it works. The
-syntax of the find and replace command for strings in bash is
-`${string//pattern/replacement}`. Use regex to specify the pattern.
-Don't forget to include any text you want to display, like the newly
-updated board and the letters that have been guessed.
+## Write `game`, the main loop for the game
 
-For the `else` case, we don't need to make any changes to `$wip` because
-the letter isn't in the word. However, we do need to decrement the
-number of lives. You will need to use double parentheses (( )) to create
-a math environment, with a \$ in front of them to mark it as a variable.
-You also need to call `check_lives` to determine whether the user still
-has lives left or if the game is over. (You will write this function
-later.) Don't forget `fi`.
-
-## Write game function
-
-
-You will now need to write a function `game` that prompts the user for
-letters until the word is guessed. In order to have an effective game,
-you first need to define your variables (funny, I think you wrote a
-function for that already). You also need to let the player know how
-long the word is by printing the board. Then, you need to keep asking
-for letters until the word-in-progress is the same as the word itself.
-(Remember, an `until` loop requires `do` at the beginning and `done`
-when it is finished.) When the word is guessed, the user should be asked
-if they want to play again. Their `answer` should be read in.
+This function prompts the player for letters until the word is guessed or the
+player runs out of lives. In order to have an effective game, you first need to
+define your variables (funny, I think you wrote a function for that already).
+You also need to let the player know how long the word is by printing the board.
+Then, you need to keep asking for letters until the word-in-progress is the same
+as the word itself. When the word is guessed, the game should ask the user  if
+they want to play again. If so, start a new game.
 
 ## Check number of lives remaining
-
 
 Now you will need to check to see if the player has any lives remaining.
 You can do this by writing an `if` statement. If the player has no lives
