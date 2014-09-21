@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="generator" content="Madoko, version 0.6.3-beta" />
+  <meta name="viewport" content="initial-scale=1.0" />
+  <meta name="author" content="Annie Christy, Lisa Goeller, Huting Lin, Jozi McKiernan, and Paige Rinnert" />
+  <title>Linux Basics</title>
+  <link rel="stylesheet" type="text/css" href="madoko.css">
+  <link rel="stylesheet" type="text/css" href="./writeup.css">
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+       TeX: { 
+         Macros: { mathid: ['\\mathit{#1\\hspace{0.1ex}}',1], mathkw: ['\\mathsf{#1}',1],
+                   mathspace: ['\\hspace{#1pt}\\hspace{#1pt}\\hspace{#1pt}',1], mathindent: ['\\hspace{#1ex}',1], mathbr: ['\\\\'],
+                 },
+  
+       }
+    });
+    MathJax.Hub.Register.StartupHook('TeX AMSmath Ready',function () { 
+      MathJax.InputJax.TeX.Definitions.environment['mdMathprearray'] = ['AMSarray',null,null,null,'l','0em','0em'];
+    });
+  </script>
+  <script type="text/javascript"
+    src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+</head>
+<body class="madoko">
+
+<h1 id="linux-basics-part-2"  data-line="8" ><span data-line=":8"></span>Linux Basics, Part 2</h1>
+<p data-line="9"><span data-line=":9"></span><em>Originally created by Annie Christy, Lisa Goeller, Huting Lin, Jozi McKiernan, and Paige Rinnert</em><span data-line=":9"></span>
+</p><h2 id="permissions"  data-line="11" ><span data-line=":11"></span>Permissions</h2>
+<p data-line="13"><span data-line=":13"></span>Every file has a ten-character string that defines its attributes. This
+string is listed first in the output of <span data-line=":14"></span><code class="code">ls -l</code><span data-line=":14"></span>.
+</p>
+<p class="indent" data-line="16"><span data-line=":16"></span>Here is one example from the output of <span data-line=":16"></span><code class="code">ls -l</code><span data-line=":16"></span>:
+</p>
+<pre class="para-block fenced para-block" data-line="17" data-line-code="18"><code data-line="18">-rwxr--rw- 1 blackbeard users 3000 Jun 10 01:53 ocean.txt</code></pre>
+<p data-line="21"><span data-line=":21"></span>The command <span data-line=":21"></span><code class="code">ls -l</code><span data-line=":21"></span> shows other useful information, such as the creator of
+the file (blackbeard), the group that owns the file (users), and the
+size of the file in bytes (3000), but here we are just going to focus on
+the permissions.
+</p>
+<p class="indent" data-line="26"><span data-line=":26"></span>The first character in the string <span data-line=":26"></span><code class="code">-rwxr–rw-</code><span data-line=":26"></span> gives its file type: 
+<span data-line=":27"></span><code class="code">-</code><span data-line=":27"></span> tells us that this is a regular file.
+</p>
+<p class="indent" data-line="29"><span data-line=":29"></span>The other nine characters represent the file<span data-line=":29"></span>&#39;<span data-line=":29"></span>s mode. Characters two
+through four (rwx) represent the owner<span data-line=":30"></span>&#39;<span data-line=":30"></span>s permissions, five through seven
+(<span data-line=":31"></span><code class="code">r--</code><span data-line=":31"></span>) represent the owning group<span data-line=":31"></span>&#39;<span data-line=":31"></span>s permissions, and eight through ten
+(<span data-line=":32"></span><code class="code">rw-</code><span data-line=":32"></span>) represent the world permissions, the permissions of everyone else.
+The permissions of the mode can be represented by three characters:
+</p><table class="madoko block" data-line="35">
+<thead><tr><th class="cell-line"></th><th class="cell-line"></th></tr>
+<tr><th> Symbol  </th><th> Description                                                                   </th></tr></thead>
+<tbody><tr><td class="cell-line"></td><td class="cell-line"></td></tr>
+<tr><td> <code class="code">r</code>     </td><td> allows a file to be opened and read                                           </td></tr>
+<tr><td> <code class="code">w</code>     </td><td> allows a file to be written but does not allow files to be renamed or deleted </td></tr>
+<tr><td> <code class="code">x</code>     </td><td> allows a file to be treated as a program and be executable                    </td></tr>
+<tr><td class="cell-line"></td><td class="cell-line"></td></tr></tbody></table>
+<ul class="compact" data-line="43">
+<li data-line="43"><span data-line=":43"></span>Look at the permissions for <span data-line=":43"></span>~<span data-line=":43"></span>/LinuxBasics/the<span data-line=":43"></span>_<span data-line=":43"></span>sea. Can
+you determine who has permissions to the file?
+</li></ul>
+
+<p data-line="46"><span data-line=":46"></span>File modes can also be expressed in binary and octal representations.
+Let<span data-line=":47"></span>&#39;<span data-line=":47"></span>s see how this works:
+</p><table class="madoko block" data-line="49">
+<thead><tr><th class="cell-line"></th><th class="cell-line"></th><th class="cell-line"></th></tr>
+<tr><th> Octal  </th><th> Binary   </th><th> File Mode   </th></tr></thead>
+<tbody><tr><td class="cell-line"></td><td class="cell-line"></td><td class="cell-line"></td></tr>
+<tr><td> 0      </td><td> 000      </td><td> <code class="code">---</code>       </td></tr>
+<tr><td> 1      </td><td> 001      </td><td> <code class="code">--x</code>       </td></tr>
+<tr><td> 2      </td><td> 010      </td><td> <code class="code">-w-</code>       </td></tr>
+<tr><td> 3      </td><td> 011      </td><td> <code class="code">-wx</code>       </td></tr>
+<tr><td> 4      </td><td> 100      </td><td> <code class="code">r--</code>       </td></tr>
+<tr><td> 5      </td><td> 101      </td><td> <code class="code">r-x</code>       </td></tr>
+<tr><td> 6      </td><td> 110      </td><td> <code class="code">rw-</code>       </td></tr>
+<tr><td> 7      </td><td> 111      </td><td> <code class="code">rwx</code>       </td></tr>
+<tr><td class="cell-line"></td><td class="cell-line"></td><td class="cell-line"></td></tr></tbody></table>
+<p data-line="62"><span data-line=":62"></span>The permissions of a file will most often be 0 or 4-7 in the octal
+representation.
+</p>
+<p class="indent para-continue" data-line="65"><span data-line=":65"></span>The <span data-line=":65"></span><code class="code">umask</code><span data-line=":65"></span> command sets the default permissions given to
+newly created files. When files are created, the default permissions are 666.
+Running <span data-line=":67"></span><code class="code">umask 0000</code><span data-line=":67"></span> would set the default permissions for new files to 666,
+which is rw-rw-rw-. The 000 means that none of the permissions are masked.
+(Ignore the first digit for now because it is only used for special modes).
+Changing the value of umask will mask permissions. For example, if you
+set umask to 0066, you will change the default file permissions to 600,
+which means that only the file creator can read, write, and execute the file.
+</p>
+<ul class="compact" data-line="74">
+<li data-line="74"><span data-line=":74"></span>Run <span data-line=":74"></span><code class="code">umask</code><span data-line=":74"></span> to see what the current default permissions are. Under
+these default permissions, what are world users allowed to do?
+</li></ul>
+
+<p class="para-continue" data-line="77"><span data-line=":77"></span>OK, so now we know the default settings. But what if we wanted to change
+the permissions of an already existing file? There are several
+techniques for changing file permissions.
+</p>
+<ol class="loose" data-line="81">
+<li data-line="81">
+<p data-line="81"><span data-line=":81"></span>Using <span data-line=":81"></span><code class="code">chmod</code><span data-line=":81"></span>
+</p>
+<pre class="para-block fenced para-block" data-line="82" data-line-code="83"><code data-line="83">chmod &lt;octal #&gt; &lt;filename&gt;</code></pre>
+<p data-line="85"><span data-line=":85"></span>With octal representation, you can change the file<span data-line=":85"></span>&#39;<span data-line=":85"></span>s mode. For
+example, if you were to input:
+</p>
+<pre class="para-block fenced para-block" data-line="87" data-line-code="88"><code data-line="88">chmod 600 MINE.txt</code></pre>
+<p data-line="90"><span data-line=":90"></span>This would set the permissions of the file MINE.txt so that only the
+owner would be able to read and write the file.
+</p></li>
+<li data-line="93">
+<p data-line="93"><span data-line=":93"></span>Using <span data-line=":93"></span><code class="code">chown</code><span data-line=":93"></span>
+</p>
+<pre class="para-block fenced para-block" data-line="94" data-line-code="95"><code data-line="95">chown &lt;name&gt; &lt;filename&gt;</code></pre>
+<p data-line="97"><span data-line=":97"></span>This changes the ownership of the file to the specified user.
+</p>
+<pre class="para-block fenced para-block" data-line="98" data-line-code="99"><code data-line="99">chown :&lt;group&gt; &lt;filename&gt;</code></pre>
+<p data-line="101"><span data-line=":101"></span>This command changes the group ownership to the group <span data-line=":101"></span><code class="code">&lt;group&gt;</code><span data-line=":101"></span>.
+Note that you can use a combination of these two commands to change
+both individual and group owners at the same time:
+</p>
+<pre class="para-block fenced para-block" data-line="104" data-line-code="105"><code data-line="105">chown &lt;name&gt;:&lt;group&gt; &lt;filename&gt;</code></pre></li></ol>
+<h2 id="su-and-sudo" class="unnumbered"  data-line="108" ><span data-line=":108"></span>SU and SUDO</h2>
+<p data-line="110"><span data-line=":110"></span>If you try running chown or chmod on a file that you don<span data-line=":110"></span>&#39;<span data-line=":110"></span>t own, you<span data-line=":110"></span>&#39;<span data-line=":110"></span>ll
+notice that <span data-line=":111"></span><em>you can&#39;t</em><span data-line=":111"></span>. The only way to do this is to become another
+user. To become another user, run the following command:
+</p>
+<pre class="para-block fenced para-block" data-line="113" data-line-code="114"><code data-line="114">su &lt;user&gt;</code></pre>
+<p data-line="116"><span data-line=":116"></span>You will then be prompted for the user<span data-line=":116"></span>&#39;<span data-line=":116"></span>s password. If you do not include
+a username, the command line will assume that you wish to become the
+superuser. The superuser has power over everything and can change all
+permissions.
+</p>
+<p class="indent" data-line="121"><span data-line=":121"></span>To stop being a user in su, simply type exit into the command line and
+hit enter.
+</p>
+<p class="indent" data-line="124"><span data-line=":124"></span>To run a single command using su, simply type:
+</p>
+<pre class="para-block fenced para-block" data-line="125" data-line-code="126"><code data-line="126">su -c &lt;command&gt;</code></pre>
+<p data-line="128"><span data-line=":128"></span>The sudo command also allows a user to get more privileges, but in a
+much more controlled way. Because the administrator configures sudo, a
+user using sudo may not have full superuser powers. Sudo differs from su
+in that sudo usually requires a user<span data-line=":131"></span>&#39;<span data-line=":131"></span>s own password rather than the
+root<span data-line=":132"></span>&#39;<span data-line=":132"></span>s. Thus, sudo is a much safer command than su. The sudo syntax
+looks like this:
+</p>
+<pre class="para-block fenced para-block" data-line="134" data-line-code="135"><code data-line="135">sudo &lt;command&gt;</code></pre>
+<p class="para-continue" data-line="137"><span data-line=":137"></span>It is here that we as the CS Department remind you once again, <span data-line=":137"></span>&#8220;&#8221;<span data-line=":137"></span>With
+great power, comes great responsibility.<span data-line=":138"></span>&quot;<span data-line=":138"></span> Like Spiderman, when becoming
+the superuser you become more than the average human. We only hope that
+you continue to use your powers for good.
+</p>
+<ul class="compact" data-line="142">
+<li data-line="142"><span data-line=":142"></span>Remember the <span data-line=":142"></span>~<span data-line=":142"></span>/LinuxBasics/arrr file you made? Well, it contains the names of
+the files you<span data-line=":143"></span>&#39;<span data-line=":143"></span>re going to need for the next part of the lab.
+However, there is one small problem: you don<span data-line=":144"></span>&#39;<span data-line=":144"></span>t have all the permissions
+you need to modify them! Change the permissions on the files listed in
+arrr so that you have rwx access. (Hint:
+flags are your friend.)
+</li></ul>
+<h2 id="text-editors"  data-line="149" ><span data-line=":149"></span>Text Editors</h2>
+<p data-line="150"><span data-line=":150"></span>Navigate to the directory <span data-line=":150"></span><code class="code">pirate_editors</code><span data-line=":150"></span> and run:
+</p>
+<pre class="para-block fenced para-block" data-line="151" data-line-code="152"><code data-line="152">vim dreadpirate_instructions</code></pre>
+<p data-line="154"><span data-line=":154"></span>Then read the file and follow the directions to complete this part of
+the lab.
+</p><h2 id="treasure-hunt"  data-line="157" ><span data-line=":157"></span>Treasure Hunt!</h2>
+<p data-line="159"><span data-line=":159"></span>There is some treasure hidden on your machine, and we want to help you find it!
+In this part of the lab, we<span data-line=":160"></span>&#39;<span data-line=":160"></span>ll chart a course through a map to your treasure. 
+Each step along the way may requre the use of a new tool: regular expressions.
+</p><h3 id="regular-expressions"  data-line="163" ><span data-line=":163"></span>Regular Expressions</h3>
+<p data-line="165"><span data-line=":165"></span>Regular expressions are a powerful tool for pattern matching. In fact,
+you were already using regular expressions when you ran the grep
+command! If you learn how to use regular expressions, you can match much
+more than just words; you will be able to match patterns like every word
+that starts with a j, or every file that contains a number in its name.<span data-line=":169"></span><br>
+</p>
+<p class="indent" data-line="171"><span data-line=":171"></span>Two programs that are commonly used with regular expressions are awk and
+sed. Awk is an interpreted language that is very good at processing text
+with regular expressions. Sed stands for <span data-line=":173"></span>&#8220;stream editor&#8221;<span data-line=":173"></span> and is a
+UNIX utility that allows the user to process files. The main difference
+between the two is that sed is simpler and easier to use to edit text
+while awk is a programming language in and of itself (vaguely similar to
+C) that can do a lot more than just edit text. If you are interested,
+you can research more about the history and use of awk and sed.<span data-line=":178"></span><br>
+</p>
+<p class="indent" data-line="180"><span data-line=":180"></span>In this lab, you will mostly be using the sed command. You are
+encouraged to read the sed man page to learn more about how the command
+works and to get comfortable with the available options. Two option
+flags you should definitely know about are<span data-line=":183"></span> <span data-line=":183"></span>-i and<span data-line=":183"></span> <span data-line=":183"></span>-e. The<span data-line=":183"></span> <span data-line=":183"></span>-e command
+will make the changes to the file and output the altered file to the
+command line without changing the saved version of the file. The<span data-line=":185"></span> <span data-line=":185"></span>-i
+option will edit the file in place.<span data-line=":186"></span><br>
+</p>
+<p class="indent" data-line="188"><span data-line=":188"></span>The regular expression metacharacters are <span data-line=":188"></span>^<span data-line=":188"></span> <span data-line=":188"></span>*<span data-line=":188"></span> <span data-line=":188"></span>-<span data-line=":188"></span> [ ]<span data-line=":188"></span> <span data-line=":188"></span>\<span data-line=":188"></span>{ } ?<span data-line=":188"></span> <span data-line=":188"></span>+ ( ) .
+and |.<span data-line=":189"></span><br>
+</p>
+<p class="indent" data-line="191"><span data-line=":191"></span>They each have different meanings. For example, <span data-line=":191"></span>^<span data-line=":191"></span> anchors the beginning
+of a line and <span data-line=":192"></span>$<span data-line=":192"></span> anchors the end of a line. The . is a character
+placeholder, so it could be replaced by any character. So, the regular
+expression<span data-line=":194"></span><br>
+</p>
+<p class="indent" data-line="196"><span data-line=":196"></span><code class="code">&#39;^q..x.$&#39;</code><span data-line=":196"></span>
+</p>
+<p class="indent" data-line="198"><span data-line=":198"></span>will match with any word that is five characters long, starts with a q
+and whose second-to-last character is an x. Note that single quotes are
+used to designate the regular expression as separate from any command.
+If your pattern involves single quotes, you will want to surround your
+regular expression with double quotes instead.<span data-line=":202"></span><br>
+</p>
+<p class="indent" data-line="204"><span data-line=":204"></span>The<span data-line=":204"></span> [ ]<span data-line=":204"></span> characters allow you to designate multiple choices. So the
+expression
+</p>
+<p class="indent" data-line="207"><span data-line=":207"></span><code class="code">&#39;^[ABC]&#39;</code><span data-line=":207"></span>
+</p>
+<p class="indent" data-line="209"><span data-line=":209"></span>will match any pattern that begins with a capital A, B, or C.<span data-line=":209"></span><br>
+</p>
+<p class="indent" data-line="211"><span data-line=":211"></span>Obviously, this handout does not cover all there is to know about
+regular expressions. It will just serve as an introduction. However,
+regular expressions are very powerful and useful, so it is definitely
+worth your time to learn more!<span data-line=":214"></span><br>
+</p>
+<p class="indent" data-line="216"><span data-line=":216"></span>The clue that will lead you to the first step toward your treasure is hidden in
+the file treasureisland. To decode the message, you will need to follow
+the instructions exactly for the message to appear. It is recommended
+that you save copies of your text file at different steps so that you
+can go back if you make mistakes. Several .diff files have been provided
+so you can check your progress.<span data-line=":221"></span><br>
+</p>
+<p class="indent para-continue" data-line="223"><span data-line=":223"></span>Start by making a copy of the file treasureisland to work on so that you
+can keep a copy of the original for reference. (The file is located in
+the <span data-line=":225"></span>~<span data-line=":225"></span>/LinuxBasics directory.)
+</p>
+<ol class="loose" data-line="227">
+<li data-line="227">
+<p data-line="227"><span data-line=":227"></span>It is often useful to perform find and replace operations on text
+files. There is a simple sed command just for this purpose. Its
+basic form is:
+</p>
+<pre class="para-block para-block" data-line="231"><code>sed -i &#39;s/&lt;find&gt;/&lt;replace&gt;/g&#39; file.txt</code></pre>
+<p data-line="233"><span data-line=":233"></span>The<span data-line=":233"></span> <span data-line=":233"></span>-i option tells sed to edit the file in place. Replace
+<span data-line=":234"></span><<span data-line=":234"></span>find<span data-line=":234"></span>><span data-line=":234"></span> with the pattern that you want to search for. This can be a
+character or word, or using regular expressions, we can ask it to
+search for many different patterns! Whatever should take the place
+of the patterns should go in the position of <span data-line=":237"></span><<span data-line=":237"></span>replace<span data-line=":237"></span>><span data-line=":237"></span>. The
+leading s stands for <span data-line=":238"></span>&#8220;substitute&#8221;<span data-line=":238"></span> and the trailing g stands for
+<span data-line=":239"></span>&#8220;global.&#8221;<span data-line=":239"></span> If the g is left off, only the first instance of the
+pattern in each line will be replaced.<span data-line=":240"></span><br>
+</p>
+<p data-line="242"><span data-line=":242"></span>So, to remove all the extraneous punctuation that are not single
+quotes or periods and replace them with a space, we could use the
+following command:
+</p>
+<pre class="para-block para-block" data-line="246"><code>sed -i &#39;s/[?!,:;&quot;-]/ /g&#39; treasureisland</code></pre>
+<p data-line="248"><span data-line=":248"></span>Run this command now. If you like, it might be a good idea to run it
+with the<span data-line=":249"></span> <span data-line=":249"></span>-e option first, so that you can see what will happen to
+your file without actually changing it.
+</p></li>
+<li data-line="252">
+<p data-line="252"><span data-line=":252"></span>To remove apostrophes and replace them with spaces, we need to
+surround the regular expression with double quotes instead of single
+quotes.
+</p>
+<pre class="para-block para-block" data-line="256"><code>sed -i &quot;s/&#39;/ /g&quot; treasureisland</code></pre>
+<p data-line="258"><span data-line=":258"></span>Run this command now.
+</p></li>
+<li data-line="260">
+<p data-line="260"><span data-line=":260"></span>It is also useful to remove entire lines of a file by line number.
+If you want to quickly view the lines in a file, you can run
+<span data-line=":262"></span><code class="code">cat -n &lt;filename&gt;</code><span data-line=":262"></span> which will display all of the lines in a file by
+line number. It is also useful to pipe the cat command through less,
+so that you can go back and view all the lines in a long file. The
+regular expression that allows us to remove lines from a file has
+the general form:
+</p>
+<pre class="para-block para-block" data-line="268"><code>sed -i &#39;&lt;line number&gt;d&#39; &lt;filename&gt;</code></pre>
+<p data-line="270"><span data-line=":270"></span>To remove multiple consecutive lines, the command looks like this:
+</p>
+<pre class="para-block para-block" data-line="272"><code>sed -i &#39;&lt;starting line number&gt;,&lt;ending line number&gt;d&#39; &lt;filename&gt;</code></pre>
+<p data-line="274"><span data-line=":274"></span>It is even possible to remove several sets of consecutive lines by
+using semicolons to separate the groups of lines that you want to
+delete:
+</p>
+<pre class="para-block para-block" data-line="278"><code>sed -i &#39;&lt;line number&gt;d;&lt;starting line number&gt;,&lt;ending line number&gt;d&#39; &lt;filename&gt;</code></pre>
+<p data-line="280"><span data-line=":280"></span>Note that a d is required after each grouping of lines that you want
+to delete.
+</p>
+<p data-line="283"><span data-line=":283"></span>We want to remove lines 1-27 from treasureisland. Do this by running
+the following:
+</p>
+<pre class="para-block para-block" data-line="286"><code>sed -i &#39;1,27d&#39; treasureisland</code></pre></li>
+<li data-line="288">
+<p data-line="288"><span data-line=":288"></span>Next, we will combine find-replace syntax with the delete command
+and some more regular expression pattern matching to remove all
+lines in the file that do not begin with uppercase or lowercase L,
+T, K, A, or O. Do this now.
+</p>
+<pre class="para-block para-block" data-line="293"><code>sed -i &#39;/^[lLtTkKaAoO]/!d&#39; treasureisland</code></pre></li>
+<li data-line="295">
+<p data-line="295"><span data-line=":295"></span>The next step is to change the file so that all the characters are
+lowercase. For this, it is easier to use awk. Awk does not have an
+option to change a file in place, so we need to file the output into
+a temporary file, then overwrite the old file with the contents of
+the temporary file.
+</p>
+<pre class="para-block para-block" data-line="301"><code>awk &#39;{print tolower($0)}&#39; treasureisland &gt; tempfile &amp;&amp; mv tempfile treasureisland</code></pre></li>
+<li data-line="303">
+<p data-line="303"><span data-line=":303"></span>Next, delete all the periods in the file. You can use the find and
+replace command to do this, just make sure to replace with nothing,
+not with a space. Remember that a period is a metacharacter, so you
+will need to use the escape character to find it like this: <span data-line=":306"></span>\<span data-line=":306"></span>.
+</p></li>
+<li data-line="308">
+<p data-line="308"><span data-line=":308"></span>If we can remove specific lines, we should be able to add lines as
+well. The basic format of this regular expression is:
+</p>
+<pre class="para-block para-block" data-line="311"><code>sed -i &#39;&lt;line number&gt;i &lt;string&gt;&#39; &lt;filename&gt;</code></pre>
+<p data-line="313"><span data-line=":313"></span>Try it out by inserting the string <span data-line=":313"></span>&#8220;run&#8221;<span data-line=":313"></span> at line 9 in
+treasureisland. Do not include the double quotes.
+</p></li>
+<li data-line="316">
+<p data-line="316"><span data-line=":316"></span>Now, insert the string <span data-line=":316"></span>&#8220;/usr/local/&#8221;<span data-line=":316"></span> at line 8 in treasureisland.
+It includes the / character, so you will need to use the escape
+character within the string to access it.
+</p>
+<p data-line="320"><span data-line=":320"></span>If you would like to check your work at this point, there is a file
+called regex<span data-line=":321"></span>_<span data-line=":321"></span>checks/step08check.txt stored in the directory. It contains the
+correct file contents after the first eight steps. Check it against
+your file using the diff command. Remember that you can read the
+diff man page again to learn more about the command.
+</p>
+<pre class="para-block para-block" data-line="326"><code>diff </code></pre></li>
+<li data-line="328">
+<p data-line="328"><span data-line=":328"></span>Use the line removal command to remove lines 1-5, 11, 13-15, 17-34,
+and 37. Be careful! You will need to remove all the lines at the
+same time, or you might accidentally delete part of the clue.
+</p>
+<p data-line="332"><span data-line=":332"></span>There is another check file, called step09check.txt to check your
+work after step 9.
+</p></li>
+<li data-line="335">
+<p data-line="335"><span data-line=":335"></span>Now, separate the text file so that each word is on its own line. Do
+this by replacing whitespace with a newline. Sed recognizes <span data-line=":336"></span>\<span data-line=":336"></span>s as
+whitespace and <span data-line=":337"></span>\<span data-line=":337"></span>n as a newline.
+</p>
+<p data-line="339"><span data-line=":339"></span>Once again, a file for checking your work after this step is in the
+directory at step10check.txt.
+</p></li>
+<li data-line="342">
+<p data-line="342"><span data-line=":342"></span>Using the insertion syntax given above, insert a dash at line 74.
+Now insert a dash at line 100.
+</p></li>
+<li data-line="345">
+<p data-line="345"><span data-line=":345"></span>Insert a period at line 149. Remember that a period is a
+metacharacter.
+</p></li>
+<li data-line="348">
+<p data-line="348"><span data-line=":348"></span>Insert the character x at line 38.
+</p></li>
+<li data-line="350">
+<p data-line="350"><span data-line=":350"></span>Next, remove the following lines: 1, 3-33, 35-36, 39-49, 51-58,
+60-73, 76-87, 89-100, 102-120, and 122-149. Remember that you need
+to delete them all at once.
+</p>
+<p data-line="354"><span data-line=":354"></span>There is a file for checking your work after this step called
+step14check.txt.
+</p></li>
+<li data-line="357">
+<p data-line="357"><span data-line=":357"></span>Another useful regular expression will append two lines together:
+</p>
+<pre class="para-block para-block" data-line="359"><code>sed -i &#39;N;s/\n/ /&#39; file.txt</code></pre>
+<p data-line="361"><span data-line=":361"></span>This command is essentially replacing every newline character with a
+space. The N at the beginning of the regular expression will append
+the current line and the next line into the space of the pattern.
+Run the above command once on the treasureisland.txt file.
+</p></li>
+<li data-line="366">
+<p data-line="366"><span data-line=":366"></span>Some whitespace snuck into the file. Replace all instances of the
+string <span data-line=":367"></span><code class="code">local/ </code><span data-line=":367"></span> with the string <span data-line=":367"></span><code class="code">local/</code><span data-line=":367"></span> using the global
+find and replace command.
+</p></li>
+<li data-line="370">
+<p data-line="370"><span data-line=":370"></span>Run the command that will append two lines together <span data-line=":370"></span><em>three more
+times</em><span data-line=":371"></span>.
+</p></li>
+<li data-line="373">
+<p data-line="373"><span data-line=":373"></span>Now, replace all instances of the string <span data-line=":373"></span><code class="code"> - </code><span data-line=":373"></span> with the string
+<span data-line=":374"></span><code class="code">-</code><span data-line=":374"></span>. (The original string has two spaces around it. The new string should 
+have no spaces around it.)
+</p></li>
+<li data-line="377">
+<p data-line="377"><span data-line=":377"></span>Replace all instances of the string <span data-line=":377"></span><code class="code"> . </code><span data-line=":377"></span> with the string <span data-line=":377"></span><code class="code">.</code><span data-line=":377"></span>.
+(The original string has two spaces around it. The new string should 
+have no spaces around it.)
+</p></li>
+<li data-line="381">
+<p data-line="381"><span data-line=":381"></span>Recall that in regular expressions, the <span data-line=":381"></span>$<span data-line=":381"></span> character represents the
+end of a line and the . character represents one character. Use
+these to write a regular expression that will delete the last two
+characters from every line in the file.
+</p></li>
+<li data-line="386">
+<p data-line="386"><span data-line=":386"></span>Now, replace any instance of <span data-line=":386"></span><code class="code">sh</code><span data-line=":386"></span> in the file with <span data-line=":386"></span><code class="code">py</code><span data-line=":386"></span>.
+</p>
+<p data-line="388"><span data-line=":388"></span>Open the file! If all went well, you will have a clue to send you to
+the final step in the lab.
+</p></li></ol>
+<h2 id="executables"  data-line="391" ><span data-line=":391"></span>Executables</h2>
+<p data-line="393"><span data-line=":393"></span>Now that you have found the location of the executable file, you should
+run it. We will cover shell scripting and executables in another lab so
+for now all you need to know is how to run a file. To run most shell
+scripts, you will need to be in the same directory in the script, or
+know a path to the script. Invoke the scripting language at the
+beginning of the command line then the file name.
+</p>
+<p class="indent" data-line="400"><span data-line=":400"></span>For instance, to run a shell script called swabthedeck.sh, you would run
+the command:
+</p>
+<pre class="para-block para-block" data-line="403"><code>sh swabthedeck.sh</code></pre>
+<p data-line="405"><span data-line=":405"></span>Python and perl are also common scripting languages. To run a python
+script called coconut.py, you would run the command:
+</p>
+<pre class="para-block para-block" data-line="408"><code>python coconut.py</code></pre>
+<p data-line="410"><span data-line=":410"></span>Try it out with the executable that you just discovered and see what
+happens!
+</p>
+</body>
+</html>

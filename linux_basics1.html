@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="generator" content="Madoko, version 0.6.3-beta" />
+  <meta name="viewport" content="initial-scale=1.0" />
+  <meta name="author" content="Annie Christy, Lisa Goeller, Huting Lin, Jozi McKiernan, and Paige Rinnert" />
+  <title>Linux Basics</title>
+  <link rel="stylesheet" type="text/css" href="madoko.css">
+  <link rel="stylesheet" type="text/css" href="./writeup.css">
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+       TeX: { 
+         Macros: { mathid: ['\\mathit{#1\\hspace{0.1ex}}',1], mathkw: ['\\mathsf{#1}',1],
+                   mathspace: ['\\hspace{#1pt}\\hspace{#1pt}\\hspace{#1pt}',1], mathindent: ['\\hspace{#1ex}',1], mathbr: ['\\\\'],
+                 },
+  
+       }
+    });
+    MathJax.Hub.Register.StartupHook('TeX AMSmath Ready',function () { 
+      MathJax.InputJax.TeX.Definitions.environment['mdMathprearray'] = ['AMSarray',null,null,null,'l','0em','0em'];
+    });
+  </script>
+  <script type="text/javascript"
+    src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+</head>
+<body class="madoko">
+
+<h1 id="linux-basics-part-1"  data-line="8" ><span data-line=":8"></span>Linux Basics, Part 1</h1>
+<p data-line="9"><span data-line=":9"></span><em>Originally created by Annie Christy, Lisa Goeller, Huting Lin, Joži McKiernan, and Paige Rinnert</em><span data-line=":9"></span>
+</p>
+<blockquote data-line="11">
+
+<p data-line="11"><span data-line=":11"></span>You are about to enter a world of choices and performance<span data-line=":11"></span>&#8230;<span data-line=":11"></span>
+<span data-line=":12"></span>&#8211;<span data-line=":12"></span>Gentoo Handbook
+</p></blockquote>
+<p data-line="14"><span data-line=":14"></span>Welcome to the Gentoo Linux operating system! The goal of this lab is to
+familiarize yourself with the Linux command line and other important
+tools for working in Linux systems. As you read through the lab, you
+should <span data-line=":17"></span><strong>highlight the tasks</strong><span data-line=":17"></span> you<span data-line=":17"></span>&#39;<span data-line=":17"></span>ll do (e.g., commands to run,
+questions to answer, etc.).
+</p>
+<p class="indent" data-line="20"><span data-line=":20"></span>For this lab, you should log onto your VM with the username you created
+for yourself last time (i.e., <span data-line=":21"></span><strong>don&#39;t log in as root</strong><span data-line=":21"></span>).
+</p><h2 id="navigating-the-linux-filesystem"  data-line="23" ><span data-line=":23"></span>Navigating the Linux filesystem</h2>
+<p data-line="25"><span data-line=":25"></span>The first thing to understand is that Linux treats everything as a file.
+The filesystem is like a tree that consists of nested files and
+directories. It is important to be able to navigate this system so you
+can access and manipulate files.
+</p>
+<p class="indent" data-line="30"><span data-line=":30"></span>The general form of a linux command is as follows:
+</p>
+<pre class="para-block fenced para-block" data-line="31" data-line-code="32"><code data-line="32">username@computername /your/current/directory $</code></pre><h3 id="moving-around"  data-line="35" ><span data-line=":35"></span>Moving around</h3>
+<p data-line="37"><span data-line=":37"></span>The <span data-line=":37"></span><code class="code">cd</code><span data-line=":37"></span> command changes the directory. Using
+<span data-line=":38"></span><code class="code">cd</code><span data-line=":38"></span> with the name of a directory as the
+argument moves you to that directory. For example,
+<span data-line=":40"></span><code class="code">cd /usr/bin</code><span data-line=":40"></span> will take you to the directory /bin inside
+the /usr directory. If you are already in the /usr directory, you can
+simply type <span data-line=":42"></span><code class="code">cd bin</code><span data-line=":42"></span>.
+</p>
+<p class="indent" data-line="44"><span data-line=":44"></span>The <span data-line=":44"></span><code class="code">.</code><span data-line=":44"></span> symbol refers to your current working directory and
+the <span data-line=":45"></span><code class="code">..</code><span data-line=":45"></span> symbol refers to the parent directory, the
+directory that is one level up. For example, running
+<span data-line=":47"></span><code class="code">cd ..</code><span data-line=":47"></span> in /usr/bin will move you to the /usr directory.
+</p>
+<p class="indent" data-line="49"><span data-line=":49"></span>Using <span data-line=":49"></span><code class="code">cd ~</code><span data-line=":49"></span> or just <span data-line=":49"></span><code class="code">cd</code><span data-line=":49"></span> with no
+arguments will return you to your home directory. The symbol / refers to
+the root directory, so running <span data-line=":51"></span><code class="code">cd /</code><span data-line=":51"></span> will take you to the
+root directory. Running <span data-line=":52"></span><code class="code">cd -</code><span data-line=":52"></span> will return you to the
+directory you were in previously.
+</p>
+<p class="indent" data-line="55"><span data-line=":55"></span>The <span data-line=":55"></span><code class="code">pwd</code><span data-line=":55"></span> command prints the path to your current working
+directory.
+</p><h3 id="listing-files"  data-line="58" ><span data-line=":58"></span>Listing files</h3>
+<p class="para-continue" data-line="60"><span data-line=":60"></span>The <span data-line=":60"></span><code class="code">ls</code><span data-line=":60"></span> command lists the files in the current directory
+(a directory is the linux equivalent of a folder). If the argument of
+<span data-line=":62"></span><code class="code">ls</code><span data-line=":62"></span> is the name of a directory, it will list the files in that
+directory.
+</p>
+<ul class="compact" data-line="65">
+<li data-line="65"><span data-line=":65"></span>Try navigating the filesystem on your machine. Some interesting
+directories are /etc, /bin, and /usr/bin.
+</li></ul>
+
+<p data-line="68"><span data-line=":68"></span>One common option to use with ls is<span data-line=":68"></span> <span data-line=":68"></span>-l (long), which gives you a list of
+not just the filenames but detailed information about the file
+permissions, owner, size, and date modified. Run <span data-line=":70"></span><code class="code">ls -l</code><span data-line=":70"></span> in the current
+working directory, your home directory. Then run ls<span data-line=":71"></span> <span data-line=":71"></span>-l for the
+/LinuxBasics directory.
+</p>
+<pre class="para-block fenced para-block" data-line="74" data-line-code="75"><code data-line="75">ls -l /LinuxBasics</code></pre><h3 id="common-filetypes" class="unnumbered"  data-line="78" ><span data-line=":78"></span>Common filetypes</h3>
+<p data-line="79"><span data-line=":79"></span>Navigate to the <span data-line=":79"></span><code class="code">/LinuxBasics/filetypes</code><span data-line=":79"></span> directory and run <span data-line=":79"></span><code class="code">ls -l</code><span data-line=":79"></span>. This directory contains
+examples of the the most common types of files. These are the file types:
+</p><table class="madoko block" data-line="82">
+<thead><tr><th class="cell-line"></th><th class="cell-line"></th></tr>
+<tr><th> Symbol </th><th> Description                                                                                                    </th></tr></thead>
+<tbody><tr><td class="cell-line"></td><td class="cell-line"></td></tr>
+<tr><td> <code class="code">-</code>    </td><td> a regular file                                                                                                 </td></tr>
+<tr><td> <code class="code">d</code>    </td><td> a directory                                                                                                    </td></tr>
+<tr><td> <code class="code">l</code>    </td><td> a symbolic link                                                                                                </td></tr>
+<tr><td> <code class="code">c</code>    </td><td> a character special file, which holds data as a stream of bytes                                                </td></tr>
+<tr><td> <code class="code">b</code>    </td><td> a block special file, which refers to a  device that handles data in blocks, like a CD-ROM drive or hard drive </td></tr>
+<tr><td class="cell-line"></td><td class="cell-line"></td></tr></tbody></table>
+<p data-line="92"><span data-line=":92"></span>Some files are <span data-line=":92"></span><em>hidden</em><span data-line=":92"></span> and don<span data-line=":92"></span>&#39;<span data-line=":92"></span>t show up when the <span data-line=":92"></span><code class="code">ls</code><span data-line=":92"></span>
+command is run or even <span data-line=":93"></span><code class="code">ls -l</code><span data-line=":93"></span>. The names of these files begin with <span data-line=":93"></span><code class="code">.</code><span data-line=":93"></span>
+Running <span data-line=":94"></span><code class="code">ls -a</code><span data-line=":94"></span> allows you to view hidden files.
+</p><h2 id="common-commands" class="unnumbered"  data-line="96" ><span data-line=":96"></span>Common commands</h2>
+<p data-line="97"><span data-line=":97"></span>Here are some common commands for manipulating files and directories and for
+viewing files.
+</p><h3 id="less"  data-line="100" ><span data-line=":100"></span><code class="code">less</code></h3>
+<p class="para-continue" data-line="101"><span data-line=":101"></span>This command lets you page through the contents of a text file. Run <span data-line=":101"></span><code class="code">less</code><span data-line=":101"></span> followed
+by the filename and you can scroll through the document. 
+</p>
+<ul class="compact" data-line="104">
+<li data-line="104"><span data-line=":104"></span>Navigate to the <span data-line=":104"></span><code class="code">/LinuxBasics</code><span data-line=":104"></span> directory and use less to see what<span data-line=":104"></span>&#39;<span data-line=":104"></span>s in 
+<span data-line=":105"></span><code class="code">treasureisland</code><span data-line=":105"></span>. We will use this file in part 2 of the lab.
+</li></ul>
+<h3 id="cp"  data-line="107" ><span data-line=":107"></span><code class="code">cp</code></h3>
+<p class="para-continue" data-line="108"><span data-line=":108"></span>This is the command to copy a file or directory. The syntax is
+    <span data-line=":109"></span><code class="code">cp &lt;target_file&gt; &lt;destination_file&gt;.</code><span data-line=":109"></span> If you want to copy the file to a
+    different directory, include the path to the directory in the new
+    filename. In order to copy a directory, you need to add<span data-line=":111"></span> <span data-line=":111"></span>-r (recursive)
+    to copy all the files contained in the directory. 
+</p>
+<ul class="compact" data-line="114">
+<li data-line="114"><span data-line=":114"></span>Copy the <span data-line=":114"></span><code class="code">/LinuxBasics</code><span data-line=":114"></span> directory to your home directory.
+</li></ul>
+<h3 id="mkdir"  data-line="116" ><span data-line=":116"></span><code class="code">mkdir</code></h3>
+<p class="para-continue" data-line="117"><span data-line=":117"></span>This command creates a directory. The syntax is <span data-line=":117"></span><code class="code">mkdir &lt;directory_name&gt;</code><span data-line=":117"></span>. 
+</p>
+<ul class="compact" data-line="119">
+<li data-line="119"><span data-line=":119"></span>Navigate to your copy of <span data-line=":119"></span><code class="code">LinuxBasics/filetypes</code><span data-line=":119"></span> and create a directory named after your 
+favorite pirate ship.
+</li>
+<li data-line="121"><span data-line=":121"></span>Make a copy of the directory named after your favorite pirate ship and name it after your
+favorite sea creature.
+</li></ul>
+<h3 id="touch"  data-line="124" ><span data-line=":124"></span><code class="code">touch</code></h3>
+<p class="para-continue" data-line="126"><span data-line=":126"></span>This command can be used to create files.<span data-line=":126"></span><sup id="back-fn-1" ><a href="#fn-1" title="1. Technically, touch updates the &#8220;last access&#8221; and &#8220;last modification&#8221; times of a file. But if the file doesn&#39;t exisit, touch creates it first.
+&#8617;" class="footnote-ref localref" ><span class="footnote-label">1</span></a></sup><span data-line=":126"></span> Simply run
+<span data-line=":127"></span><code class="code">touch &lt;filename&gt;</code><span data-line=":127"></span> and the new file will be created in your working
+directory. 
+</p>
+<ul class="compact" data-line="130">
+<li data-line="130"><span data-line=":130"></span>Go into the directory you just created and make a file named
+after your favorite pirate.
+</li></ul>
+<h4 id="mv" data-line="136" ><span data-line=":136"></span><code class="code">mv</code></h4>
+<p class="para-continue" data-line="137"><span data-line=":137"></span>This command is used to move files (as the name suggests) and is
+also used to rename them. The syntax is similar to <span data-line=":138"></span><code class="code">cp</code><span data-line=":138"></span>. To move a file to
+a different directory, you need to include the path to the new
+directory in the new filename. To rename a file, the syntax is
+<span data-line=":141"></span><code class="code">mv &lt;old_filename&gt; &lt;new_filename&gt;</code><span data-line=":141"></span>. 
+</p>
+<ul class="compact" data-line="143">
+<li data-line="143"><span data-line=":143"></span>Use <span data-line=":143"></span><code class="code">mv</code><span data-line=":143"></span> to change the name of <span data-line=":143"></span><code class="code">ExampleSymLink</code><span data-line=":143"></span> to a file named for your favorite treasure.
+</li></ul>
+<h4 id="rm" data-line="145" ><span data-line=":145"></span><code class="code">rm</code></h4>
+<p class="para-continue" data-line="146"><span data-line=":146"></span>This is the command to remove files. The syntax is
+<span data-line=":147"></span><code class="code">rm &lt;filename&gt;</code><span data-line=":147"></span>. Be careful!! Once you remove a file it is exceedingly
+difficult to retrieve it. 
+</p>
+<ul class="compact" data-line="150">
+<li data-line="150"><span data-line=":150"></span>Remove files fileA, fileB, and fileC from ExampleDirectory.
+</li></ul>
+<h4 id="rmdir" data-line="152" ><span data-line=":152"></span><code class="code">rmdir</code></h4>
+<p class="para-continue" data-line="153"><span data-line=":153"></span>This command removes EMPTY directories. The syntax is similar
+to the command above, <span data-line=":154"></span><code class="code">rmdir &lt;directory_name&gt;</code><span data-line=":154"></span>. If you want to remove a
+directory with files in it, you must first delete the files. 
+</p>
+<ul class="compact" data-line="157">
+<li data-line="157"><span data-line=":157"></span>Delete ExampleDirectory.
+</li></ul>
+<h4 id="echo" data-line="159" ><span data-line=":159"></span><code class="code">echo</code></h4>
+<p data-line="161"><span data-line=":161"></span>The command <span data-line=":161"></span><code class="code">echo</code><span data-line=":161"></span> repeats back to you the information you give it. Try
+it:
+</p>
+<pre class="para-block fenced para-block" data-line="164" data-line-code="165"><code data-line="165">echo Shiver me timbers!</code></pre>
+<p data-line="168"><span data-line=":168"></span>You can also use echo to find the value of variables. For instance, try
+these:
+</p>
+<pre class="para-block fenced para-block" data-line="170" data-line-code="171"><code data-line="171">echo ~
+
+echo $USER</code></pre>
+<p data-line="175"><span data-line=":175"></span>Now you are ready to begin your exploration of your Linux system!
+</p><h2 id="man-pages"  data-line="177" ><span data-line=":177"></span>man pages</h2>
+<p data-line="179"><span data-line=":179"></span>Linux systems have lots of commands for you to run, but the beginner
+system administrator does not always know what commands are avaliable
+and how they can be used. A good way to learn more about the commands on
+your machine is through man pages. There are manual pages for each
+command and they provide information about what a command does and ways
+to invoke various options for the command.
+</p>
+<p class="indent" data-line="186"><span data-line=":186"></span>You can access a man page from the command line by typing
+<span data-line=":187"></span><code class="code">man &lt;command&gt;</code><span data-line=":187"></span>. To see what a man page looks like, try running
+<span data-line=":188"></span><code class="code">man ls</code><span data-line=":188"></span>. You will see the name of the command and its function, its
+syntax (synopsis), a description of the command, and a list of its
+options. At the very bottom is the author, how to report bugs, and
+additional notes. To close the page when you are finished, press <span data-line=":191"></span><code class="code">q</code><span data-line=":191"></span>.
+</p>
+<p class="indent" data-line="193"><span data-line=":193"></span>Open the man page for the command grep with the command:
+</p>
+<pre class="para-block fenced para-block" data-line="194" data-line-code="195"><code data-line="195">man grep</code></pre>
+<ul class="compact" data-line="198">
+<li data-line="198"><span data-line=":198"></span>Using <span data-line=":198"></span><code class="code">man</code><span data-line=":198"></span> and the command line, answer the worksheet questions about 
+<span data-line=":199"></span><code class="code">grep</code><span data-line=":199"></span>, <span data-line=":199"></span><code class="code">cat</code><span data-line=":199"></span>, and <span data-line=":199"></span><code class="code">diff</code><span data-line=":199"></span>. (The files <span data-line=":199"></span>~<span data-line=":199"></span>/LinuxBasics/treasureisland and 
+<span data-line=":200"></span>~<span data-line=":200"></span>/LinuxBasics/the<span data-line=":200"></span>_<span data-line=":200"></span>sea are good for testing commands.)
+</li></ul>
+
+<p data-line="202"><span data-line=":202"></span>As you hopefully have noticed, man pages contain lots of useful
+information! As you continue with this assignment and with future
+projects, remember that man pages are always a good way to look up
+commands that you don<span data-line=":205"></span>&#39;<span data-line=":205"></span>t understand or aren<span data-line=":205"></span>&#39;<span data-line=":205"></span>t completely comfortable with
+yet, to make sure that you are using them correctly.
+</p>
+<p class="indent" data-line="208"><span data-line=":208"></span>System administrators also need to be good at <span data-line=":208"></span>&#8220;judicious googling&#8221;<span data-line=":208"></span>.
+Often, we need to look to the internet or a system wiki to learn about
+how to fix bugs or the best way to perform an operation. So don<span data-line=":210"></span>&#39;<span data-line=":210"></span>t be
+afraid to do more research about whatever you are working on! It is
+important to stay well informed and to know where you can find the
+answers to your questions.
+</p><h2 id="input-output-and-error-streams"  data-line="215" ><span data-line=":215"></span>Input, output, and error streams</h2>
+<p data-line="216"><span data-line=":216"></span>Programs such as <span data-line=":216"></span><code class="code">ls</code><span data-line=":216"></span> produce output. Usually this output is printed to the
+screen, but Linux lets you <span data-line=":217"></span><em>redirect</em><span data-line=":217"></span> the output to another place, e.g., a file.
+</p>
+<p class="indent" data-line="219"><span data-line=":219"></span>The following command creates a file called ls-output.txt that contains
+the results (i.e., standard output) of the <span data-line=":220"></span><code class="code">ls -l /usr/bin</code><span data-line=":220"></span> command, which
+happens to be a list of the files in /usr/bin with file details.
+</p>
+<pre class="para-block fenced para-block" data-line="222" data-line-code="223"><code data-line="223">ls -l /usr/bin &gt; ls-output.txt</code></pre>
+<p data-line="226"><span data-line=":226"></span>The redirection character <span data-line=":226"></span><code class="code">&gt;</code><span data-line=":226"></span> overwrites the contents of a file, and <span data-line=":226"></span><code class="code">&gt;&gt;</code><span data-line=":226"></span> appends
+text to the end of a file. In both cases, if the file does not exist it
+will be created.
+</p>
+<p class="indent" data-line="230"><span data-line=":230"></span>The error messages displayed on the command line can also be directed to
+a file. The following command creates a file called ls-error, which contains the
+errors message that results from the ls command:
+</p>
+<pre class="para-block fenced para-block" data-line="233" data-line-code="234"><code data-line="234">ls -l ~/LinuxBasics/ninjas 2&gt; ls-error</code></pre>
+<p data-line="237"><span data-line=":237"></span>Typically a program reads input from the keyboard, but we can also redirect the
+input stream to come from another source. The following command redirects input
+to a file called newfile. After you enter the command, try typing some text. 
+(Type ctrl-D to indicate that you<span data-line=":240"></span>&#39;<span data-line=":240"></span>re done typing text.)
+</p>
+<pre class="para-block fenced para-block" data-line="241" data-line-code="242"><code data-line="242">cat &gt; newfile</code></pre>
+<p data-line="244"><span data-line=":244"></span>Whatever you type after this command will be added to the file newfile! 
+(Type ctrl-D to indicate that you<span data-line=":245"></span>&#39;<span data-line=":245"></span>re done adding to the file.)
+</p><h2 id="pipes"  data-line="247" ><span data-line=":247"></span>Pipes</h2>
+<p data-line="249"><span data-line=":249"></span>Pipes are a structure that join commands by connecting the
+output of one command to the input of another. They are useful for
+combining multiple commands to perform complex operations. To create a
+pipe, type two or more commands joined by the <span data-line=":252"></span><code class="code">|</code><span data-line=":252"></span> symbol (found
+above the ENTER key).
+</p>
+<p class="indent" data-line="255"><span data-line=":255"></span>Some of the most common commands included in pipes are <span data-line=":255"></span><code class="code">less</code><span data-line=":255"></span> and
+<span data-line=":256"></span><code class="code">grep</code><span data-line=":256"></span>. <span data-line=":256"></span><code class="code">less</code><span data-line=":256"></span> is useful because many commands generate a loooooong
+output, and putting that output into less allows the user to scroll
+through it. <span data-line=":258"></span><code class="code">grep</code><span data-line=":258"></span> allows you to specify a pattern and will display only
+lines matching that pattern, which makes it useful for filtering results
+in pipes. With both <span data-line=":260"></span><code class="code">grep</code><span data-line=":260"></span> and search commands like <span data-line=":260"></span><code class="code">find</code><span data-line=":260"></span> or
+<span data-line=":261"></span><code class="code">locate</code><span data-line=":261"></span> you can use regular expressions (regex) to specify a pattern to
+match (more on this later).
+</p><h3 id="examples"  data-line="265" ><span data-line=":265"></span>Examples</h3>
+<p data-line="267"><span data-line=":267"></span>Simply running <span data-line=":267"></span><code class="code">ls -l /usr/bin</code><span data-line=":267"></span> will allow you to see the files in
+/usr/bin but you may not be able to scroll through them. Adding less
+puts the output of ls<span data-line=":269"></span> <span data-line=":269"></span>-l /usr/bin (the list of files) into the less
+program to allow you to scroll through them.
+</p>
+<pre class="para-block fenced para-block" data-line="272" data-line-code="273"><code data-line="273">ls -l /usr/bin | less</code></pre>
+<p data-line="276"><span data-line=":276"></span>This command searches the root directory (/) for files that begin with
+the word <span data-line=":277"></span>&#8220;Example&#8221;<span data-line=":277"></span>. Like in the first example, running find by itself
+will return the list of files matching the given criteria. However,
+piping through less lets you view the results through the less program.
+</p>
+<pre class="para-block fenced para-block" data-line="281" data-line-code="282"><code data-line="282">find / -name &quot;Example*&quot; | less</code></pre>
+<p data-line="285"><span data-line=":285"></span>This command creates a sorted list of the files in bin and /usr/bin that
+contain <span data-line=":286"></span>&#8220;zip&#8221;<span data-line=":286"></span> in the name with repeated files omitted.
+</p>
+<pre class="para-block fenced para-block" data-line="288" data-line-code="289"><code data-line="289">ls /bin /usr/bin | sort | uniq | grep zip</code></pre>
+<p data-line="292"><span data-line=":292"></span>This command makes a list of the files in /bin and /usr/bin without
+duplicates and then counts the number of lines in that list using <span data-line=":293"></span><code class="code">wc -l</code><span data-line=":293"></span>,
+thereby returning the number of non-repeated files in both directories.
+</p>
+<pre class="para-block fenced para-block" data-line="295" data-line-code="296"><code data-line="296">ls /bin /usr/bin | uniq | wc -l</code></pre><h3 id="exercises"  data-line="299" ><span data-line=":299"></span>Exercises</h3>
+<p class="para-continue" data-line="300"><span data-line=":300"></span>Write your responses to these questions on your worksheet.
+</p>
+<ol class="compact" data-line="302">
+<li data-line="302"><span data-line=":302"></span>Navigate to your LinuxBasics directory. Create a pipe to view all
+the files (including file details) in <span data-line=":303"></span><code class="code">LinuxBasics/treasure_chest</code><span data-line=":303"></span>
+using less. (Look at all that gold!! <span data-line=":304"></span>&#8230;<span data-line=":304"></span>I mean, files.)
+</li>
+<li data-line="305"><span data-line=":305"></span>Use pipes to count the number of files in <span data-line=":305"></span><code class="code">/etc</code><span data-line=":305"></span>.
+</li>
+<li data-line="306"><span data-line=":306"></span>Create a file called arrr that lists all files in the LinuxBasics
+directory that contain <span data-line=":307"></span>&#8220;pirate&#8221;<span data-line=":307"></span> in the name. (Hint: you will need
+to do a recursive listing<span data-line=":308"></span>&#8211;<span data-line=":308"></span>try checking the manpage for <span data-line=":308"></span><code class="code">ls</code><span data-line=":308"></span>.)
+</li>
+<li data-line="309"><span data-line=":309"></span>Inside the LinuxBasics directory, create a file called treasure. The
+file treasure should list both the files in the
+LinuxBasics/treasure<span data-line=":311"></span>_<span data-line=":311"></span>chest directory and the files in the
+LinuxBasics/black<span data-line=":312"></span>_<span data-line=":312"></span>pearl directory.
+</li>
+<li data-line="313"><span data-line=":313"></span>Use the <span data-line=":313"></span><code class="code">cat</code><span data-line=":313"></span> command to create a file in the <span data-line=":313"></span><code class="code">black_pearl</code><span data-line=":313"></span>
+directory called JackSparrow with the text <span data-line=":314"></span><em>But why is the rum
+gone?</em><span data-line=":315"></span>
+</li></ol>
+<div class="footnotes madoko">
+<hr >
+
+<div id="fn-1" class="footnote" data-line="133">
+<p data-line="133"><span data-line=":133"></span><span class="footnote-before"><sup><span class="footnote-label">1</span>.</sup> </span><span data-line=":133"></span>Technically, <span data-line=":133"></span><code class="code">touch</code><span data-line=":133"></span> updates the <span data-line=":133"></span>&#8220;last access&#8221;<span data-line=":133"></span> and <span data-line=":133"></span>&#8220;last modification&#8221;<span data-line=":133"></span> times of a file. But if the file doesn<span data-line=":133"></span>&#39;<span data-line=":133"></span>t exisit, <span data-line=":133"></span><code class="code">touch</code><span data-line=":133"></span> creates it first.
+<span data-line=":134"></span><a href="#back-fn-1" class="footnote-backref localref">&#8617;</a></p></div></div>
+</body>
+</html>

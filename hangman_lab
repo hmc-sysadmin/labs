@@ -1,0 +1,69 @@
+#! /bin/bash
+
+# All the functions you will need are defined below. When you 
+# start writing code inside each function, it's okay to delete
+# the return statement.
+
+# To run this script, make sure that you are in the same
+# directory where the script exists, and run ./hangman_lab
+# on the command line.
+
+function define {
+word=$(shuf -n 1 dict)
+length=$(expr length "$word")
+wip=$(printf '%0.s_' $(seq 1 $length))
+
+}
+
+function check_lives {
+return
+}
+
+function letter_in_word {
+return
+}
+
+function guessed_letter {
+	if [[ ${gl[@]} != *"$letter"* ]]; then
+		gl[$[${#gl[@]}+1]]=$letter
+		letter_in_word
+	else
+		echo "*** You've already guessed that letter. Try again. ***"
+		echo "The letters you've guessed are: " ${gl[@]}
+		echo
+		echo $wip
+		echo
+		get_letter
+	fi
+
+}
+
+function valid_letter {
+return
+}
+
+function get_letter {
+return
+}
+
+function game {
+return
+}
+
+# extra credit!
+function menu {
+echo "Would you like to play against the computer
+or against a friend?
+    (1) computer (one-player)
+    (2) friend (two-player)
+Type 1 for one-player and 2 for two-player."
+
+}
+
+echo "Welcome to hangman!"
+# Run the game function here
+
+echo "Thanks for playing!"
+
+
+
