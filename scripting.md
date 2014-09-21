@@ -2,7 +2,7 @@
 *Originally created by Lisa Goeller, Joži McKiernan, and Paige Rinnert*
 
 
-## Readings {#readings}
+## Readings
 
 Before beginning this lab, here are some readings you'll probably want to do.
 They come from the book *The Linux Command Line: A Complete Introduction* by
@@ -20,7 +20,7 @@ William Shotts.
   - Chapter 31 (p. 375-380) talks about case branching, which will be useful 
     for the extra credit.
 
-## Introduction {#introduction}
+## Introduction
 
 
 The goal of this lab is to write a program in bash to play Hangman! **Pair
@@ -45,7 +45,7 @@ directory. This is the file you will grab words from; each word is on a
 new line in the file. Go ahead and use less to view the dictionary file
 if you want.
 
-## Running a script {#running-a-script}
+## Running a script
 
 
 Before you start writing, here is how you run a script. You can run a
@@ -65,7 +65,7 @@ expected. Be sure that any incomplete lines of code are commented out so
 they don’t return errors. Feel free to add print statements throughout
 to help with debugging.
 
-## Defining Variables {#defining-variables}
+## Defining Variables
 
 
 Start off by completing the function `define` that defines the necessary
@@ -97,7 +97,7 @@ a command to a variable, like in `word`, `length`, and `wip`, the
 command needs to be enclosed in parentheses and then preceded by a \$,
 like this: `variable=$(command)`.
 
-## Get user input for letter {#get-user-input-for-letter}
+## Get user input for letter
 
 
 The function you will write next is called `get_letter`. (Instead of
@@ -114,7 +114,7 @@ user input is `read` and the syntax is `read <variable>`. In this case,
 we will call the variable `letter`. After adding code to a function,
 it’s okay to remove the `return` statements.
 
-## Check that letter is valid {#check-that-letter-is-valid}
+## Check that letter is valid
 
 
 The next function you should write is called `valid_letter` and
@@ -132,7 +132,7 @@ such as a reminder of what letters have been guessed and what the word
 looks like now. At the end of the `else` statement, you need to type
 `fi` to close the entire if/else section.
 
-## Check if the letter has been guessed {#check-if-the-letter-has-been-guessed}
+## Check if the letter has been guessed
 
 
 We wrote this function, `guessed_letter`, for you because the syntax is
@@ -142,7 +142,7 @@ guessed the letter. If the user has guessed it, the function returns to
 the letter to the array `gl` which contains guessed letters, and it
 calls `letter_in_word` to determine whether the letter is in the word.
 
-## Check that the letter is in the word {#check-that-the-letter-is-in-the-word}
+## Check that the letter is in the word
 
 
 This function, `letter_in_word`, checks whether the letter is in the
@@ -168,7 +168,7 @@ You also need to call `check_lives` to determine whether the user still
 has lives left or if the game is over. (You will write this function
 later.) Don’t forget `fi`.
 
-## Write game function {#write-game-function}
+## Write game function
 
 
 You will now need to write a function `game` that prompts the user for
@@ -181,7 +181,7 @@ for letters until the word-in-progress is the same as the word itself.
 when it is finished.) When the word is guessed, the user should be asked
 if they want to play again. Their `answer` should be read in.
 
-## Check number of lives remaining {#check-number-of-lives-remaining}
+## Check number of lives remaining
 
 
 Now you will need to check to see if the player has any lives remaining.
@@ -191,7 +191,7 @@ to play again if they so wish. Otherwise, the player should just keep
 playing. If the player decides to play again, both the word and the
 variables need to be reset.
 
-## Putting it all together {#putting-it-all-together}
+## Putting it all together
 
 
 Now that you’ve defined the functions, you should call them, assuming
@@ -201,7 +201,7 @@ work.
 
 Now you’re ready to run the script and test your game!
 
-## Extra Credit :) {#extra-credit}
+## Extra Credit :)
 
 
 If you still have some time left over, you can write a starting menu
