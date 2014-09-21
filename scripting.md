@@ -5,8 +5,10 @@
 # Shell Scripting in Bash
 *Originally created by Lisa Goeller, Joži McKiernan, and Paige Rinnert*
 
+<!--
 ## TODO
   - Double-check readings
+-->
 
 ## Readings
 
