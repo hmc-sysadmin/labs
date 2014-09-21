@@ -1,10 +1,3 @@
-Title   : Linux Basics
-Author  : Lisa Goeller, Joži McKiernan, and Paige Rinnert
-MathJax : True
-Css     : ./writeup.css
-
-Heading Depth: 0 
-
 # Shell Scripting in Bash
 *Originally created by Lisa Goeller, Joži McKiernan, and Paige Rinnert*
 
