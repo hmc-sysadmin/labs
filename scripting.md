@@ -198,35 +198,26 @@ this function later.)
 
 ## Write `game`, the main loop for the game
 
-This function prompts the player for letters until the word is guessed or the
-player runs out of lives. In order to have an effective game, you first need to
-define your variables (funny, I think you wrote a function for that already).
-You also need to let the player know how long the word is by printing the board.
-Then, you need to keep asking for letters until the word-in-progress is the same
-as the word itself. When the word is guessed, the game should ask the user  if
-they want to play again. If so, start a new game.
+This function prompts the player for letters until the game is over. In order to
+have an effective game, you first need to define your variables (funny, I think
+you wrote a function for that already). You also need to let the player know how
+long the word is by printing the board. Then, you need to keep asking for
+letters until the word-in-progress is the same as the word itself. When the word
+is guessed, the game should ask the user if they want to play again. 
 
-## Check number of lives remaining
+## Write `check_lives` to check how many lives remain
 
-Now you will need to check to see if the player has any lives remaining.
-You can do this by writing an `if` statement. If the player has no lives
-remaining, you should give them `$word` (just to be nice) and the option
-to play again if they so wish. Otherwise, the player should just keep
-playing. If the player decides to play again, both the word and the
+If the player has no lives remaining, you should give them `$word` (just to be
+nice) and the option to play again if they so wish. Otherwise, the player should
+just keep playing. If the player decides to play again, both the word and the
 variables need to be reset.
 
 ## Putting it all together
 
-
-Now that you've defined the functions, you should call them, assuming
-that the user wants to play. (Hint: Try using a while loop!) Consider
-how all the functions can work together to allow the game to actually
-work.
-
-Now you're ready to run the script and test your game!
+Now you're ready to run the script and test your game! You may have to think a
+bit about how the functions tie together, but all the pieces are there!
 
 ## Extra Credit :)
-
 
 If you still have some time left over, you can write a starting menu
 that offers the option for the player to play in single-player mode or

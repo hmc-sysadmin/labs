@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="generator" content="Madoko, version 0.6.3-beta" />
+  <meta name="viewport" content="initial-scale=1.0" />
+  <meta name="author" content="Lisa Goeller, Joži McKiernan, and Paige Rinnert" />
+  <title>Linux Basics</title>
+  <link rel="stylesheet" type="text/css" href="madoko.css">
+  <link rel="stylesheet" type="text/css" href="./writeup.css">
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+       TeX: { 
+         Macros: { mathid: ['\\mathit{#1\\hspace{0.1ex}}',1], mathkw: ['\\mathsf{#1}',1],
+                   mathspace: ['\\hspace{#1pt}\\hspace{#1pt}\\hspace{#1pt}',1], mathindent: ['\\hspace{#1ex}',1], mathbr: ['\\\\'],
+                 },
+  
+       }
+    });
+    MathJax.Hub.Register.StartupHook('TeX AMSmath Ready',function () { 
+      MathJax.InputJax.TeX.Definitions.environment['mdMathprearray'] = ['AMSarray',null,null,null,'l','0em','0em'];
+    });
+  </script>
+  <script type="text/javascript"
+    src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+</head>
+<body class="madoko">
+
+<h1 id="shell-scripting-in-bash"  data-line="8;scripting.md:5" ><span data-line="8;scripting.md::5"></span>Shell Scripting in Bash</h1>
+<p data-line="8;scripting.md:6"><span data-line="8;scripting.md::6"></span><em>Originally created by Lisa Goeller, Joži McKiernan, and Paige Rinnert</em><span data-line="8;scripting.md::6"></span>
+</p><!--
+## TODO
+  - Double-check readings
+-->
+
+<h2 id="readings"  data-line="8;scripting.md:13" ><span data-line="8;scripting.md::13"></span>Readings</h2>
+<p data-line="8;scripting.md:15"><span data-line="8;scripting.md::15"></span>Before beginning this lab, you<span data-line="8;scripting.md::15"></span>&#39;<span data-line="8;scripting.md::15"></span>ll probably want to do read up on shell
+scripting. These readings come from the book <span data-line="8;scripting.md::16"></span><em>The Linux Command Line: A Complete
+Introduction</em><span data-line="8;scripting.md::17"></span> by William Shotts.
+</p>
+<p class="indent para-continue" data-line="8;scripting.md:19"><span data-line="8;scripting.md::19"></span><strong>Strongly recommended</strong><span data-line="8;scripting.md::19"></span>
+</p>
+<ul class="compact" data-line="8;scripting.md:21">
+<li data-line="8;scripting.md:21"><span data-line="8;scripting.md::21"></span>Chapters 24-25 (p. 309<span data-line="8;scripting.md::21"></span>&#8211;<span data-line="8;scripting.md::21"></span>324) provide some background on setting and using 
+variables.
+</li>
+<li data-line="8;scripting.md:23"><span data-line="8;scripting.md::23"></span>Chapters 26-29 (p. 325<span data-line="8;scripting.md::23"></span>&#8211;<span data-line="8;scripting.md::23"></span>362) discuss functions, if/else branching, keyboard 
+input, and while/until loops.
+</li></ul>
+
+<p class="para-continue" data-line="8;scripting.md:26"><span data-line="8;scripting.md::26"></span><em>Additional reading</em><span data-line="8;scripting.md::26"></span>
+</p>
+<ul class="compact" data-line="8;scripting.md:28">
+<li data-line="8;scripting.md:28"><span data-line="8;scripting.md::28"></span>Chapter 31 (p. 375<span data-line="8;scripting.md::28"></span>&#8211;<span data-line="8;scripting.md::28"></span>380) talks about case branching, which will be useful 
+for the extra credit.
+</li></ul>
+<h2 id="introduction"  data-line="8;scripting.md:31" ><span data-line="8;scripting.md::31"></span>Introduction</h2>
+<p data-line="8;scripting.md:33"><span data-line="8;scripting.md::33"></span>The goal of this lab is to write a program in bash to play Hangman! <span data-line="8;scripting.md::33"></span><strong>Pair
+programming is highly encouraged for this lab.</strong><span data-line="8;scripting.md::34"></span> 
+</p>
+<p class="indent" data-line="8;scripting.md:36"><span data-line="8;scripting.md::36"></span>Bash is a scripting language. There are different kinds of shells (like sh, zsh,
+and csh) but we will just be working in bash, which stands for <span data-line="8;scripting.md::37"></span><strong>b</strong><span data-line="8;scripting.md::37"></span>ourne
+<span data-line="8;scripting.md::38"></span><strong>a</strong><span data-line="8;scripting.md::38"></span>gain <span data-line="8;scripting.md::38"></span><strong>sh</strong><span data-line="8;scripting.md::38"></span>ell (so named because it replaced sh, the original Bourne
+shell).
+</p>
+<p class="indent" data-line="8;scripting.md:41"><span data-line="8;scripting.md::41"></span>To do this lab, you need to be familiar with constructing if/else statements and
+while/until loops. You should also be fairly comfortable with regular
+expressions. Don<span data-line="8;scripting.md::43"></span>&#39;<span data-line="8;scripting.md::43"></span>t be afraid to use Google to look up syntax that you are unsure
+about! This<span data-line="8;scripting.md::44"></span>&nbsp;<a href="http://www.johnstowers.co.nz/blog/pages/bash-cheat-sheet.html">Bash cheat sheet</a><span data-line="8;scripting.md::44"></span> might also help.
+</p><h2 id="materials"  data-line="8;scripting.md:46" ><span data-line="8;scripting.md::46"></span>Materials</h2>
+<p data-line="8;scripting.md:48"><span data-line="8;scripting.md::48"></span>You<span data-line="8;scripting.md::48"></span>&#39;<span data-line="8;scripting.md::48"></span>ll need two files:<span data-line="8;scripting.md::48"></span>&nbsp;<a href="http://www.cs.hmc.edu/courses/2014/fall/sysadmin/hangman_lab"><code class="code">hangman_lab</code></a><span data-line="8;scripting.md::48"></span> and<span data-line="8;scripting.md::48"></span>&nbsp;<a href="http://www.cs.hmc.edu/courses/2014/fall/sysadmin/dict"><code class="code">dict</code></a><span data-line="8;scripting.md::48"></span>.  The
+<span data-line="8;scripting.md::49"></span><code class="code">hangman_lab</code><span data-line="8;scripting.md::49"></span> file contains the beginning of a script that implements hangman.
+You<span data-line="8;scripting.md::50"></span>&#39;<span data-line="8;scripting.md::50"></span>ll modify this file as part of the lab. The <span data-line="8;scripting.md::50"></span><code class="code">dict</code><span data-line="8;scripting.md::50"></span> file contains words that
+the game can use; each line of the files contains a word.
+</p>
+<p class="indent para-continue" data-line="8;scripting.md:53"><span data-line="8;scripting.md::53"></span>There are two ways to get the files on your VM:
+</p>
+<dl class="loose" data-line="8;scripting.md:55">
+<dt class="dt" style='font-weight:bold'>Download the files directly to your VM.</dt>
+<dd class="dd" data-line="8;scripting.md:55" style='margin-left:1.5em'>
+<p data-line="8;scripting.md:55"><span data-line="8;scripting.md::55"></span>Log into your VM. In your home directory, use the <span data-line="8;scripting.md::55"></span><code class="code">wget</code><span data-line="8;scripting.md::55"></span> command, along with
+the file URLs. Click on the links for the files above to visit the URLS, then
+copy the URL and run the command <span data-line="8;scripting.md::57"></span><code class="code">wget &lt;URL&gt;</code><span data-line="8;scripting.md::57"></span>.
+</p></dd>
+<dt class="dt" style='font-weight:bold'>Download the files to your computer, then upload them to your VM.</dt>
+<dd class="dd" data-line="8;scripting.md:60" style='margin-left:1.5em'>
+<p data-line="8;scripting.md:60"><span data-line="8;scripting.md::60"></span>Click the links for the files above, then save them to your computer. Use
+the <span data-line="8;scripting.md::61"></span><code class="code">scp</code><span data-line="8;scripting.md::61"></span> command to upload them from your machine to your VM, like so: <span data-line="8;scripting.md::61"></span><code class="code">scp
+&lt;file&gt; &lt;username&gt;@vm&lt;#&gt;.sys.cs.hmc.edu:~/</code><span data-line="8;scripting.md::62"></span>. This command will place the
+files in your home directory on your VM. Note: Your browser might try to add
+a .txt extension to the files. If so, you should remove the extension.
+</p></dd></dl>
+<p data-line="8;scripting.md:67"><span data-line="8;scripting.md::67"></span>Notice that the <span data-line="8;scripting.md::67"></span><code class="code">hangman_lab</code><span data-line="8;scripting.md::67"></span> file starts with a <span data-line="8;scripting.md::67"></span><em>&#8220;shebang&#8221;</em><span data-line="8;scripting.md::67"></span>:
+</p>
+<pre class="para-block fenced para-block" data-line="8;scripting.md:68" data-line-code="8;scripting.md:69"><code data-line="8;scripting.md:69">#! /bin/bash</code></pre>
+<p data-line="8;scripting.md:71"><span data-line="8;scripting.md::71"></span>This line describes how to execute it: using the bash shell.
+</p><h2 id="running-a-script"  data-line="8;scripting.md:73" ><span data-line="8;scripting.md::73"></span>Running a script</h2>
+<p class="para-continue" data-line="8;scripting.md:75"><span data-line="8;scripting.md::75"></span>There are many ways to run a script or program on a <span data-line="8;scripting.md::75"></span>*<span data-line="8;scripting.md::75"></span>nix system. For this lab,
+we<span data-line="8;scripting.md::76"></span>&#39;<span data-line="8;scripting.md::76"></span>ll run the hangman script as an executable file. To do so:
+</p>
+<ol class="compact" data-line="8;scripting.md:78">
+<li data-line="8;scripting.md:78"><span data-line="8;scripting.md::78"></span>Make sure the <span data-line="8;scripting.md::78"></span><code class="code">hangman_lab</code><span data-line="8;scripting.md::78"></span> has executable permissions (see the<span data-line="8;scripting.md::78"></span>&nbsp;<a href="https:www.cs.hmc.edu/courses/2014/fall/sysadmin/linux_basics2.html">previous
+lab</a><span data-line="8;scripting.md::79"></span> if you need a reminder for how to do this).
+</li>
+<li data-line="8;scripting.md:80"><span data-line="8;scripting.md::80"></span>Run the command <span data-line="8;scripting.md::80"></span><code class="code">./hangman_lab</code><span data-line="8;scripting.md::80"></span>
+</li></ol>
+
+<p data-line="8;scripting.md:82"><span data-line="8;scripting.md::82"></span>In general, to run an executable file, you run the filename as if it were a
+command. For example, <span data-line="8;scripting.md::83"></span><code class="code">./hangman_lab</code><span data-line="8;scripting.md::83"></span> or <span data-line="8;scripting.md::83"></span><code class="code">~/hangman_lab</code><span data-line="8;scripting.md::83"></span>. 
+</p>
+<p class="indent" data-line="8;scripting.md:85"><span data-line="8;scripting.md::85"></span>You can avoid typing the full path to the program, if the program<span data-line="8;scripting.md::85"></span>&#39;<span data-line="8;scripting.md::85"></span>s directory 
+is in your path. The path is set by the <span data-line="8;scripting.md::86"></span><code class="code">$PATH</code><span data-line="8;scripting.md::86"></span> variable in your environment. 
+If the script is in a directory on your path, you will be able to run it by 
+typing only the name of the script on the command line. For example, <span data-line="8;scripting.md::88"></span><code class="code">ls</code><span data-line="8;scripting.md::88"></span>. 
+To find out what directories are part of your path, type <span data-line="8;scripting.md::89"></span><code class="code">echo $PATH</code><span data-line="8;scripting.md::89"></span> on
+your command line. It will produce a colon-delimited list of directories
+on your path. 
+</p><!--
+Throughout the process of writing the script, you can check periodically
+that it is working by running it and seeing if the behavior is what you
+expected. Be sure that any incomplete lines of code are commented out so
+they don't return errors. Feel free to add print statements throughout
+to help with debugging.
+-->
+
+<h2 id="defining-variables"  data-line="8;scripting.md:101" ><span data-line="8;scripting.md::101"></span>Defining Variables</h2>
+<p class="para-continue" data-line="8;scripting.md:103"><span data-line="8;scripting.md::103"></span>We<span data-line="8;scripting.md::103"></span>&#39;<span data-line="8;scripting.md::103"></span>ll start implementing hangman by defining some variables. Look at the
+function <span data-line="8;scripting.md::104"></span><code class="code">define</code><span data-line="8;scripting.md::104"></span> in the <span data-line="8;scripting.md::104"></span><code class="code">hangman_lab</code><span data-line="8;scripting.md::104"></span> file. This function defines some
+variables for the program; you<span data-line="8;scripting.md::105"></span>&#39;<span data-line="8;scripting.md::105"></span>ll define some more. Here are the variables
+already defined:
+</p>
+<dl class="loose" data-line="8;scripting.md:108">
+<dt class="dt" style='font-weight:bold'><code class="code">word</code></dt>
+<dd class="dd" data-line="8;scripting.md:108" style='margin-left:1.5em'>
+<p data-line="8;scripting.md:108"><span data-line="8;scripting.md::108"></span>selected randomly from the provided dictionary using the command <span data-line="8;scripting.md::108"></span><code class="code">shuf</code><span data-line="8;scripting.md::108"></span>,
+which shuffles the dictionary and returns the first line (a single word).
+</p></dd>
+<dt class="dt" style='font-weight:bold'><code class="code">length</code></dt>
+<dd class="dd" data-line="8;scripting.md:112" style='margin-left:1.5em'>
+<p data-line="8;scripting.md:112"><span data-line="8;scripting.md::112"></span>the length of a word
+</p></dd>
+<dt class="dt" style='font-weight:bold'><code class="code">wip</code></dt>
+<dd class="dd" data-line="8;scripting.md:115" style='margin-left:1.5em'>
+<p data-line="8;scripting.md:115"><span data-line="8;scripting.md::115"></span>stands for <span data-line="8;scripting.md::115"></span>&#8220;word in progress&#8221;<span data-line="8;scripting.md::115"></span>. It is the game board. It begins as a sequence
+of underscores, each of which represents one letter of the word. The board
+gets filled in over the course of the game.
+</p></dd></dl>
+<p class="para-continue" data-line="8;scripting.md:120"><span data-line="8;scripting.md::120"></span>The variables you need to define are:
+</p>
+<dl class="loose" data-line="8;scripting.md:122">
+<dt class="dt" style='font-weight:bold'><code class="code">lives</code></dt>
+<dd class="dd" data-line="8;scripting.md:122" style='margin-left:1.5em'>
+<p data-line="8;scripting.md:122"><span data-line="8;scripting.md::122"></span>the number of lives the player gets before they lose the game. In our
+version, we gave eight lives to the player. 
+</p></dd>
+<dt class="dt" style='font-weight:bold'><code class="code">gl</code></dt>
+<dd class="dd" data-line="8;scripting.md:126" style='margin-left:1.5em'>
+<p data-line="8;scripting.md:126"><span data-line="8;scripting.md::126"></span>stands for <span data-line="8;scripting.md::126"></span>&#8220;guessed letters&#8221;<span data-line="8;scripting.md::126"></span>. It<span data-line="8;scripting.md::126"></span>&#39;<span data-line="8;scripting.md::126"></span>s an empty array that will
+eventually contain the letters that the player has guessed.
+</p></dd></dl>
+<p class="para-continue" data-line="8;scripting.md:130"><span data-line="8;scripting.md::130"></span>A few reminders about values and variables in bash:
+</p>
+<ul class="compact" data-line="8;scripting.md:132">
+<li data-line="8;scripting.md:132"><span data-line="8;scripting.md::132"></span>An array, which is similar to a list, is represented by parentheses: <span data-line="8;scripting.md::132"></span><code class="code">()</code><span data-line="8;scripting.md::132"></span>.
+</li>
+<li data-line="8;scripting.md:133"><span data-line="8;scripting.md::133"></span>Whitespace is significant in bash. There shouldn<span data-line="8;scripting.md::133"></span>&#39;<span data-line="8;scripting.md::133"></span>t be any space between the 
+variable and its value, like this: <span data-line="8;scripting.md::134"></span><code class="code">variable=value</code><span data-line="8;scripting.md::134"></span>.
+</li>
+<li data-line="8;scripting.md:135"><span data-line="8;scripting.md::135"></span>To refer to refer to variables in bash, the syntax is <span data-line="8;scripting.md::135"></span><code class="code">$variable</code><span data-line="8;scripting.md::135"></span>. If you 
+want to include a character directly after the variable (for
+example a period at the end of a sentence), include curly brackets
+around the variable: <span data-line="8;scripting.md::138"></span><code class="code">${variable}</code><span data-line="8;scripting.md::138"></span>. 
+</li>
+<li data-line="8;scripting.md:139"><span data-line="8;scripting.md::139"></span>To assign the results of a command to a variable (see, e.g., <span data-line="8;scripting.md::139"></span><code class="code">word</code><span data-line="8;scripting.md::139"></span>, 
+<span data-line="8;scripting.md::140"></span><code class="code">length</code><span data-line="8;scripting.md::140"></span>, and <span data-line="8;scripting.md::140"></span><code class="code">wip</code><span data-line="8;scripting.md::140"></span>), the command needs to be enclosed in parentheses and 
+then preceded by a <span data-line="8;scripting.md::141"></span>$<span data-line="8;scripting.md::141"></span>, like this: <span data-line="8;scripting.md::141"></span><code class="code">variable=$(command)</code><span data-line="8;scripting.md::141"></span>.
+</li>
+<li data-line="8;scripting.md:142"><span data-line="8;scripting.md::142"></span>To reference arrays, in addition to the <span data-line="8;scripting.md::142"></span>$<span data-line="8;scripting.md::142"></span> and curly brackets, you need to 
+tell bash to look at all elements of the array: <span data-line="8;scripting.md::143"></span><code class="code">${array[@]}</code><span data-line="8;scripting.md::143"></span>. 
+</li></ul>
+<h2 id="write-get_letter-to-ask-the-player-for-a-letter"  data-line="8;scripting.md:145" ><span data-line="8;scripting.md::145"></span>Write <span data-line="8;scripting.md::145"></span><code class="code">get_letter</code><span data-line="8;scripting.md::145"></span> to ask the player for a letter</h2>
+<p data-line="8;scripting.md:146"><span data-line="8;scripting.md::146"></span><em>Note: Instead of writing the functions in the order they
+will be called, which is the order they appear in the file, we encourage you to
+write them in the order they appear in this lab description.</em><span data-line="8;scripting.md::148"></span>
+</p>
+<p class="indent" data-line="8;scripting.md:150"><span data-line="8;scripting.md::150"></span>The <span data-line="8;scripting.md::150"></span><code class="code">get_letter</code><span data-line="8;scripting.md::150"></span> function should ask the user to input a letter. There are three
+parts to the function: first it prints a string to tell the user what to enter,
+next it reads the user<span data-line="8;scripting.md::152"></span>&#39;<span data-line="8;scripting.md::152"></span>s input, and finally the function calls
+<span data-line="8;scripting.md::153"></span><code class="code">valid_letter</code><span data-line="8;scripting.md::153"></span> to determine if the input was valid.
+</p>
+<p class="indent" data-line="8;scripting.md:155"><span data-line="8;scripting.md::155"></span>Remember the print command in bash is <span data-line="8;scripting.md::155"></span><code class="code">echo</code><span data-line="8;scripting.md::155"></span>. The command to ask for
+user input is <span data-line="8;scripting.md::156"></span><code class="code">read</code><span data-line="8;scripting.md::156"></span>, and the syntax is <span data-line="8;scripting.md::156"></span><code class="code">read &lt;variable&gt;</code><span data-line="8;scripting.md::156"></span>. In this case,
+we will call the variable <span data-line="8;scripting.md::157"></span><code class="code">letter</code><span data-line="8;scripting.md::157"></span>. After adding code to a function,
+it<span data-line="8;scripting.md::158"></span>&#39;<span data-line="8;scripting.md::158"></span>s okay to remove the <span data-line="8;scripting.md::158"></span><code class="code">return</code><span data-line="8;scripting.md::158"></span> statements.
+</p><h2 id="write-valid_letter-to-validate-the-players-letter"  data-line="8;scripting.md:160" ><span data-line="8;scripting.md::160"></span>Write <span data-line="8;scripting.md::160"></span><code class="code">valid_letter</code><span data-line="8;scripting.md::160"></span> to validate the player<span data-line="8;scripting.md::160"></span>&#39;<span data-line="8;scripting.md::160"></span>s letter</h2>
+<p data-line="8;scripting.md:162"><span data-line="8;scripting.md::162"></span>Valid inputs consist of lowercase Roman alphabet characters only. If the
+input is valid, the function should call the function <span data-line="8;scripting.md::163"></span><code class="code">guessed_letter</code><span data-line="8;scripting.md::163"></span>.
+(which we have provided because the syntax is kind of obscure.) If the input is 
+invalid, the program should prompt the player for another letter, by calling 
+<span data-line="8;scripting.md::166"></span><code class="code">get_letter</code><span data-line="8;scripting.md::166"></span>. You might consider printing some additional helpful information 
+for the player, such as a reminder of what letters have been guessed and what 
+the word looks like now. 
+</p><!--
+## Write `guessed_letter` to check if the player's guess is new
+
+We wrote this function, `guessed_letter`, for you because the syntax is
+bizarre. The goal of this function is to check if the user has already
+guessed the letter. If the user has guessed it, the function returns to
+`get_letter` to ask for a different letter. If not, the function adds
+the letter to the array `gl` which contains guessed letters, and it
+calls `letter_in_word` to determine whether the letter is in the word.
+-->
+
+<h2 id="write-letter_in_word-to-check-the-players-guess"  data-line="8;scripting.md:181" ><span data-line="8;scripting.md::181"></span>Write <span data-line="8;scripting.md::181"></span><code class="code">letter_in_word</code><span data-line="8;scripting.md::181"></span> to check the player<span data-line="8;scripting.md::181"></span>&#39;<span data-line="8;scripting.md::181"></span>s guess</h2>
+<p data-line="8;scripting.md:183"><span data-line="8;scripting.md::183"></span>The <span data-line="8;scripting.md::183"></span><code class="code">letter_in_word</code><span data-line="8;scripting.md::183"></span> function checks whether the letter is in the secret word.
+Use regular expressions to check whether the string <span data-line="8;scripting.md::184"></span><code class="code">$word</code><span data-line="8;scripting.md::184"></span> contains the string
+<span data-line="8;scripting.md::185"></span><code class="code">$letter</code><span data-line="8;scripting.md::185"></span>. If it does, update the variable <span data-line="8;scripting.md::185"></span><code class="code">$wip</code><span data-line="8;scripting.md::185"></span> to include the newly guessed
+letter. To do this, you can use a slightly counterintuitive strategy: replace
+all characters in <span data-line="8;scripting.md::187"></span><code class="code">$word</code><span data-line="8;scripting.md::187"></span> NOT found in the guessed letters list with
+underscores. The syntax of the find and replace command for strings in bash is
+<span data-line="8;scripting.md::189"></span><code class="code">${string/pattern/replacement}</code><span data-line="8;scripting.md::189"></span>. Use a regular expression to specify the 
+pattern. When the player guesses a correct letter, you may also want to display
+other information, e.g., the newly updated board and the letters that have been 
+guessed.
+</p>
+<p class="indent" data-line="8;scripting.md:194"><span data-line="8;scripting.md::194"></span>If the player guesses a letter that<span data-line="8;scripting.md::194"></span>&#39;<span data-line="8;scripting.md::194"></span>s <span data-line="8;scripting.md::194"></span><em>not</em><span data-line="8;scripting.md::194"></span> in the word, the script should
+decrement the number of lives.  You also need to call <span data-line="8;scripting.md::195"></span><code class="code">check_lives</code><span data-line="8;scripting.md::195"></span> to determine
+whether the user still has lives left or if the game is over. (You will write
+this function later.)
+</p><h2 id="write-game-the-main-loop-for-the-game"  data-line="8;scripting.md:199" ><span data-line="8;scripting.md::199"></span>Write <span data-line="8;scripting.md::199"></span><code class="code">game</code><span data-line="8;scripting.md::199"></span>, the main loop for the game</h2>
+<p data-line="8;scripting.md:201"><span data-line="8;scripting.md::201"></span>This function prompts the player for letters until the game is over. In order to
+have an effective game, you first need to define your variables (funny, I think
+you wrote a function for that already). You also need to let the player know how
+long the word is by printing the board. Then, you need to keep asking for
+letters until the word-in-progress is the same as the word itself. When the word
+is guessed, the game should ask the user if they want to play again. 
+</p><h2 id="write-check_lives-to-check-how-many-lives-remain"  data-line="8;scripting.md:208" ><span data-line="8;scripting.md::208"></span>Write <span data-line="8;scripting.md::208"></span><code class="code">check_lives</code><span data-line="8;scripting.md::208"></span> to check how many lives remain</h2>
+<p data-line="8;scripting.md:210"><span data-line="8;scripting.md::210"></span>If the player has no lives remaining, you should give them <span data-line="8;scripting.md::210"></span><code class="code">$word</code><span data-line="8;scripting.md::210"></span> (just to be
+nice) and the option to play again if they so wish. Otherwise, the player should
+just keep playing. If the player decides to play again, both the word and the
+variables need to be reset.
+</p><h2 id="putting-it-all-together"  data-line="8;scripting.md:215" ><span data-line="8;scripting.md::215"></span>Putting it all together</h2>
+<p data-line="8;scripting.md:217"><span data-line="8;scripting.md::217"></span>Now you<span data-line="8;scripting.md::217"></span>&#39;<span data-line="8;scripting.md::217"></span>re ready to run the script and test your game! You may have to think a
+bit about how the functions tie together, but all the pieces are there!
+</p><h2 id="extra-credit--"  data-line="8;scripting.md:220" ><span data-line="8;scripting.md::220"></span>Extra Credit :)</h2>
+<p data-line="8;scripting.md:222"><span data-line="8;scripting.md::222"></span>If you still have some time left over, you can write a starting menu
+that offers the option for the player to play in single-player mode or
+against a friend. To write a menu, look at <span data-line="8;scripting.md::224"></span><code class="code">case</code><span data-line="8;scripting.md::224"></span> branching (see Chapter
+31 of the Linux book). It is within these branches that you should
+define <span data-line="8;scripting.md::226"></span><code class="code">$word</code><span data-line="8;scripting.md::226"></span>, whether it should be retrieved randomly from a
+dictionary or whether it should be inputted into the game.
+</p>
+<p class="indent" data-line="8;scripting.md:229"><span data-line="8;scripting.md::229"></span>Also, if you are so inclined, you can try including ASCII art of a
+hangman (or something less grotesque) that updates throughout the game.
+Another idea is to create a cheating function that allows the player to
+search through the dictionary with regex for possible matches to the
+letters they<span data-line="8;scripting.md::233"></span>&#39;<span data-line="8;scripting.md::233"></span>ve already guessed in the word. Play around, have fun, and
+happy scripting!
+</p>
+</body>
+</html>
