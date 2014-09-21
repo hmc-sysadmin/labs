@@ -39,8 +39,7 @@ shell).
 To do this lab, you need to be familiar with constructing if/else statements and
 while/until loops. You should also be fairly comfortable with regular
 expressions. Don't be afraid to use Google to look up syntax that you are unsure
-about! This  
-[Bash cheat sheet](http://www.johnstowers.co.nz/blog/pages/bash-cheat-sheet.html) might also help.
+about! This [Bash cheat sheet](http://www.johnstowers.co.nz/blog/pages/bash-cheat-sheet.html) might also help.
 
 ## Materials
 
