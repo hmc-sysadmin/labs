@@ -5,11 +5,6 @@
 # Shell Scripting in Bash
 *Originally created by Lisa Goeller, Joži McKiernan, and Paige Rinnert*
 
-<!--
-## TODO
-  - Double-check readings
--->
-
 ## Readings
 
 Before beginning this lab, you'll probably want to do read up on shell
