@@ -1,0 +1,8 @@
+Title   : Network Time Protocol (NTP) and Network File System (NFS)
+Author  : Annie Christy
+MathJax : True
+Css     : ./writeup.css
+
+Heading Depth: 0 
+
+[INCLUDE="ntp_nfs.md"]
