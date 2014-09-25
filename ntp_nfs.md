@@ -224,7 +224,7 @@ services that start at boot.
 
 Now, reboot your machine.
 
-    sudo shutdown -r now
+    sudo reboot
 
 The files should be mounted automatically. Check to make sure.
 
