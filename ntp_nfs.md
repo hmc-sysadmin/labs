@@ -5,9 +5,9 @@
 Note: Most of the commands in this lab need to be run as the superuser,
 so consider running them as root.
 
-## Network Time Protocol (NTP) {#network-time-protocol-ntp .unnumbered}
+## Network Time Protocol (NTP)
 
-### What is NTP? {#what-is-ntp .unnumbered}
+### What is NTP?
 
 
 NTP is an internet protocol that uses packet-switched, variable-latency
@@ -29,7 +29,7 @@ are not synchronized.\
 For more information, visit
 <http://en.wikipedia.org/wiki/Network_Time_Protocol>
 
-### Enabling NTP {#enabling-ntp .unnumbered}
+### Enabling NTP
 
 
 The class server is already running NTP. Your goal is to use NTP to sync
@@ -97,9 +97,9 @@ If you would like to monitor the status of your server.
 
 For more information, visit <http://wiki.gentoo.org/wiki/Ntp>
 
-## Network File System (NFS) {#network-file-system-nfs .unnumbered}
+## Network File System (NFS)
 
-### What is NFS? {#what-is-nfs .unnumbered}
+### What is NFS?
 
 
 In 1984, Sun Microsystems developed a distributed file system protocol
@@ -123,7 +123,7 @@ For more information, visit
 
 <http://en.wikipedia.org/wiki/Network_File_System>
 
-### Manually Mounting NFS Shares {#manually-mounting-nfs-shares .unnumbered}
+### Manually Mounting NFS Shares
 
 
 We will begin by learning how to manually mount the desired filesystems
@@ -165,7 +165,7 @@ need this directory anymore, so you can delete it.
 
     rmdir /local
 
-### Mount NFS Shares at Boot with autofs {#mount-nfs-shares-at-boot-with-autofs .unnumbered}
+### Mount NFS Shares at Boot with autofs
 
 
 You may have noticed that if you change something in your home directory
