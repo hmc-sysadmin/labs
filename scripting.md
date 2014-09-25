@@ -181,10 +181,10 @@ Use regular expressions to check whether the string `$word` contains the string
 letter. To do this, you can use a slightly counterintuitive strategy: replace
 all characters in `$word` NOT found in the guessed letters list with
 underscores. The syntax of the find and replace command for strings in bash is
-`${string/pattern/replacement}`. Use a regular expression to specify the 
-pattern. When the player guesses a correct letter, you may also want to display
-other information, e.g., the newly updated board and the letters that have been 
-guessed.
+`${string//pattern/replacement}` (the double-slash, `//` is for global
+replacement). Use a regular expression to specify the  pattern. When the player
+guesses a correct letter, you may also want to display other information, e.g.,
+the newly updated board and the letters that have been  guessed.
 
 If the player guesses a letter that's *not* in the word, the script should
 decrement the number of lives.  You also need to call `check_lives` to determine
