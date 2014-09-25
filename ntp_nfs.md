@@ -176,7 +176,7 @@ However, it is unlikely that you have ever had to mount your home
 directory on knuth before working with it. That would be really annoying
 because you would need to do it every time you wanted to access your
 files! Instead, it is possible to mount the NFS shares automatically
-when then computer boots. That way, the NFS files that you use a lot
+when the computer boots. That way, the NFS files that you use a lot
 will be waiting for you when you log on.
 
 We use a program called autofs to automount files. There are two files
@@ -222,7 +222,8 @@ services that start at boot.
 
     rc-status
 
-Now, reboot your machine.
+Now, reboot your machine. You will lose your connection. Wait for a bit, then
+try to ssh back in.
 
     sudo reboot
 
