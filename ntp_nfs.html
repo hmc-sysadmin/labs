@@ -29,71 +29,69 @@
 </head>
 <body class="madoko">
 
-
-<hr  class="madoko" data-line="8;ntp_nfs.md:1">
-
-<p data-line="8;ntp_nfs.md:2"><span data-line="8;ntp_nfs.md::2"></span>author:
-- Annie Christy
-<span data-line="8;ntp_nfs.md::4"></span>&#8230;<span data-line="8;ntp_nfs.md::4"></span>
+<h1 id="network-time-protocol-ntp-and-network-file-system-nfs"  data-line="8;ntp_nfs.md:1" ><span data-line="8;ntp_nfs.md::1"></span>Network Time Protocol (NTP) and Network File System (NFS)</h1>
+<p data-line="8;ntp_nfs.md:3"><span data-line="8;ntp_nfs.md::3"></span><em>Originally created by Annie Christy</em><span data-line="8;ntp_nfs.md::3"></span>
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:6"><span data-line="8;ntp_nfs.md::6"></span>Note: Most of the commands in this lab need to be run as the superuser,
+<p class="indent" data-line="8;ntp_nfs.md:5"><span data-line="8;ntp_nfs.md::5"></span>Note: Most of the commands in this lab need to be run as the superuser,
 so consider running them as root.
-</p><h1 id="network-time-protocol-ntp" class="unnumbered"  data-line="8;ntp_nfs.md:9" ><span data-line="8;ntp_nfs.md::9"></span>Network Time Protocol (NTP) </h1><h2 id="what-is-ntp" class="unnumbered"  data-line="8;ntp_nfs.md:12" ><span data-line="8;ntp_nfs.md::12"></span>What is NTP? </h2>
-<p data-line="8;ntp_nfs.md:15"><span data-line="8;ntp_nfs.md::15"></span>NTP is an internet protocol that uses packet-switched, variable-latency
+</p><h2 id="network-time-protocol-ntp"  data-line="8;ntp_nfs.md:8" ><span data-line="8;ntp_nfs.md::8"></span>Network Time Protocol (NTP)</h2><h3 id="what-is-ntp"  data-line="8;ntp_nfs.md:10" ><span data-line="8;ntp_nfs.md::10"></span>What is NTP?</h3>
+<p data-line="8;ntp_nfs.md:13"><span data-line="8;ntp_nfs.md::13"></span>NTP is an internet protocol that uses packet-switched, variable-latency
 data networks to synchronize system clocks. The purpose of NTP is to
 synchronize the clocks of all connected computers within a few
-milliseconds of Coordinated Universal Time, which is also known as UTC.<span data-line="8;ntp_nfs.md::18"></span><br>
+milliseconds of Coordinated Universal Time, which is also known as UTC.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:20"><span data-line="8;ntp_nfs.md::20"></span>NTP clocks are organized into strata, where stratum 0 is made up of
+<p class="indent" data-line="8;ntp_nfs.md:18"><span data-line="8;ntp_nfs.md::18"></span>NTP clocks are organized into strata, where stratum 0 is made up of
 extremely precise atomic clocks, GPS clocks, or radio clocks. Stratum 1
 is made up of computers that are coordinated with the atomic devices.
-The lower strata (2 through 15) are a tree of synchronized servers that
-communicate with each other to achieve synchronization.<span data-line="8;ntp_nfs.md::24"></span><br>
+The lower strata (2 through 15) form a tree of synchronized servers that
+communicate with one another to achieve synchronization.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:26"><span data-line="8;ntp_nfs.md::26"></span>We are interested in this protocol because some of the services we want
+<p class="indent" data-line="8;ntp_nfs.md:24"><span data-line="8;ntp_nfs.md::24"></span>We are interested in this protocol because some of the services we want
 to run depend on servers and clients that have exactly synchronized
 time. Specifically, NFS will complain if the client and server clocks
-are not synchronized.<span data-line="8;ntp_nfs.md::29"></span><br>
+are not synchronized.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:31"><span data-line="8;ntp_nfs.md::31"></span>For more information, visit
-<span data-line="8;ntp_nfs.md::32"></span><a href="http://en.wikipedia.org/wiki/Network_Time_Protocol">http://en.wikipedia.org/wiki/Network_Time_Protocol</a><span data-line="8;ntp_nfs.md::32"></span>
-</p><h2 id="enabling-ntp" class="unnumbered"  data-line="8;ntp_nfs.md:34" ><span data-line="8;ntp_nfs.md::34"></span>Enabling NTP </h2>
-<p data-line="8;ntp_nfs.md:37"><span data-line="8;ntp_nfs.md::37"></span>The class server is already running NTP. Your goal is to use NTP to sync
+<p class="indent" data-line="8;ntp_nfs.md:29"><span data-line="8;ntp_nfs.md::29"></span>For more information, visit
+<span data-line="8;ntp_nfs.md::30"></span><a href="http://en.wikipedia.org/wiki/Network_Time_Protocol">http://en.wikipedia.org/wiki/Network_Time_Protocol</a><span data-line="8;ntp_nfs.md::30"></span>
+</p><h3 id="enabling-ntp"  data-line="8;ntp_nfs.md:32" ><span data-line="8;ntp_nfs.md::32"></span>Enabling NTP</h3>
+<p data-line="8;ntp_nfs.md:35"><span data-line="8;ntp_nfs.md::35"></span>The class server is already running NTP. Your goal is to use NTP to sync
 your system clock to the server’s clock.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:40"><span data-line="8;ntp_nfs.md::40"></span>You want to tell your computer to query NFS server for NTP
+<p class="indent" data-line="8;ntp_nfs.md:38"><span data-line="8;ntp_nfs.md::38"></span>You want to tell your computer to query NFS server for NTP
 synchronization. To do this, open the /etc/ntp.conf file and add a line
 directing the NTP implementation to the class server.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:44"><code>sudo vim /etc/ntp.conf</code></pre>
-<p data-line="8;ntp_nfs.md:46"><span data-line="8;ntp_nfs.md::46"></span>Add the following lines to the section whose comments tell you to
-<span data-line="8;ntp_nfs.md::47"></span>`<span data-line="8;ntp_nfs.md::47"></span>`<span data-line="8;ntp_nfs.md::47"></span>Name of the servers ntpd should sync with.<span data-line="8;ntp_nfs.md::47"></span>&quot;<span data-line="8;ntp_nfs.md::47"></span>
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:42"><code>sudo vim /etc/ntp.conf</code></pre>
+<p data-line="8;ntp_nfs.md:44"><span data-line="8;ntp_nfs.md::44"></span>Add the following lines to the section whose comments tell you to
+<span data-line="8;ntp_nfs.md::45"></span>&#8220;Name of the servers ntpd should sync with.&#8221;<span data-line="8;ntp_nfs.md::45"></span>
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:49"><code>server          crispy.sys.cs.hmc.edu
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:47"><code>server          crispy.sys.cs.hmc.edu
 server          127.127.1.0
 fudge           127.127.1.0          stratum 10</code></pre>
-<p data-line="8;ntp_nfs.md:53"><span data-line="8;ntp_nfs.md::53"></span>The first line instructs ntpd to sync with the class NFS server. The
+<p data-line="8;ntp_nfs.md:51"><span data-line="8;ntp_nfs.md::51"></span>The first line instructs ntpd to sync with the class NFS server. The
 following two lines tell ntpd to synchronize with itself if it loses its
 connection with the class server.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:57"><span data-line="8;ntp_nfs.md::57"></span>Note the presence of a driftfile in <span data-line="8;ntp_nfs.md::57"></span><code class="code">/etc/ntp.conf</code><span data-line="8;ntp_nfs.md::57"></span>. This file is where
+<p class="indent" data-line="8;ntp_nfs.md:55"><span data-line="8;ntp_nfs.md::55"></span><em>Aside</em><span data-line="8;ntp_nfs.md::55"></span>: Note the presence of a <span data-line="8;ntp_nfs.md::55"></span><code class="code">driftfile</code><span data-line="8;ntp_nfs.md::55"></span> in <span data-line="8;ntp_nfs.md::55"></span><code class="code">/etc/ntp.conf</code><span data-line="8;ntp_nfs.md::55"></span>. This file is where
 the machine can store information about the natural time drifts that
 your computer has, so that it can automatically adjust for them.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:61"><span data-line="8;ntp_nfs.md::61"></span>You need to uncomment the bottom line in the file to ensure that other
+<p class="indent" data-line="8;ntp_nfs.md:59"><span data-line="8;ntp_nfs.md::59"></span>You need to uncomment the bottom line in the file to ensure that other
 machines on your network can synchronize with your server, but that they
 cannot configure the server.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:65"><code>restrict 192.168.0.0 mask 255.255.255.0 nomodify nopeer notrap</code></pre>
-<p data-line="8;ntp_nfs.md:67"><span data-line="8;ntp_nfs.md::67"></span>the NTP service has a function called monlist, that is used to query the
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:63"><code>restrict 192.168.0.0 mask 255.255.255.0 nomodify nopeer notrap</code></pre>
+<p data-line="8;ntp_nfs.md:65"><span data-line="8;ntp_nfs.md::65"></span>the NTP service has a function called monlist, that is used to query the
 server about the hosts that have connected to it. This can be useful if
 you want to learn about your network stats, but we don’t really need it
 and it leaves your machine susceptible to denial-of-service attacks. To
 disable this functionality, add the following line to the bottom of the
 /etc/ntp.conf file:
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:74"><code>disable monitor</code></pre>
-<p data-line="8;ntp_nfs.md:76"><span data-line="8;ntp_nfs.md::76"></span>To start the NTP service and check that it is running, run the following
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:72"><code>disable monitor</code></pre>
+<p data-line="8;ntp_nfs.md:74"><span data-line="8;ntp_nfs.md::74"></span>You can now save and close the file.
+</p>
+<p class="indent" data-line="8;ntp_nfs.md:76"><span data-line="8;ntp_nfs.md::76"></span>To start the NTP service and check that it is running, run the following
 rc-service commands as root.
 </p>
 <pre class="para-block para-block" data-line="8;ntp_nfs.md:79"><code>rc-service ntp-client start
@@ -113,62 +111,65 @@ boot.
 </p>
 <pre class="para-block para-block" data-line="8;ntp_nfs.md:98"><code>rc-status</code></pre>
 <p data-line="8;ntp_nfs.md:100"><span data-line="8;ntp_nfs.md::100"></span>For more information, visit <span data-line="8;ntp_nfs.md::100"></span><a href="http://wiki.gentoo.org/wiki/Ntp">http://wiki.gentoo.org/wiki/Ntp</a><span data-line="8;ntp_nfs.md::100"></span>
-</p><h1 id="network-file-system-nfs" class="unnumbered"  data-line="8;ntp_nfs.md:102" ><span data-line="8;ntp_nfs.md::102"></span>Network File System (NFS) </h1><h2 id="what-is-nfs" class="unnumbered"  data-line="8;ntp_nfs.md:105" ><span data-line="8;ntp_nfs.md::105"></span>What is NFS? </h2>
-<p data-line="8;ntp_nfs.md:108"><span data-line="8;ntp_nfs.md::108"></span>In 1984, Sun Microsystems developed a distributed file system protocol
+</p><h2 id="network-file-system-nfs"  data-line="8;ntp_nfs.md:102" ><span data-line="8;ntp_nfs.md::102"></span>Network File System (NFS)</h2><h3 id="what-is-nfs"  data-line="8;ntp_nfs.md:104" ><span data-line="8;ntp_nfs.md::104"></span>What is NFS?</h3>
+<p data-line="8;ntp_nfs.md:107"><span data-line="8;ntp_nfs.md::107"></span>In 1984, Sun Microsystems developed a distributed file system protocol
 called a Network File System (NFS). NFS makes it possible for clients to
 access files on a remote server as though they were a part of the local
 file tree. The class server is already running the NFS service. It is
 running the NFS daemon, nfsd, and it will reference the file
 /etc/exports to determine what filesystems it is allowed to export to
-clients. I have already added your computers to this file and given them
+clients. We have already added your computers to this file and given them
 read-write access to the /local directory. Your first goal will be to
-mount /local to your machine.<span data-line="8;ntp_nfs.md::116"></span><br>
+mount the server<span data-line="8;ntp_nfs.md::115"></span>&#39;<span data-line="8;ntp_nfs.md::115"></span>s /local directory on your machine.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:118"><span data-line="8;ntp_nfs.md::118"></span>To access the NFS shares on the server, we will use tools from the
+<p class="indent" data-line="8;ntp_nfs.md:117"><span data-line="8;ntp_nfs.md::117"></span>To access the NFS shares on the server, we will use tools from the
 nfs-utils package, which has already been installed.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:121"><span data-line="8;ntp_nfs.md::121"></span>Start the rpc.statd daemon.
+<p class="indent" data-line="8;ntp_nfs.md:120"><span data-line="8;ntp_nfs.md::120"></span>Start the rpc.statd daemon.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:123"><code>/etc/init.d/rpc.statd start</code></pre>
-<p data-line="8;ntp_nfs.md:125"><span data-line="8;ntp_nfs.md::125"></span>For more information, visit
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:122"><code>/etc/init.d/rpc.statd start</code></pre>
+<p data-line="8;ntp_nfs.md:124"><span data-line="8;ntp_nfs.md::124"></span>For more information, visit
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:127"><span data-line="8;ntp_nfs.md::127"></span><a href="http://en.wikipedia.org/wiki/Network_File_System">http://en.wikipedia.org/wiki/Network_File_System</a><span data-line="8;ntp_nfs.md::127"></span>
-</p><h2 id="manually-mounting-nfs-shares" class="unnumbered"  data-line="8;ntp_nfs.md:129" ><span data-line="8;ntp_nfs.md::129"></span>Manually Mounting NFS Shares </h2>
-<p data-line="8;ntp_nfs.md:132"><span data-line="8;ntp_nfs.md::132"></span>We will begin by learning how to manually mount the desired filesystems
+<p class="indent" data-line="8;ntp_nfs.md:126"><span data-line="8;ntp_nfs.md::126"></span><a href="http://en.wikipedia.org/wiki/Network_File_System">http://en.wikipedia.org/wiki/Network_File_System</a><span data-line="8;ntp_nfs.md::126"></span>
+</p><h3 id="manually-mounting-nfs-shares"  data-line="8;ntp_nfs.md:128" ><span data-line="8;ntp_nfs.md::128"></span>Manually Mounting NFS Shares</h3>
+<p data-line="8;ntp_nfs.md:131"><span data-line="8;ntp_nfs.md::131"></span>We will begin by learning how to manually mount the desired filesystems
 onto your machine.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:135"><span data-line="8;ntp_nfs.md::135"></span>You need to create the directory that you want the NFS share to mount
+<p class="indent" data-line="8;ntp_nfs.md:134"><span data-line="8;ntp_nfs.md::134"></span>You need to create the directory that you want the NFS share to mount
 to. It doesn’t really matter what you call this directory, but it makes
 sense to call it by the same name that it has on the server. So, create
 a file called /local.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:140"><code>cd /
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:139"><code>cd /
 mkdir /local</code></pre>
-<p data-line="8;ntp_nfs.md:143"><span data-line="8;ntp_nfs.md::143"></span>Just to convince you that the filesystem is not mounted yet, please go
+<p data-line="8;ntp_nfs.md:142"><span data-line="8;ntp_nfs.md::142"></span>Just to convince you that the filesystem is not mounted yet, please go
 into /local. It should be empty.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:146"><code>cd /local
-cd ..</code></pre>
-<p data-line="8;ntp_nfs.md:149"><span data-line="8;ntp_nfs.md::149"></span>Now, mount the filesystem from the server.This command takes the form of
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:145"><code>cd /local
+cd -</code></pre>
+<p data-line="8;ntp_nfs.md:148"><span data-line="8;ntp_nfs.md::148"></span>Now, mount the filesystem from the server.This command takes the form of
 mount server.address:/server/path /client/path.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:152"><code>mount crispy.sys.cs.hmc.edu:/vol/local /local</code></pre>
-<p data-line="8;ntp_nfs.md:154"><span data-line="8;ntp_nfs.md::154"></span>Now, if you go into the /local file, you should see several folders.
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:151"><code>mount crispy.sys.cs.hmc.edu:/vol/local /local</code></pre>
+<p data-line="8;ntp_nfs.md:153"><span data-line="8;ntp_nfs.md::153"></span>Now, if you go into the /local file, you should see several folders.
 Open the file called README and follow the instructions there.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:157"><span data-line="8;ntp_nfs.md::157"></span>It is good to know how to manually mount filesystems, but it is not a
+<p class="indent" data-line="8;ntp_nfs.md:156"><span data-line="8;ntp_nfs.md::156"></span>It is good to know how to manually mount filesystems, but it is not a
 particularly efficient way to work if you want to use the NFS shares a
 lot because the share becomes unmounted when the computer is rebooted.
 To prove this to yourself, you should reboot your computer now (but
 first make sure that you don’t have any important processes running).
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:163"><code>sudo shutdown -r now</code></pre>
-<p data-line="8;ntp_nfs.md:165"><span data-line="8;ntp_nfs.md::165"></span>Now, go back to the /local directory. It should be empty because your
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:162"><code>sudo reboot</code></pre>
+<p data-line="8;ntp_nfs.md:164"><span data-line="8;ntp_nfs.md::164"></span>You will lose your connection. Wait for a bit, then
+try to ssh back in.
+</p>
+<p class="indent" data-line="8;ntp_nfs.md:167"><span data-line="8;ntp_nfs.md::167"></span>Now, go back to the /local directory. It should be empty because your
 machine isn’t getting the files off the NFS server anymore. You don’t
 need this directory anymore, so you can delete it.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:169"><code>rmdir /local</code></pre><h2 id="mount-nfs-shares-at-boot-with-autofs" class="unnumbered"  data-line="8;ntp_nfs.md:171" ><span data-line="8;ntp_nfs.md::171"></span>Mount NFS Shares at Boot with autofs </h2>
-<p data-line="8;ntp_nfs.md:174"><span data-line="8;ntp_nfs.md::174"></span>You may have noticed that if you change something in your home directory
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:171"><code>rmdir /local</code></pre><h3 id="mount-nfs-shares-at-boot-with-autofs"  data-line="8;ntp_nfs.md:173" ><span data-line="8;ntp_nfs.md::173"></span>Mount NFS Shares at Boot with autofs</h3>
+<p data-line="8;ntp_nfs.md:176"><span data-line="8;ntp_nfs.md::176"></span>You may have noticed that if you change something in your home directory
 on knuth, that change will appear when you log into your home directory
 on any of the other machines on the CS Department cluster. This works
 because the home directories are exported to the machines using NFS.
@@ -176,61 +177,55 @@ However, it is unlikely that you have ever had to mount your home
 directory on knuth before working with it. That would be really annoying
 because you would need to do it every time you wanted to access your
 files! Instead, it is possible to mount the NFS shares automatically
-when then computer boots. That way, the NFS files that you use a lot
+when the computer boots. That way, the NFS files that you use a lot
 will be waiting for you when you log on.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:185"><span data-line="8;ntp_nfs.md::185"></span>We use a program called autofs to automount files. There are two files
+<p class="indent" data-line="8;ntp_nfs.md:187"><span data-line="8;ntp_nfs.md::187"></span>We use a program called autofs to automount files. There are two files
 that we need to configure on the client machine. First, read through the
 file /etc/autofs/auto.master.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:189"><code>sudo vim /etc/autofs/auto.master</code></pre>
-<p data-line="8;ntp_nfs.md:191"><span data-line="8;ntp_nfs.md::191"></span>This file tells autofs where to mount files and also provides a path to
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:191"><code>sudo vim /etc/autofs/auto.master</code></pre>
+<p data-line="8;ntp_nfs.md:193"><span data-line="8;ntp_nfs.md::193"></span>This file tells autofs where to mount files and also provides a path to
 a file that provides details about what to mount. Add the following line
 to the file beneath the comment that says ’For details of the format
 look at autofs(5)’ but make sure the line you add is uncommented.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:196"><code>/mnt        /etc/autofs/auto_mnt</code></pre>
-<p data-line="8;ntp_nfs.md:198"><span data-line="8;ntp_nfs.md::198"></span>The line you just added to the file tells the computer to mount the NFS
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:198"><code>/mnt        /etc/autofs/auto_mnt</code></pre>
+<p data-line="8;ntp_nfs.md:200"><span data-line="8;ntp_nfs.md::200"></span>The line you just added to the file tells the computer to mount the NFS
 shares in the /mnt directory. It also gives the computer the path to the
 automnt file which will contain a list of the NFS shares that should be
 mounted automatically. Open that file now.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:203"><code>sudo vim /etc/autofs/auto_mnt</code></pre>
-<p data-line="8;ntp_nfs.md:205"><span data-line="8;ntp_nfs.md::205"></span>This file should be empty when you first open it. Each line you add will
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:205"><code>sudo vim /etc/autofs/auto_mnt</code></pre>
+<p data-line="8;ntp_nfs.md:207"><span data-line="8;ntp_nfs.md::207"></span>This file should be empty when you first open it. Each line you add will
 represent a directory that you want to mount to your system. The first
 part of a line is the name of the share as you want it to show up in
 your /mnt directory. the second part of a line provides the location of
 the share on the NFS server. Tell the machine to automount /vol/local by
 adding the following line.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:212"><code>local crispy.sys.cs.hmc.edu:/vol/local</code></pre>
-<p data-line="8;ntp_nfs.md:214"><span data-line="8;ntp_nfs.md::214"></span>If you want autofs to mount the NFS share at boot, then you need to make
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:214"><code>local crispy.sys.cs.hmc.edu:/vol/local</code></pre>
+<p data-line="8;ntp_nfs.md:216"><span data-line="8;ntp_nfs.md::216"></span>If you want autofs to mount the NFS share at boot, then you need to make
 sure that autofs itself is running at boot. Make sure that ntpd, nfs,
 and autofs are all added to the default run level.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:218"><code>rc-update add nfs default
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:220"><code>rc-update add nfs default
 
 rc-update add autofs default</code></pre>
-<p data-line="8;ntp_nfs.md:222"><span data-line="8;ntp_nfs.md::222"></span>The ntpd service should already be on the default run level, but you can
+<p data-line="8;ntp_nfs.md:224"><span data-line="8;ntp_nfs.md::224"></span>The ntpd service should already be on the default run level, but you can
 use the rc-status command to check. It will print a list of all the
 services that start at boot.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:226"><code>rc-status</code></pre>
-<p data-line="8;ntp_nfs.md:228"><span data-line="8;ntp_nfs.md::228"></span>Now, reboot your machine.
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:228"><code>rc-status</code></pre>
+<p data-line="8;ntp_nfs.md:230"><span data-line="8;ntp_nfs.md::230"></span>Now, reboot your machine. You will lose your connection. Wait for a bit, then
+try to ssh back in.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:230"><code>sudo shutdown -r now</code></pre>
-<p data-line="8;ntp_nfs.md:232"><span data-line="8;ntp_nfs.md::232"></span>The files should be mounted automatically. Check to make sure.
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:233"><code>sudo reboot</code></pre>
+<p data-line="8;ntp_nfs.md:235"><span data-line="8;ntp_nfs.md::235"></span>The files should be mounted automatically. Check to make sure.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:234"><code>cd /mnt/local</code></pre>
-<p data-line="8;ntp_nfs.md:236"><span data-line="8;ntp_nfs.md::236"></span>In the directory you created earlier, which should be located at<span data-line="8;ntp_nfs.md::236"></span><br>
-<span data-line="8;ntp_nfs.md::237"></span><code class="code">/mnt/local/classDir/firstnameLastname</code><span data-line="8;ntp_nfs.md::237"></span>, answer the following
-questions.<span data-line="8;ntp_nfs.md::238"></span><br>
-</p>
-<p class="indent" data-line="8;ntp_nfs.md:240"><span data-line="8;ntp_nfs.md::240"></span>1<span data-line="8;ntp_nfs.md::240"></span>.<span data-line="8;ntp_nfs.md::240"></span> What was the most difficult part of this lab?<span data-line="8;ntp_nfs.md::240"></span><br>
-</p>
-<p class="indent" data-line="8;ntp_nfs.md:242"><span data-line="8;ntp_nfs.md::242"></span>2<span data-line="8;ntp_nfs.md::242"></span>.<span data-line="8;ntp_nfs.md::242"></span> What did you do to troubleshoot your problems?<span data-line="8;ntp_nfs.md::242"></span><br>
-</p>
-<p class="indent" data-line="8;ntp_nfs.md:244"><span data-line="8;ntp_nfs.md::244"></span>3<span data-line="8;ntp_nfs.md::244"></span>.<span data-line="8;ntp_nfs.md::244"></span> Explain NFS to a twelve-year-old.<span data-line="8;ntp_nfs.md::244"></span><br>
+<pre class="para-block para-block" data-line="8;ntp_nfs.md:237"><code>cd /mnt/local</code></pre>
+<p data-line="8;ntp_nfs.md:239"><span data-line="8;ntp_nfs.md::239"></span>In the file you created earlier, leave your fellow sysadmins some easter eggs:
+somehthing fun for people to find.
 </p>
 </body>
 </html>

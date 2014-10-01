@@ -13,18 +13,18 @@ so consider running them as root.
 NTP is an internet protocol that uses packet-switched, variable-latency
 data networks to synchronize system clocks. The purpose of NTP is to
 synchronize the clocks of all connected computers within a few
-milliseconds of Coordinated Universal Time, which is also known as UTC.\
+milliseconds of Coordinated Universal Time, which is also known as UTC.
 
 NTP clocks are organized into strata, where stratum 0 is made up of
 extremely precise atomic clocks, GPS clocks, or radio clocks. Stratum 1
 is made up of computers that are coordinated with the atomic devices.
-The lower strata (2 through 15) are a tree of synchronized servers that
-communicate with each other to achieve synchronization.\
+The lower strata (2 through 15) form a tree of synchronized servers that
+communicate with one another to achieve synchronization.
 
 We are interested in this protocol because some of the services we want
 to run depend on servers and clients that have exactly synchronized
 time. Specifically, NFS will complain if the client and server clocks
-are not synchronized.\
+are not synchronized.
 
 For more information, visit
 <http://en.wikipedia.org/wiki/Network_Time_Protocol>
@@ -42,7 +42,7 @@ directing the NTP implementation to the class server.
     sudo vim /etc/ntp.conf
 
 Add the following lines to the section whose comments tell you to
-\`\`Name of the servers ntpd should sync with."
+"Name of the servers ntpd should sync with."
 
     server          crispy.sys.cs.hmc.edu
     server          127.127.1.0
@@ -52,7 +52,7 @@ The first line instructs ntpd to sync with the class NFS server. The
 following two lines tell ntpd to synchronize with itself if it loses its
 connection with the class server.
 
-Note the presence of a driftfile in `/etc/ntp.conf`. This file is where
+_Aside_: Note the presence of a `driftfile` in `/etc/ntp.conf`. This file is where
 the machine can store information about the natural time drifts that
 your computer has, so that it can automatically adjust for them.
 
@@ -70,6 +70,8 @@ disable this functionality, add the following line to the bottom of the
 /etc/ntp.conf file:
 
     disable monitor
+
+You can now save and close the file.
 
 To start the NTP service and check that it is running, run the following
 rc-service commands as root.
@@ -108,9 +110,9 @@ access files on a remote server as though they were a part of the local
 file tree. The class server is already running the NFS service. It is
 running the NFS daemon, nfsd, and it will reference the file
 /etc/exports to determine what filesystems it is allowed to export to
-clients. I have already added your computers to this file and given them
+clients. We have already added your computers to this file and given them
 read-write access to the /local directory. Your first goal will be to
-mount /local to your machine.\
+mount the server's /local directory on your machine.
 
 To access the NFS shares on the server, we will use tools from the
 nfs-utils package, which has already been installed.
@@ -141,7 +143,7 @@ Just to convince you that the filesystem is not mounted yet, please go
 into /local. It should be empty.
 
     cd /local
-    cd ..
+    cd -
 
 Now, mount the filesystem from the server.This command takes the form of
 mount server.address:/server/path /client/path.
@@ -157,7 +159,10 @@ lot because the share becomes unmounted when the computer is rebooted.
 To prove this to yourself, you should reboot your computer now (but
 first make sure that you don’t have any important processes running).
 
-    sudo shutdown -r now
+    sudo reboot
+
+You will lose your connection. Wait for a bit, then
+try to ssh back in.
 
 Now, go back to the /local directory. It should be empty because your
 machine isn’t getting the files off the NFS server anymore. You don’t
@@ -231,12 +236,5 @@ The files should be mounted automatically. Check to make sure.
 
     cd /mnt/local
 
-In the directory you created earlier, which should be located at\
-`/mnt/local/classDir/firstnameLastname`, answer the following
-questions.\
-
-1\. What was the most difficult part of this lab?\
-
-2\. What did you do to troubleshoot your problems?\
-
-3\. Explain NFS to a twelve-year-old.\
+In the file you created earlier, leave your fellow sysadmins some easter eggs:
+somehthing fun for people to find.
