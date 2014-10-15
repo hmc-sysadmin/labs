@@ -160,6 +160,10 @@ When *fortune-mod-all* is done installing, let's have some fun:
    - When you start a new bash shell (including when you log in), bash treats 
    the file `~/.bashrc` as a script and runs it. Modify `~/.bashrc` so that a
    cow says a pithy quote every time you log in (or start a new shell).
+   - You can also make it so that a cow says a pithy quote when *any* user logs
+   on to your system. To do so, add the appropriate command to the bottom of the
+   file `/etc/profile`. Ask a friend who has an account on your system to log in
+   and verify that they're greeted by a cow.
 
 ## Updating the Portage Tree and Your System
 
