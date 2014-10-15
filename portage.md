@@ -1,4 +1,4 @@
-# Portage
+# Package Management with Portage
 
 *Originally created by Huting Lin*
 
