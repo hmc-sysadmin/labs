@@ -1,0 +1,292 @@
+\documentclass[11pt]{article}
+\usepackage{inputenc}
+\usepackage{ucs}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{titling}
+\usepackage{hyperref}
+\usepackage[margin=1in]{geometry}
+
+\setlength{\droptitle}{-1in}
+
+\usepackage{courier}
+\setlength{\parindent}{0.2in}
+
+\title{System Administration Lab 2: Portage Commands and Features\vspace{-2ex}}
+\author{Huting Lin}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{ABOUT PORTAGE}
+
+Portage is a package management system used by Gentoo Linux, based on the concept of port collections. Ports are sets of makefiles and patches provided by a BSD-based operating system (BSD stands for Berkeley Software Distribution, Nowadays though, it is often used non-specifically to refer to any of the BSD descendants which together form a branch of the family of Unix-like operating systems. Gentoo is not a BSD decendant, though it does have a project called Gentoo/FreeBSD that is trying to hybridize the two). Portage, written in the Python programming language, is the main utility that defines Gentoo. The system consists of two main parts, the ebuild system and \verb|emerge|. The ebuild system takes care of the actual work of building and installing packages, while \verb|emerge| provides an interface to ebuild: managing an ebuild repository, resolving dependencies and similar issues.
+
+\section*{The Emerge Command}
+
+\verb|emerge| is one of the most important commands in relation to Portage. The command allows users to interact with the packages of the Portage tree, install packages, calculate dependencies, and more.
+
+\subsubsection*{Before-Installation Check}
+
+The \verb|emerge| command has an option that allows the user to see what the installation would do without actually installing the package(s). As an example:
+
+\begin{enumerate}
+     \item Try to \verb|emerge| the package \textit{cowsay} with the \verb|--pretend| option. \textit{cowsay} is a program that takes an input string and prints out a cow saying (or thinking) the string.
+     \\*[2mm] NOTE: A command's options usually have shortened versions to make things easier on the usuer, usually the first letter of the option. So, \verb|--pretend| can be shortened to \verb|-p| and \verb|--ask| can be shortened to \verb|-a|. Options can also be combined without spaces using their shortened form. So, if we wanted both \verb|--ask| and \verb|--pretend|, then we can use \verb|-ap|. 
+     \\*[2mm] In front of the names of packages are letters enclosed in brackets that tell you the status of, or what \verb|emerge| plans to do with, the corresponding package:
+     \begin{description}
+       \item[N] package is completely new, so installing new package
+       \item[S] new SLOT installation (can be installed side-by-side with other versions)
+       \item[U] updating to another version
+       \item[D] downgrading to lower version since it seems better than current version
+       \item[r] reinstall (forced)
+       \item[R] replacing/remerging same version
+       \item[F] fetch restricted; must be manually downloaded
+       \item[f] fetch restricted; already downloaded
+       \item[I] interactive/requires user input
+       \item[B] blocked by another package (unresolved conflict)
+       \item[b] blocked by another package (automatically resolved conflict)
+     \end{description}
+     \item You can run the program by using the command:
+     \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, showstringspaces=false]
+cowsay hello world
+\end{lstlisting}
+     However, if you were to try it now, it would not work. This is because, even though the command \verb|emerge| was used, the option \verb|--pretend| makes it so that it was not an actual installation. So, initiate an actual installation of \textit{cowsay} this time using \verb|emerge| and test it with the command mentioned above.
+   \end{enumerate}
+  
+  \subsubsection*{Updating the Portage Tree and Your System- DO NOT RUN ANY OF THE COMMANDS!!}
+    The Portage tree is a collection of ebuilds, which are files that contain all information Portage needs to maintain software (install, search, query, ...). These ebuilds reside in \verb|/usr/portage| by default and are the ones that Portage uses when asked to perform some action regarding software titles.
+   \begin{enumerate}
+     \item To make sure that the Portage Tree on your system is up-to-date, you would connect to the Gentoo database using:
+     \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, showstringspaces=false]
+emerge --sync
+\end{lstlisting}
+     This will make sure that your Portage Tree matches the one Gentoo has on file.
+     \item The previous step only updates the tree. No other changes are made to the system. So, to update the actual system, we would use the following command. The most important options are \verb|--update| and \verb|@world|:
+     \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 1em, showstringspaces=false]
+emerge --ask --update --deep --with-bdeps=y --newuse @world
+\end{lstlisting}
+     \begin{itemize}
+       \item \verb|--ask| This option means that, after gathering all the data it needs and displaying what it will do, \verb|emerge| will ask for user confirmation before continuing the process. 
+       \item \verb|--update| This is the option that tells \verb|emerge| to go through the update process. It updates packages to the best version available, not necessarily the highest version due to packages possibly in the testing stage.
+       \item \verb|--deep| This forces Portage to consider the entire dependency tree of packages (more information on this topic later in the lab) rather than focusing on their more immediate dependencies.
+       \item \verb|--with-bdeps=y| When calculating dependencies, this option tells \verb|emerge| to include build time dependencies, which are dependencies that some packages on your system need during their compile and build process. But once that package is installed, these dependencies are no longer required
+       \item \verb|--newuse| tells \verb|emerge| to consider installed packages when USE flags have changed. This helps update already installed packages to change accordingly to those changes in USE flags.
+       \item \verb|@world| tells the command to work at the world level, which encompasses the system set and the selected set. The system set contains the software packages that are required for a standard Gentoo Linux installation to run properly. The selected set contains the packages the user has explicitly asked to be installed.
+     \end{itemize}
+   
+     \item To remove (recently) orphaned dependencies (packages that no are no longer depended on by another package), you can use the option \verb|--depclean| with \verb|emerge|, which cleans the system by removing packages that are not associated with explicitly merged packages.
+   
+     \item To properly finish off updates/removal of orphan dependencies and to make sure all merged packages can properly deal with the change in dependencies, you can use the following command. However, it is part of a package called \verb|gentoolkit|, so you would need to \verb|emerge gentoolkit| before you can use it.
+     \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 1em, showstringspaces=false]
+revdep-rebuild
+\end{lstlisting}
+   
+     \item If you ever get a message to update your config files, there are 3 possible commands to use:
+     \begin{description}
+       \item[etc-update] is a tool to help merge changes made in config files during updates, it gives users the option to keep the old config file, use the new one, make changes interactively, or to ignore the update. Once in the interactive interface, it gives you a list of commands and what each command does.
+       \item[dispatch-conf] allows the user to utilize an interactive process similar to that of \textbf{etc-update} along with automatic backups.
+       \item[cfg-update] is an easy-to-use script with a smart auto-update function (but without the risk of breaking your system) and automatic backups. It also has the potential to use GUI diff/merge tools for updating all configuration files that contain your customized settings.
+     \end{description}
+   \end{enumerate}
+  
+\subsubsection*{Removing Software}
+    If you ever want to remove a package, either to free up space or to resolve a conflict, the option \verb|--unmerge| will do it. Try it out with \verb|cowsay|
+   \\*[1mm] NOTE: \verb|--unmerge| does not remove the configuration file of the program. This is so that, if you were to remerge the same package sometime in the future, the changes you made before would stay, and you could just continue where you left off.
+   \\* \textit{For more information/options, check out the \emph{man} page for \emph{emerge}.}
+
+
+
+\section*{Dependencies}
+
+    A dependency is a file that the package you are trying to install requires. When a package is emerged, it usually ``pulls in'' the dependencies needed in the installation. It draws on dependency trees (lists/records of each package and what it depends on or what depends on it) synced from Gentoo, and can encounter problems with conflicting configurations or dependencies (more on this later).
+
+   \subsubsection*{Display Dependencies}
+   Portage has dependency trees for its packages to keep track of what is required by the package or what it requires. To view what a package depends on, in this case \verb|fortune|, we will use the command: \textbf{Suggestion: pipe the result into less. The output is pretty long, but it just goes to show how many dependencies \emph{fortune} has.}
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 1em, showstringspaces=false]
+equery g fortune-mod-all
+\end{lstlisting}
+    \textbf{Question:} How would you bring up the list of packages that depend on cowsay? (Hint: man pages are your friends!)
+    
+   \subsubsection*{Possible Problems}
+   As mentioned before, some problems can come up due to conflicts between dependencies or a dependency and configurations.
+    \begin{itemize}
+      \item \textbf{Slots}
+       \\* Portage allows for different versions of a single package to coexist on a system. While other distributions tend to name their package those versions (like \verb|python2.6| and \verb|python2.7|), Portage uses a technology called \verb|SLOTs|. An ebuild declares a certain \verb|SLOT| for its version. Ebuilds with different \verb|SLOTs| can coexist on the same system. For instance, the freetype package has ebuilds with \verb|SLOT="1"| and \verb|SLOT="2"|. To list all versions of python currently installed on your machine, use the command:
+       \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 1em, showstringspaces=false]
+eselect python list
+\end{lstlisting}
+       Not all packages have different \verb|SLOTs| for their versions though, so if a package tries to install another version, the new version would compete with the pre-existing one and result in what is called a \verb|slot conflict|. This can be solved by \verb|unmerging| the previous version (but ONLY if no other installed package depends on it) or mask the new version to prevent \verb|emerge| from pulling it in (see ``Masked Packages'' for more info).
+       
+      \item \textbf{Blocked Packages}
+       \\* Ebuilds contain specific fields that inform Portage about its dependencies, two of which are \verb|DEPEND| and \verb|RDEPEND|. The two possible dependencies, build dependencies and run-time dependencies, are declared in these two fields respectively. When one of these dependencies explicitly marks a package as ``not compatible,'' it triggers a blockage. While recent versions of Portage are smart enough to work around minor blockages without user intervention, occasionally you will need to fix it yourself. 
+       \\* [1mm] As an example, pretend that, while trying to emerge the mail system Postfix, your \verb|emerge --pretend| gives you the output:
+       \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 1em, showstringspaces=false]
+[blocks B     ] mail-mta/ssmtp 
+(is blocking mail-mta/postfix-2.2.2-r1)
+\end{lstlisting}
+        and without the option \verb|--pretend|, you got:
+        \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 4em, showstringspaces=false]
+!!! Error: the mail-mta/postfix package conflicts with 
+!!! another package.
+!!!        both can't be installed on the same system together.
+!!!        Please use 'emerge --pretend' to determine blockers. 
+\end{lstlisting}
+        To fix a blockage, you can choose not to install the package or unmerge the conflicting package first. In the given example, you can opt not to install \textit{postfix} or to remove \textit{ssmtp} first.
+        \\*[2mm] NOTE: You may also see blocking packages with specific atoms, such as 
+        \\* \verb|<media-video/mplayer-1.0_rc1-r2| (see \verb|man emerge| for more information on atoms). The less-than symbol in the beginning of the atom name indicates the group of versions of this partucular software that the blockage refers to. So, the ``\textless'' shows that any version less than \verb|1.0_rc1_r2| is blocked. So, for this example, updating to a more recent version of the blocking package would circumnavigate and remove the block. 
+        \\*It is also possible that two packages that are yet to be installed are blocking each other. In this rare case, you should find out why you need to install both. In most cases you can do with one of the packages alone. If not, you should file a bug to Gentoo.
+    
+      \item \textbf{Masked Packages}
+       \\* When you want to install a package that hasn't been marked available or compatible for your system, you will receive a masking error similar to that of the following:
+       \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 5em, showstringspaces=false]
+!!! all ebuilds that could satisfy "bootsplash" have been masked. 
+\end{lstlisting}
+       with the reason(s) being:
+       \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 2em, showstringspaces=false]
+!!! possible candidates are:
+
+- gnome-base/gnome-2.8.0_pre1 (masked by: ~x86 keyword)
+- lm-sensors/lm-sensors-2.8.7 (masked by: -sparc keyword)
+- sys-libs/glibc-2.3.4.20040808 (masked by: -* keyword)
+- dev-util/cvsd-1.0.2 (masked by: missing keyword)
+- games-fps/unreal-tournament-451 (masked by: package.mask)
+- sys-libs/glibc-2.3.2-r11 (masked by: profile)
+- net-im/skype-2.1.0.81 (masked by: skype-eula license(s)) 
+\end{lstlisting}
+       You can install a different yet similar application that is available for your particular system or wait until the wanted package becomes available. Reasons for a package being masked include:
+       \begin{itemize}
+         \item \verb|~arch keyword| means that the application is not tested sufficiently to be put in the stable branch. Wait a few days or weeks and try again.
+         \item \verb|-arch keyword| or \verb|-* keyword| means that the application does not work on your architecture. An architecture is a family of CPUs (processors) who support the same instructions. The two most prominent architectures in the desktop world are the x86 architecture and the x86\_64 architecture (for which Gentoo uses the amd64 notation). If you believe the package does work file a bug at Gentoo's bugzilla website.
+         \item \verb|missing keyword| means that the application has not been tested on your architecture yet. Ask the Gentoo architecture porting team to test the package or test it for them and report your findings on the bugzilla website.
+         \item \verb|package.mask| means that the package has been found corrupt, unstable, or worse and has been deliberately marked as do-not-use.
+         \item \verb|profile| means that the package has been found not suitable for your profile. The application might break your system if you installed it or is just not compatible with the profile you use. 
+         \\* A Portage profile specifies default values for global and per-package USE flags, specifies default values for most variables found in /etc/portage/make.conf, and defines a set of system packages, basically acting as the default configurations of the system. They are maintained by Gentoo developers as a part of the Portage Tree.
+         \item \verb|license| means that the package's license is not compatible with your ACCEPT\_LICENSE setting. You must explicitly permit its license or license group by setting it in \verb|/etc/portage/make.conf| or in \\* \verb|/etc/portage/package.license|. Refer to \textbf{Licenses} in the Gentoo Handbook to learn how licenses work.
+       \end{itemize}
+    
+      \item \textbf{USE Flag Changes}
+       \\* When you want to install a package which not only depends on another package, but also requires that that package is built with a particular USE flag (or set of USE flags) that don't match your settings, Portage will warn you: 
+       \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 4em, showstringspaces=false]
+The following USE changes are necessary to proceed:
+#required by app-text/happypackage-2.0, required by happypackage 
+(argument) >=app-text/feelings-1.0.0 test
+\end{lstlisting}
+       If \verb|--autounmask| isn't set, then the following may also be shown:
+       \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 4em, showstringspaces=false]
+emerge: there are no ebuilds built with USE flags to satisfy 
+"app-text/feelings[test]".
+!!! One of the following packages is required to complete your 
+    request:
+- app-text/feelings-1.0.0 (Change USE: +test)
+(dependency required by "app-text/happypackage-2.0" [ebuild])
+(dependency required by "happypackage" [argument])
+\end{lstlisting}
+       In the given example, the package \verb|app-text/feelings| needs to be built with \verb|USE="test"|, but this USE flag is not set on the system. To resolve this, either add the requested USE flag to your global USE flags or set it for that particular package in the local USE flags (more information in Sidenote: USE flags).
+       \\*[2mm] \textbf{Sidenote: USE flags}
+
+        USE flags are keywords that define the support and dependency info. By defining a USE flag, you let portage know to install using support for USE flag.
+
+        There are two main types of USE flags:
+        \begin{enumerate}
+          \item \textit{Global flags} are used system wide by several packages. To change global USE flags go to \verb|/etc/portage/make.conf|.
+          \item \textit{Local flags} are used by a single package to make package-specific decisions. To change local USE flags go to \verb|/etc/portage/package.use|.
+        \end{enumerate}
+
+        There are also temporary USE flags. When installing a program, you can set specific USE flags to use just for that installation, usually by typing \verb|USE="..."| in front of the \verb|emerge| command. However, these temporary USE flags will be lost when you re-emerge or update that program.
+        \\*[2mm] The order of priorities for USE flags from lowest to highest is:
+        \begin{enumerate}
+          \item Default USE settings declared in the make.defaults files
+          \item user defined USE flags in make.conf
+          \item user defined USE flags in package.use
+          \item environmental variables (temporary USE flags)
+        \end{enumerate}
+     
+      \item \textbf{Missing Dependencies}
+       \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false]
+emerge: there are no ebuilds to satisfy ">=sys-devel/gcc-3.4.2-r4".
+
+!!! Problem with ebuild sys-devel/gcc-3.4.2-r2
+!!! Possibly a DEPEND/*DEPEND problem. 
+       \end{lstlisting}
+       Though rarely, the application you are trying to install may depend on another package that is not yet available for your system. Unless you are mixing branches (categories of the Portage Tree), this should not occur and, as such, is a bug that you should report if it hasn't been already. There's not much else you can do.
+    
+      \item \textbf{Circular Dependencies}
+       \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 2em, showstringspaces=false]
+!!! Error: circular dependencies: 
+
+ebuild / net-print/cups-1.1.15-r2 depends on ebuild / 
+app-text/ghostscript-7.05.3-r1
+ebuild / app-text/ghostscript-7.05.3-r1 depends on ebuild / 
+net-print/cups-1.1.15-r2 
+\end{lstlisting}
+       Circular dependencies occur when two or more packages you want to install depend on each other and can therefore not be installed. This is most likely a bug in the Portage tree and, as such, you should resync after a while and try again. Circular dependencies can often be avoided by temporarily disabling USE flags that trigger optional dependencies.
+       \\* [1mm] You can also check and see if a bug has been filed and, if not, report the problem.
+   \end{itemize}   
+   \textit{For more error categories and examples, visit:}
+   \\* \url{http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&chap=1#doc_chap5}
+ 
+ \section*{Matching!}
+ 
+  Match the following error catagories with their respective example scenarios/output:  
+  \begin{description}
+    \item[1.] Slot Conflict \underline{\hspace{1.5cm}} \hspace{2mm} \textbf{2.} Blocked Package \underline{\hspace{1.5cm}} \hspace{2mm} \textbf{3.} Masked Package \underline{\hspace{1.5cm}}
+    \item[4.] USE Flag Changes \underline{\hspace{1.5cm}} \hspace{2mm} \textbf{5.} Missing Dependency \underline{\hspace{1.5cm}}
+    \item[6.] Circular Dependency \underline{\hspace{1.5cm}}
+   \end{description}
+
+  \pagebreak
+  Answer Bank:
+  \begin{description}
+    \item[A.] Partial Portage Output
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = -1cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false]
+!!! One of the following packages is required to complete your request:
+- dev-libs/libgcrypt-1.4.6 (Change USE: +static-libs)
+(dependency required by "sys-fs/cryptsetup-1.1.3-r3[-dynamic]" [ebuild])
+(dependency required by "sys-apps/hal-0.5.14-r4[crypt]" [ebuild])
+(dependency required by "@selected" [set])
+(dependency required by "@world" [argument])
+\end{lstlisting}
+ 
+    \item[B.] Partial Portage Output:
+     \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = -.8cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false]
+(gnome-extra/evolution-data-server-2.32.3-r3:0/0::gentoo, ebuild 
+scheduled for merge) pulled in by <gnome-extra/evolution-data-server-3.5 
+required by (app-office/dexter-0.1:0/0::elementary, ebuild scheduled 
+for merge)
+
+(gnome-extra/evolution-data-server-3.10.4:0/45::gentoo, ebuild scheduled 
+for merge) pulled in by >=gnome-extra/evolution-data-server-3.9.1:=[vala] 
+required by (dev-libs/folks-0.9.6:0/25::gentoo, ebuild scheduled for
+merge)
+\end{lstlisting}
+
+    \item[C.] Partial Portage Output:
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = -.8cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false]
+('ebuild', '/', 'sys-libs/glibc-2.11.2', 'merge') depends on
+('ebuild', '/', 'sys-devel/gcc-4.4.3-r2', 'merge') (hard)
+('ebuild', '/', 'sys-devel/gcc-4.4.3-r2', 'merge') depends on
+('ebuild', '/', 'sys-libs/glibc-2.11.2', 'merge') (hard) 
+\end{lstlisting}
+
+   \item[D.] Similar Scenario:
+    \\* You found a new friend! But it seems like your best friend had met him before and got a very unfavorable first impression. Now, the two refuse to be even in the same room. Oops.
+
+   \item[E.] Similar Scenario:
+    \\* Your new robot just needs a very special part to work!.......that is impossible to get with your income and situation.
+    
+   \item[F.] Similar Scenario:
+    \\* So, you're offered a cool product from one of your friends. But it's on your (very secret) ``Avoid At All Costs!'' list. Sadly, you'll have to refuse her generosity.
+  \end{description}
+ 
+ \pagebreak
+ \section*{References}
+ ``1. A Portage Introduction." Vermeulen, Sven et.al.\textit{Gentoo Linux Documentation.} gentoo linux. 1 June 2014. Web. Tues 1 July 2014.
+ \\* \url{http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&chap=1#doc_chap5}
+\end{document}

@@ -1,0 +1,108 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{tabu}
+\usepackage{graphicx,xspace}
+\usepackage{float}
+
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\usepackage[margin=1in]{geometry}
+
+\usepackage{titling}
+\setlength{\droptitle}{-1in}
+
+
+\usepackage[margin=1in]{caption}
+\usepackage{courier}
+
+\setlength{\parindent}{0.2in}
+
+\title{The Domain Name System (DNS) \vspace{-2ex}}
+\author{originally created by Jo\v{z}i McKiernan}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+\section{ACTIVITY}
+We are now going to model a query travelling through the DNS by sending records to the ``machines" on our network.
+Everyone should have a role. 
+Take a moment to look at your role card.
+Also see what's in the cache, if you have one, and what records you have.
+Depending on your role, you might also have some cards to send messages on.
+The message cards have a query section, a response section, and an intermediate section. 
+Only the user should write in the query section. 
+The answer to the query should be written in the response section. 
+Anything else that needs to be written down should be written in the intermediate section.
+
+A few other notes: There are multiple users, who are identified by number. 
+Everything associated with a particular user (query, browser, local resolver) shares that number. 
+
+
+The procedure is as follows.
+
+\begin{enumerate}
+\item Sit in a circle and introduce yourself by role and name. 
+\item Now, the sysadmin needs to update the hint file on the recursive resolver so that the resolver can find the root server.
+\item Everyone will step through the first query together; after that, users should feel free to query as they like.
+
+User 1 should write their query (domain name and record type) on their first message card (ID \#10) and hand it to their browser, browser 1 (the DNS client).
+\item Browser 1 should check if the answer to the query is in its cache. 
+If the browser does have the response, it should write down the answer to the query and pass it back to the User.
+If not, it should pass the query on to its local resolver, local resolver 1. 
+\item Local resolver 1 should check whether it can answer the query from its cache.
+If so, it should write down the answer on the card and return the card to browser 1.
+Browser 1 will add the answer to its cache and then return the card to the user. 
+If not, local resolver 1 should pass it on to the recursive resolver.
+\item The recursive resolver should check if it can answer the query from its cache. 
+If so, the recursive resolver should return the message to the local resolver, who will add the answer to its cache and pass the card to the browser.
+The browser should also add the answer to its cache and then hand the card back to the user.
+ If not, the recursive resolver should start recursing. 
+Pass the query on to the root name server. 
+Check your hint file to see where the root nameserver is.
+\item The root name server should check if it has the correct record.
+If it does, write down the answer on the message card and then return the card to the recursive resolver. The recursive resolver should then add the answer to its cache and pass the card on to the local resolver, which will add the answer to its cache and pass the card back to the browswer, which will add the answer to its cache and finally pass the answer back to the user.
+
+If the root name server does not have the correct record, it should write down the name and IP address of the correct top-level domain name server in the ``Intermediate" section of the card and return the message card to the recursive resolver. 
+
+\item The recursive resolver should then pass the query to the name server returned by the root name server. 
+That name server should check if it has the correct record. If it does, it should write the answer down and give the message card back to the recursive resolver as described for the root name server in \# 7. 
+
+If it does not have the correct record, the current name server should write down the name and address of the name server for the next-lowest domain on the message card and hand it to the recursive resolver.
+\item Repeat step 8 until the name server for the record requested has been found and writes down the answer. 
+This name server will pass the answer back to the recursive resolver.
+The recursive resolver will add the answer to its cache and then hand the message back to the local resolver, which will handle the message according to the process described in step 7.  
+\item The user should now have the answer to their query. Yay!
+\item Once the first query has been successfully resolved, resolve the remaining user queries.
+
+\end{enumerate}
+
+
+\section{DISCUSSION}
+
+Once all the queries have been resolved, discuss the following questions. 
+Sys admin, it's on you to lead this discussion ;)
+\section*{Questions}
+
+\begin{enumerate}
+
+\item How long did it take each computer to finish resolving all of its queries? Which queries were the quickest to resolve? What changes or features would make the process faster? 
+
+\item Why is caching useful?
+
+\item What is the difference between a nameserver and a domain?
+
+\item Why would you want to know whether or not a record is authoritative?
+
+\end{enumerate}
+
+\end{document}
