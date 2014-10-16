@@ -138,7 +138,7 @@ provides a command that prints a pithy quote to the terminal. The `fortune`
 command can pull its quotes from multiple *fortune files*, and there are lots of
 fortune files available. Let's see:
 ```
-equery degraph fortune-mod-all | less
+equery depgraph fortune-mod-all | less
 ```
 
 Check out all those dependencies! Each one is a fortune file.
