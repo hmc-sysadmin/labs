@@ -1,0 +1,8 @@
+Title   : Mail 
+Author  : Lisa Goeller and Paige Rinnert
+MathJax : True
+Css     : ./writeup.css
+
+Heading Depth: 0 
+
+[INCLUDE="mail.md"]
