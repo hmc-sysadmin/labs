@@ -132,8 +132,8 @@ commands.
 ### Configure and start postfix
 
 1.  You can change various settings and options for your mail system in
-    the file `/etc/postfix/main.cf`. You should uncomment the line
-    `$my_destination` that contains
+    the file `/etc/postfix/main.cf`. You should uncomment the assignment for
+    `mydestination` that contains
 
         $myhostname, localhost.$mydomain,localhost, $mydomain
 
