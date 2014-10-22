@@ -158,17 +158,22 @@ subject line and put text in the message. When checking that you received the
 email, you might need to look for it in your spam folder.
 
 The command to send a message is:
-
-        sendmail EMAIL_ADDRESS
-            (FROM: _____)
-            (TO: _____)
-            (CC: ______)
-            (SUBJECT: _____)
-            message text
-            .
-
-You may have to use sudo to run sendmail. The lines in parentheses (from, to,
-cc, and subject) are optional.  Avoid blank lines because they confuse postfix.
+```
+sendmail EMAIL_ADDRESS
+```
+You may have to use sudo to run sendmail. Now you can type in the message you'd
+like to send. Messages take the form:
+```
+(FROM: _____)
+(TO: _____)
+(CC: ______)
+(SUBJECT: _____)
+message text
+.
+```
+The lines in parentheses (from, to,
+cc, and subject) are optional. If you use these fields, type them in without the
+parentheses. Avoid blank lines because they confuse postfix.
 
 ### Change the settings for hostname and domain name
 Did you get your email? The sending address should have the form:
