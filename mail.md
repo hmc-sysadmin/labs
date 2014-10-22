@@ -52,12 +52,6 @@ server handles all outgoing mail.
     Postfix understands very simple commands, which is why we can send
     simple emails in postfix without installing an MUA.
 
-#### ESMTP 
-
-ESMTP is an enhanced version of SMTP. It adds greater security and more
-features for authentication, securing bandwith, and protecting servers.
-Most commercial servers support SMTP as well as ESMTP.
-
 ### POP versus IMAP 
 
 POP, Post Office Protocol, and IMAP, Internet Message Access Procotcol,
