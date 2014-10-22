@@ -11,8 +11,4 @@ These are changes we need to make to the files for the lab:
 ## Shell Scripting
 
   **hangman**
-  : If you lose, and you choose to play again, it doesn't work. The loop only checks if 'while word != match'
-
-## Postfix
-
-  : Automate spam sending
+  If you lose, and you choose to play again, it doesn't work. The loop only checks if 'while word != match'
