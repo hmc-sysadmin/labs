@@ -167,8 +167,8 @@ The command to send a message is:
             message text
             .
 
-The lines in parentheses (from, to, cc, and subject) are optional. 
-Avoid blank lines because they confuse postfix.
+You may have to use sudo to run sendmail. The lines in parentheses (from, to,
+cc, and subject) are optional.  Avoid blank lines because they confuse postfix.
 
 ### Change the settings for hostname and domain name
 Did you get your email? The sending address should have the form:
@@ -272,7 +272,9 @@ was made by a Mudd alum (Michael Elkins, '93)!
 Use mutt to send an email to your school email address. Compare sending an email
 with postfix using the sendmail command in the command line and sending an email
 through mutt. In particular, what does the `from` field look like in the email
-you sent from mutt? If it doesn't match the one from sendmail, you may need to
+you sent from mutt? **Note: you may have to look at the raw source of the
+message to see the "true" `from` field.** 
+If it doesn't match the one from sendmail, you may need to
 configure mutt to have the correct `from` field. To do so, create a file in your
 home directory called `.muttrc` and add the following line to the file:
 ```
