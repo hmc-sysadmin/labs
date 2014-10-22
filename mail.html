@@ -47,18 +47,18 @@ called Postfix to transport mail.
 </p>
 <p class="indent" data-line="8;mail.md:22"><span data-line="8;mail.md::22"></span><strong>Mail User Agent (MUA)</strong><span data-line="8;mail.md::22"></span>. MUAs are what users see and interact with, to
 read and compose mail. We<span data-line="8;mail.md::23"></span>&#39;<span data-line="8;mail.md::23"></span>ll use a program called Mutt to read and compose mail.
-</p><h2 id="protocols"  data-line="8;mail.md:25" ><span data-line="8;mail.md::25"></span>Protocols</h2>
+</p><h2 id="overview--protocols"  data-line="8;mail.md:25" ><span data-line="8;mail.md::25"></span>Overview: Protocols</h2>
 <p data-line="8;mail.md:27"><span data-line="8;mail.md::27"></span>Protocols define the <span data-line="8;mail.md::27"></span>&#8220;language&#8221;<span data-line="8;mail.md::27"></span> that systems use when communicating.
-This is very useful and efficient because systems don’t have to
+This is very useful and efficient because systems don<span data-line="8;mail.md::28"></span>&#39;<span data-line="8;mail.md::28"></span>t have to
 translate themselves from one machine to the next when communicating.
-Mail runs using SMTP and POP or IMAP.
+Mail runs using SMTP (for sending) and POP or IMAP (for retrieving).
 </p><h3 id="smtp"  data-line="8;mail.md:32" ><span data-line="8;mail.md::32"></span>SMTP</h3>
 <p class="para-continue" data-line="8;mail.md:34"><span data-line="8;mail.md::34"></span>Postfix is an SMTP, or Simple Mail Transfer Protocol, server. An SMTP
 server handles all outgoing mail.
 </p>
 <ol class="loose" data-line="8;mail.md:37">
 <li data-line="8;mail.md:37">
-<p data-line="8;mail.md:37"><span data-line="8;mail.md::37"></span>First, the MUA uses port 25 to connect to the server at your email’s
+<p data-line="8;mail.md:37"><span data-line="8;mail.md::37"></span>First, the MUA uses port 25 to connect to the server at your email<span data-line="8;mail.md::37"></span>&#39;<span data-line="8;mail.md::37"></span>s
 domain. The MUA then tells the SMTP server the addresses of the
 server and recipient and the body of the message.
 </p></li>
@@ -70,7 +70,7 @@ domain.
 </p></li>
 <li data-line="8;mail.md:46">
 <p data-line="8;mail.md:46"><span data-line="8;mail.md::46"></span>To do this, SMTP has a conversation with DNS, the Domain Name
-Server. The DNS will give the domain’s IP address to the SMTP
+Server. The DNS will give the domain<span data-line="8;mail.md::47"></span>&#39;<span data-line="8;mail.md::47"></span>s IP address to the SMTP
 server. After this, your SMTP server can connect to the SMTP server
 at the other domain. The other domain will recognize its domain and
 will hand the message to the POP3 or IMAP server.
@@ -78,71 +78,53 @@ will hand the message to the POP3 or IMAP server.
 <p data-line="8;mail.md:52"><span data-line="8;mail.md::52"></span>Postfix understands very simple commands, which is why we can send
 simple emails in postfix without installing an MUA.
 </p></li></ol>
-<h3 id="esmtp"  data-line="8;mail.md:55" ><span data-line="8;mail.md::55"></span>ESMTP</h3>
-<p data-line="8;mail.md:57"><span data-line="8;mail.md::57"></span>ESMTP is an enhanced version of SMTP. It adds greater security and more
-features for authentication, securing bandwith, and protecting servers.
-Most commercial servers support SMTP as well as ESMTP.
-</p><h3 id="pop-versus-imap"  data-line="8;mail.md:61" ><span data-line="8;mail.md::61"></span>POP versus IMAP</h3>
-<p data-line="8;mail.md:63"><span data-line="8;mail.md::63"></span>POP, Post Office Protocol, and IMAP, Internet Message Access Procotcol,
+<h3 id="pop-versus-imap"  data-line="8;mail.md:55" ><span data-line="8;mail.md::55"></span>POP versus IMAP</h3>
+<p data-line="8;mail.md:57"><span data-line="8;mail.md::57"></span>POP, Post Office Protocol, and IMAP, Internet Message Access Procotcol,
 are similar in that they both receive and hold emails until the user
 comes to pick them up. While they both perform the same job, the go
 about it in two completely different ways. Both can be used offline.
-</p><h3 id="pop"  data-line="8;mail.md:68" ><span data-line="8;mail.md::68"></span>POP</h3>
-<p data-line="8;mail.md:70"><span data-line="8;mail.md::70"></span>POP is older than IMAP, so it has historically been more common. POP
+</p><h3 id="pop"  data-line="8;mail.md:62" ><span data-line="8;mail.md::62"></span>POP</h3>
+<p data-line="8;mail.md:64"><span data-line="8;mail.md::64"></span>POP is older than IMAP, so it has historically been more common. POP
 works by contacting your email server through port 110. To access your
 text file, the POP server asks for an account name and password. Each
 email account has one text file on the server. When a new message comes,
 POP will add the new message to the bottom of your respective file. The
 new messages will be delivered to your local machine. Once downloaded,
-it will usually delete the messages from the server unless you’ve told
+it will usually delete the messages from the server unless you<span data-line="8;mail.md::70"></span>&#39;<span data-line="8;mail.md::70"></span>ve told
 the client not to. Because everything is stored on an individual
 machine, for those who travel often or access their email from multiple
 devices, IMAP is much easier to work with.
-</p><h3 id="imap"  data-line="8;mail.md:81" ><span data-line="8;mail.md::81"></span>IMAP</h3>
-<p data-line="8;mail.md:83"><span data-line="8;mail.md::83"></span>While POP is older, IMAP is becoming the go-to for email clients. IMAP
+</p><h3 id="imap"  data-line="8;mail.md:75" ><span data-line="8;mail.md::75"></span>IMAP</h3>
+<p data-line="8;mail.md:77"><span data-line="8;mail.md::77"></span>While POP is older, IMAP is becoming the go-to for email clients. IMAP
 contacts the email server through port 143. With IMAP you can read,
 search, sort, delete, and organize your mail into folders without
 downloading them first. It keeps a record of the messages you send and
-also syncs the email that’s on your computer with the email on the
+also syncs the email that<span data-line="8;mail.md::81"></span>&#39;<span data-line="8;mail.md::81"></span>s on your computer with the email on the
 server, so the email always remains on the server. IMAP is usually a lot
 quicker than POP because it only downloads messages and attachments when
 you click on them. Thus, you can start reading through your email
 without waiting for every single message to load.
-</p><h3 id="web-based-interfaces"  data-line="8;mail.md:93" ><span data-line="8;mail.md::93"></span>Web-based Interfaces</h3>
-<p data-line="8;mail.md:95"><span data-line="8;mail.md::95"></span>The popularity of web-based interfaces like GMail, Yahoo!Mail, and
-Outlook.com, fewer people use IMAP and POP. The disadvantage of these
-are that the user has to remain connected to the internet at all times
-in order to read their mail. In this day and age, this is not a problem
-for most people anymore. IMAP and POP are still really cool, and if you
-want to create your own email service, they’re the way to go!
-</p><h2 id="tls-certificates-and-ssl"  data-line="8;mail.md:102" ><span data-line="8;mail.md::102"></span>TLS CERTIFICATES AND SSL</h2><h3 id="ssl"  data-line="8;mail.md:104" ><span data-line="8;mail.md::104"></span>SSL</h3>
-<p data-line="8;mail.md:106"><span data-line="8;mail.md::106"></span>Secure Sockets Layer, or SSL, was created by Netscape in the early days
+</p><h2 id="secure-sockets-layer-ssl-and-transport-layer-security-tls-certificates"  data-line="8;mail.md:87" ><span data-line="8;mail.md::87"></span>Secure Sockets Layer (SSL) and Transport Layer Security (TLS) certificates</h2><h3 id="ssl"  data-line="8;mail.md:89" ><span data-line="8;mail.md::89"></span>SSL</h3>
+<p data-line="8;mail.md:91"><span data-line="8;mail.md::91"></span>Secure Sockets Layer, or SSL, was created by Netscape in the early days
 of the internet. SSL creates encrypted connections between your web
-server and your visitor’s web server. To enable SSL, you need an SSL
+server and your visitor<span data-line="8;mail.md::93"></span>&#39;<span data-line="8;mail.md::93"></span>s web server. To enable SSL, you need an SSL
 certificate, which is provided by the certificate authorities. Without
-one, it is possible for every piece of data that you’re sending to be
+one, it is possible for every piece of data that you<span data-line="8;mail.md::95"></span>&#39;<span data-line="8;mail.md::95"></span>re sending to be
 seen by others. There are a lot of Certification Authorities and you may
 have to pay money for an SSL license.
-</p><h3 id="tls"  data-line="8;mail.md:114" ><span data-line="8;mail.md::114"></span>TLS</h3>
-<p data-line="8;mail.md:116"><span data-line="8;mail.md::116"></span>TLS, or transport layer security, is the new version of SSL. While you
+</p><h3 id="tls"  data-line="8;mail.md:99" ><span data-line="8;mail.md::99"></span>TLS</h3>
+<p data-line="8;mail.md:101"><span data-line="8;mail.md::101"></span>TLS, or transport layer security, is the new version of SSL. While you
 can choose to pay for a license if you so wish, you can also get a
 license for free. Fun fact: when you see https, it means that two
 clients are exchanging http over a secure SSL/TSL connection.
-</p><h2 id="more-information"  data-line="8;mail.md:121" ><span data-line="8;mail.md::121"></span>More information</h2>
-<p data-line="8;mail.md:123"><span data-line="8;mail.md::123"></span>If you are curious and want to learn more about Postfix, these are good
-resources:
+</p><h2 id="sending-and-receiving-mail--troubleshooting-hints"  data-line="8;mail.md:106" ><span data-line="8;mail.md::106"></span>Sending and receiving mail: troubleshooting hints</h2>
+<p data-line="8;mail.md:108"><span data-line="8;mail.md::108"></span>As you go through the lab, you may across errors: maybe emails don<span data-line="8;mail.md::108"></span>&#39;<span data-line="8;mail.md::108"></span>t send or you
+get a bounce message. The first thing you should do is check the mail log file,
+<span data-line="8;mail.md::110"></span><code class="code">/var/log/mail.log</code><span data-line="8;mail.md::110"></span>. The most recent emails are at the bottom of the file
+(Reminder: SHIFT-G will take you to the bottom of a file in vim). Errors are
+easy to spot as they are usually highlighted in red.
 </p>
-<p class="indent" data-line="8;mail.md:126"><span data-line="8;mail.md::126"></span>http:/www.linuxjournal.com/article/9454?page=0,0
-</p>
-<p class="indent" data-line="8;mail.md:128"><span data-line="8;mail.md::128"></span>http:/www.postfix.org/OVERVIEW.html
-</p><h2 id="troubleshooting-hints"  data-line="8;mail.md:130" ><span data-line="8;mail.md::130"></span>Troubleshooting Hints</h2>
-<p data-line="8;mail.md:132"><span data-line="8;mail.md::132"></span>If you come across errors, maybe emails don’t send or you get a bounce
-message, the first thing you should do is check the mail log file,
-<span data-line="8;mail.md::134"></span><code class="code">/var/log/mail.log</code><span data-line="8;mail.md::134"></span>. The most recent emails are at the bottom of the
-file (Reminder: SHIFT-G will take you to the bottom of a file in vim).
-Errors are easy to spot as they are usually highlighted in red.
-</p>
-<p class="indent" data-line="8;mail.md:138"><span data-line="8;mail.md::138"></span>Often times the errors are related to file ownership and permissions.
+<p class="indent" data-line="8;mail.md:114"><span data-line="8;mail.md::114"></span>Often times the errors are related to file ownership and permissions.
 Make sure that the account that needs to access a file (whether the root
 account or your account) owns the file, and check that the permissions
 make sense. Also, as usual, google is your friend (effective googling is
@@ -150,224 +132,230 @@ a good skill to learn!). This may sound silly, but errors are often the
 result of a simple misspelling or a missing word. Double check that
 everything is typed correctly before looking for configuration
 problems.
-</p><h2 id="sending-mail"  data-line="8;mail.md:147" ><span data-line="8;mail.md::147"></span>Sending mail</h2>
-<p data-line="8;mail.md:149"><span data-line="8;mail.md::149"></span>First, we<span data-line="8;mail.md::149"></span>&#39;<span data-line="8;mail.md::149"></span>ll set up postfix, the transfer agent responsible for sending mail
+</p><h2 id="sending-mail"  data-line="8;mail.md:123" ><span data-line="8;mail.md::123"></span>Sending mail</h2>
+<p data-line="8;mail.md:125"><span data-line="8;mail.md::125"></span>First, we<span data-line="8;mail.md::125"></span>&#39;<span data-line="8;mail.md::125"></span>ll set up postfix, the transfer agent responsible for sending mail
 among computers.
-</p><h3 id="configure-and-start-postfix"  data-line="8;mail.md:152" ><span data-line="8;mail.md::152"></span>Configure and start postfix</h3>
-<ol class="loose" data-line="8;mail.md:154">
-<li data-line="8;mail.md:154">
-<p data-line="8;mail.md:154"><span data-line="8;mail.md::154"></span>You can change various settings and options for your mail system in
-the file <span data-line="8;mail.md::155"></span><code class="code">/etc/postfix/main.cf</code><span data-line="8;mail.md::155"></span>. You should uncomment the line
-<span data-line="8;mail.md::156"></span><code class="code">$my_destination</code><span data-line="8;mail.md::156"></span> that contains
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:158"><code>$myhostname, localhost.$mydomain,localhost, $mydomain</code></pre>
-<p data-line="8;mail.md:160"><span data-line="8;mail.md::160"></span>You are welcome to change settings as necessary or just for fun. Go ahead
-and play around with it!
-</p></li>
-<li data-line="8;mail.md:163">
-<p data-line="8;mail.md:163"><span data-line="8;mail.md::163"></span>The next required step is to create the alias database by running
-the command <span data-line="8;mail.md::164"></span><code class="code">newaliases</code><span data-line="8;mail.md::164"></span>. This needs to be run every time aliases are 
+<p class="indent" data-line="8;mail.md:128"><span data-line="8;mail.md::128"></span>Although many of the commands in this lab require root, you should <span data-line="8;mail.md::128"></span><strong>log on to
+your machine using your user name (not root )</strong><span data-line="8;mail.md::129"></span>. Use <span data-line="8;mail.md::129"></span><code class="code">sudo</code><span data-line="8;mail.md::129"></span> to execute the
+commands.
+</p><h3 id="configure-and-start-postfix"  data-line="8;mail.md:132" ><span data-line="8;mail.md::132"></span>Configure and start postfix</h3>
+<ol class="loose" data-line="8;mail.md:134">
+<li data-line="8;mail.md:134">
+<p data-line="8;mail.md:134"><span data-line="8;mail.md::134"></span>You can change various settings and options for your mail system in
+the file <span data-line="8;mail.md::135"></span><code class="code">/etc/postfix/main.cf</code><span data-line="8;mail.md::135"></span>. You should uncomment the line
+<span data-line="8;mail.md::136"></span><code class="code">$my_destination</code><span data-line="8;mail.md::136"></span> that contains
+</p>
+<pre class="para-block para-block" data-line="8;mail.md:138"><code>$myhostname, localhost.$mydomain,localhost, $mydomain</code></pre></li>
+<li data-line="8;mail.md:140">
+<p data-line="8;mail.md:140"><span data-line="8;mail.md::140"></span>The next required step is to create the alias database by running
+the command <span data-line="8;mail.md::141"></span><code class="code">newaliases</code><span data-line="8;mail.md::141"></span>. This needs to be run every time aliases are 
 updated.
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:167"><code>sudo newaliases</code></pre></li>
-<li data-line="8;mail.md:169">
-<p data-line="8;mail.md:169"><span data-line="8;mail.md::169"></span>Now you’re ready to start postfix. Simply run the command below.
+<pre class="para-block para-block" data-line="8;mail.md:144"><code>sudo newaliases</code></pre></li>
+<li data-line="8;mail.md:146">
+<p data-line="8;mail.md:146"><span data-line="8;mail.md::146"></span>Now you<span data-line="8;mail.md::146"></span>&#39;<span data-line="8;mail.md::146"></span>re ready to start postfix. Simply run the command below.
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:171"><code>sudo /etc/init.d/postfix start</code></pre></li>
-<li data-line="8;mail.md:173">
-<p data-line="8;mail.md:173"><span data-line="8;mail.md::173"></span>You should also configure your system so that postfix will start when your
+<pre class="para-block para-block" data-line="8;mail.md:148"><code>sudo /etc/init.d/postfix start</code></pre></li>
+<li data-line="8;mail.md:150">
+<p data-line="8;mail.md:150"><span data-line="8;mail.md::150"></span>You should also configure your system so that postfix will start when your
 computer boots up.
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:176"><code>sudo rc-update add postfix default</code></pre></li></ol>
+<pre class="para-block para-block" data-line="8;mail.md:153"><code>sudo rc-update add postfix default</code></pre></li></ol>
 
-<p data-line="8;mail.md:178"><span data-line="8;mail.md::178"></span>You<span data-line="8;mail.md::178"></span>&#39;<span data-line="8;mail.md::178"></span>re ready to start sending mail! Using the command below, send an email to
-yourself (your Mudd email or other email account). Make sure you include a 
+<p data-line="8;mail.md:155"><span data-line="8;mail.md::155"></span>You<span data-line="8;mail.md::155"></span>&#39;<span data-line="8;mail.md::155"></span>re ready to start sending mail! Using the command below, send an email to
+yourself (your school email or other email account). Make sure you include a 
 subject line and put text in the message. When checking that you received the 
 email, you might need to look for it in your spam folder.
 </p>
-<p class="indent" data-line="8;mail.md:183"><span data-line="8;mail.md::183"></span>The command to send a message is:
+<p class="indent" data-line="8;mail.md:160"><span data-line="8;mail.md::160"></span>The command to send a message is:
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:185"><code>    sendmail EMAIL_ADDRESS
+<pre class="para-block para-block" data-line="8;mail.md:162"><code>    sendmail EMAIL_ADDRESS
         (FROM: _____)
         (TO: _____)
         (CC: ______)
         (SUBJECT: _____)
         message text
         .</code></pre>
-<p data-line="8;mail.md:193"><span data-line="8;mail.md::193"></span>The lines in parentheses (from, to, cc, and subject) are optional and just
-change how the message looks when it is received. Note that you may need to use
-sudo to send emails. Avoid blank lines between lines because postfix gets
-confused.
-</p><h3 id="change-the-settings-for-hostname-and-domain-name"  data-line="8;mail.md:198" ><span data-line="8;mail.md::198"></span>Change the settings for hostname and domain name</h3>
-<p class="para-continue" data-line="8;mail.md:199"><span data-line="8;mail.md::199"></span>Did you get your email? The sending address should have the form:
-    from<span data-line="8;mail.md::200"></span>@hostname<span data-line="8;mail.md::200"></span>
+<p data-line="8;mail.md:170"><span data-line="8;mail.md::170"></span>The lines in parentheses (from, to, cc, and subject) are optional. 
+Avoid blank lines because they confuse postfix.
+</p><h3 id="change-the-settings-for-hostname-and-domain-name"  data-line="8;mail.md:173" ><span data-line="8;mail.md::173"></span>Change the settings for hostname and domain name</h3>
+<p class="para-continue" data-line="8;mail.md:174"><span data-line="8;mail.md::174"></span>Did you get your email? The sending address should have the form:
+    from<span data-line="8;mail.md::175"></span>@hostname<span data-line="8;mail.md::175"></span>
 The email address has two parts:
 </p>
-<ul class="compact" data-line="8;mail.md:203">
-<li data-line="8;mail.md:203"><span data-line="8;mail.md::203"></span><strong>from</strong><span data-line="8;mail.md::203"></span>: by default, the username on the account that sent the email. It 
-can also be defined using the <span data-line="8;mail.md::204"></span>&#8220;From:&#8221;<span data-line="8;mail.md::204"></span> line in <span data-line="8;mail.md::204"></span><code class="code">sendmail</code><span data-line="8;mail.md::204"></span>
+<ul class="compact" data-line="8;mail.md:178">
+<li data-line="8;mail.md:178"><span data-line="8;mail.md::178"></span><strong>from</strong><span data-line="8;mail.md::178"></span>: by default, the username on the account that sent the email. It 
+can also be defined using the <span data-line="8;mail.md::179"></span>&#8220;From:&#8221;<span data-line="8;mail.md::179"></span> line in <span data-line="8;mail.md::179"></span><code class="code">sendmail</code><span data-line="8;mail.md::179"></span>
 </li>
-<li data-line="8;mail.md:205"><span data-line="8;mail.md::205"></span><strong>hostname</strong><span data-line="8;mail.md::205"></span>: defined using the <span data-line="8;mail.md::205"></span><code class="code">myhostname</code><span data-line="8;mail.md::205"></span> setting in /etc/postfix/main.cf.
+<li data-line="8;mail.md:180"><span data-line="8;mail.md::180"></span><strong>hostname</strong><span data-line="8;mail.md::180"></span>: defined using the <span data-line="8;mail.md::180"></span><code class="code">myhostname</code><span data-line="8;mail.md::180"></span> setting in /etc/postfix/main.cf.
 If this setting is undefined, postfix will pull it from the settings in
 /etc/conf.d/hostname
 </li></ul>
 
-<p data-line="8;mail.md:209"><span data-line="8;mail.md::209"></span>Your goal now is to change the part that comes after the<span data-line="8;mail.md::209"></span> <span data-line="8;mail.md::209"></span>@<span data-line="8;mail.md::209"></span> sign. Do this by
+<p data-line="8;mail.md:184"><span data-line="8;mail.md::184"></span>Your goal now is to change the part that comes after the<span data-line="8;mail.md::184"></span> <span data-line="8;mail.md::184"></span>@<span data-line="8;mail.md::184"></span> sign. Do this by
 editing the configuration file, /etc/postfix/main.cf. Configure the file so that
-your address looks like<span data-line="8;mail.md::211"></span> @VMNAME.sys.cs.hmc.edu<span data-line="8;mail.md::211"></span>.
+your address looks like<span data-line="8;mail.md::186"></span> @VMNAME.sys.cs.hmc.edu<span data-line="8;mail.md::186"></span>.
 </p>
-<p class="indent" data-line="8;mail.md:213"><span data-line="8;mail.md::213"></span>In order for changes to the main.cf file to take effect, run the
+<p class="indent" data-line="8;mail.md:188"><span data-line="8;mail.md::188"></span>In order for changes to the main.cf file to take effect, run the
 command below. You will need to do this anytime you make changes to main.cf.
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:216"><code>postfix reload</code></pre><h3 id="aside--how-does-sending-mail-work"  data-line="8;mail.md:218" ><span data-line="8;mail.md::218"></span>Aside: How does sending mail work?</h3>
-<p data-line="8;mail.md:220"><span data-line="8;mail.md::220"></span>You can get a brief overview of how the mail transfer agent works by using
-<span data-line="8;mail.md::221"></span><code class="code">telnet</code><span data-line="8;mail.md::221"></span>. Mail sends using port 25, so you must establish a connection
+<pre class="para-block para-block" data-line="8;mail.md:191"><code>postfix reload</code></pre><h3 id="aside--how-does-sending-mail-work"  data-line="8;mail.md:193" ><span data-line="8;mail.md::193"></span>Aside: How does sending mail work?</h3>
+<p data-line="8;mail.md:195"><span data-line="8;mail.md::195"></span>You can get a brief overview of how the mail transfer agent works by using
+<span data-line="8;mail.md::196"></span><code class="code">telnet</code><span data-line="8;mail.md::196"></span>. Mail sends using port 25, so you must establish a connection
 specifying that port. First connect to your own machine.
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:224"><code>telnet hostname.domainname 25</code></pre>
-<p data-line="8;mail.md:226"><span data-line="8;mail.md::226"></span>You will then get a reply that looks like this:
+<pre class="para-block para-block" data-line="8;mail.md:199"><code>telnet hostname.domainname 25</code></pre>
+<p data-line="8;mail.md:201"><span data-line="8;mail.md::201"></span>You will then get a reply that looks like this:
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:228"><code>Trying 127.0.0.1...
+<pre class="para-block para-block" data-line="8;mail.md:203"><code>Trying 127.0.0.1...
 Connected to hostname.domainname.
 220 hostname.domainname ESMTP Postfix</code></pre>
-<p data-line="8;mail.md:232"><span data-line="8;mail.md::232"></span>Then run:
+<p data-line="8;mail.md:207"><span data-line="8;mail.md::207"></span>Then run:
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:234"><code>HELO hostname.domainname </code></pre>
-<p data-line="8;mail.md:236"><span data-line="8;mail.md::236"></span>Anything that starts with a <span data-line="8;mail.md::236"></span>&#8220;2“ is a good sign! A &#8221;<span data-line="8;mail.md::236"></span>3” means the
-server is waiting for you to send the text of an email and <span data-line="8;mail.md::237"></span>&#8220;4“ and
-&#8221;<span data-line="8;mail.md::238"></span>5” mean that the server is unhappy with you. Once connected, the
-server sends you its <span data-line="8;mail.md::239"></span>&#8220;banner&#8221;<span data-line="8;mail.md::239"></span>, which is the part after 220. To get
+<pre class="para-block para-block" data-line="8;mail.md:209"><code>HELO hostname.domainname </code></pre>
+<p data-line="8;mail.md:211"><span data-line="8;mail.md::211"></span>Anything that starts with a <span data-line="8;mail.md::211"></span>&#8220;2“ is a good sign! A &#8221;<span data-line="8;mail.md::211"></span>3” means the
+server is waiting for you to send the text of an email and <span data-line="8;mail.md::212"></span>&#8220;4“ and
+&#8221;<span data-line="8;mail.md::213"></span>5” mean that the server is unhappy with you. Once connected, the
+server sends you its <span data-line="8;mail.md::214"></span>&#8220;banner&#8221;<span data-line="8;mail.md::214"></span>, which is the part after 220. To get
 more information about the machine you just connected to, run
-<span data-line="8;mail.md::241"></span><code class="code">EHLO hostname.domainname</code><span data-line="8;mail.md::241"></span>. Once you have done this, tell the server who
+<span data-line="8;mail.md::216"></span><code class="code">EHLO hostname.domainname</code><span data-line="8;mail.md::216"></span>. Once you have done this, tell the server who
 the mail is from.
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:244"><code>MAIL FROM: me@hostname.domainname</code></pre>
-<p data-line="8;mail.md:246"><span data-line="8;mail.md::246"></span>You will get a response from the server, saying everything is OK. Then
-you have to specify who you’re sending to (send to a valid mail address,
+<pre class="para-block para-block" data-line="8;mail.md:219"><code>MAIL FROM: me@hostname.domainname</code></pre>
+<p data-line="8;mail.md:221"><span data-line="8;mail.md::221"></span>You will get a response from the server, saying everything is OK. Then
+you have to specify who you<span data-line="8;mail.md::222"></span>&#39;<span data-line="8;mail.md::222"></span>re sending to (send to a valid mail address,
 like your gmail account):
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:250"><code>RCPT TO: you@yourplace.org</code></pre>
-<p data-line="8;mail.md:252"><span data-line="8;mail.md::252"></span>Again you will receive a response from the server saying everything is
-OK. After that, type in <span data-line="8;mail.md::253"></span><code class="code">DATA</code><span data-line="8;mail.md::253"></span>. The server will again confirm that it
+<pre class="para-block para-block" data-line="8;mail.md:225"><code>RCPT TO: you@yourplace.org</code></pre>
+<p data-line="8;mail.md:227"><span data-line="8;mail.md::227"></span>Again you will receive a response from the server saying everything is
+OK. After that, type in <span data-line="8;mail.md::228"></span><code class="code">DATA</code><span data-line="8;mail.md::228"></span>. The server will again confirm that it
 has received your message. You can then input your message contents as
-you did using the <span data-line="8;mail.md::255"></span><code class="code">sendmail</code><span data-line="8;mail.md::255"></span> command.
+you did using the <span data-line="8;mail.md::230"></span><code class="code">sendmail</code><span data-line="8;mail.md::230"></span> command.
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:257"><code>From: me
+<pre class="para-block para-block" data-line="8;mail.md:232"><code>From: me
 To: you
 Subject: An exciting investment opportunity
 
 jk, but your mail client probably thinks this is spam
 .</code></pre>
-<p data-line="8;mail.md:264"><span data-line="8;mail.md::264"></span>You will receive another confirmation message, after which you can
-<span data-line="8;mail.md::265"></span><code class="code">QUIT</code><span data-line="8;mail.md::265"></span> telnet. You can also check your email through telnet by using
-port 110, but we’ll leave that for you to explore in your free time.
-Sendmail makes you go through these same steps, but it’s a lot easier to
-send a mail through that than through telnet. Telnet is also much more
-unsecure than postfix. Let’s just say our generation has it good.
-</p><h3 id="receiving-mail"  data-line="8;mail.md:271" ><span data-line="8;mail.md::271"></span>Receiving mail</h3>
-<p class="para-continue" data-line="8;mail.md:273"><span data-line="8;mail.md::273"></span>Mudd’s CS department uses alpine as its MUA (Mail User Agent), but your machine
-will us mutt. Mutt is easier to install simply because it has a nicely 
+<p data-line="8;mail.md:239"><span data-line="8;mail.md::239"></span>You will receive another confirmation message, after which you can
+<span data-line="8;mail.md::240"></span><code class="code">QUIT</code><span data-line="8;mail.md::240"></span> telnet. You can also check your email through telnet by using
+port 110, but we<span data-line="8;mail.md::241"></span>&#39;<span data-line="8;mail.md::241"></span>ll leave that for you to explore in your free time.
+Sendmail makes you go through these same steps, but it<span data-line="8;mail.md::242"></span>&#39;<span data-line="8;mail.md::242"></span>s a lot easier to
+send a mail through that than through telnet. Telnet is also much less
+secure than postfix. Let<span data-line="8;mail.md::244"></span>&#39;<span data-line="8;mail.md::244"></span>s just say our generation has it good.
+</p><h2 id="receiving-mail"  data-line="8;mail.md:246" ><span data-line="8;mail.md::246"></span>Receiving mail</h2>
+<p class="para-continue" data-line="8;mail.md:248"><span data-line="8;mail.md::248"></span>Mudd<span data-line="8;mail.md::248"></span>&#8216;s CS department uses alpine as its MUA (Mail User Agent), but your machine
+will use mutt. Mutt is easier to install simply because it has a nicely 
 fleshed-out Gentoo wiki page, and so your machine is running mutt. Also, mutt
-was made by a Mudd alum (Michael Elkins, <span data-line="8;mail.md::276"></span>&#39;<span data-line="8;mail.md::276"></span>93)!
+was made by a Mudd alum (Michael Elkins, &#8217;<span data-line="8;mail.md::251"></span>93)!
 </p>
-<ol class="loose" data-line="8;mail.md:278">
-<li data-line="8;mail.md:278">
-<p data-line="8;mail.md:278"><span data-line="8;mail.md::278"></span>To start mutt, simply type mutt into the command line:
+<ol class="loose" data-line="8;mail.md:253">
+<li data-line="8;mail.md:253">
+<p data-line="8;mail.md:253"><span data-line="8;mail.md::253"></span>To start mutt, simply type mutt into the command line:
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:280"><code>mutt</code></pre>
-<p data-line="8;mail.md:282"><span data-line="8;mail.md::282"></span>Mutt may offer to create a mailbox for you. If it doesn<span data-line="8;mail.md::282"></span>&#39;<span data-line="8;mail.md::282"></span>t and gives 
-you the error that .maildir is not a maibox, go to the .maildir directory 
-within your home directory and create three directories: <span data-line="8;mail.md::284"></span><code class="code">cur</code><span data-line="8;mail.md::284"></span>, <span data-line="8;mail.md::284"></span><code class="code">new</code><span data-line="8;mail.md::284"></span>, 
-and <span data-line="8;mail.md::285"></span><code class="code">tmp</code><span data-line="8;mail.md::285"></span>. This should allow Mutt to recognize the .maildir as a mailbox.
+<pre class="para-block para-block" data-line="8;mail.md:255"><code>mutt</code></pre>
+<p data-line="8;mail.md:257"><span data-line="8;mail.md::257"></span>Mutt will offer to create a mailbox for you. You may also get 
+the error that .maildir is not a maibox, go to the .maildir directory 
+within your home directory and create three directories: <span data-line="8;mail.md::259"></span><code class="code">cur</code><span data-line="8;mail.md::259"></span>, <span data-line="8;mail.md::259"></span><code class="code">new</code><span data-line="8;mail.md::259"></span>, 
+and <span data-line="8;mail.md::260"></span><code class="code">tmp</code><span data-line="8;mail.md::260"></span>. This should allow Mutt to recognize the .maildir as a mailbox.
 </p></li>
-<li data-line="8;mail.md:287">
-<p data-line="8;mail.md:287"><span data-line="8;mail.md::287"></span>In order for new emails to be sent to the mutt program, you need to
+<li data-line="8;mail.md:262">
+<p data-line="8;mail.md:262"><span data-line="8;mail.md::262"></span>In order for new emails to be sent to the mutt program, you need to
 specify the mailbox. Emails need to be sent to the directory that
-mutt recognizes as its mailbox. Open the file <span data-line="8;mail.md::289"></span><code class="code">/etc/postfix/main.cf</code><span data-line="8;mail.md::289"></span>
-and search for <span data-line="8;mail.md::290"></span><code class="code">home_mailbox</code><span data-line="8;mail.md::290"></span>. Below the suggested lines for
+mutt recognizes as its mailbox. Open the file <span data-line="8;mail.md::264"></span><code class="code">/etc/postfix/main.cf</code><span data-line="8;mail.md::264"></span>
+and search for <span data-line="8;mail.md::265"></span><code class="code">home_mailbox</code><span data-line="8;mail.md::265"></span>. Below the suggested lines for
 defining this variable, add the following:
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:293"><code>home_mailbox = .maildir/</code></pre></li>
-<li data-line="8;mail.md:295">
-<p data-line="8;mail.md:295"><span data-line="8;mail.md::295"></span>Remember to reload your postfix settings!
+<pre class="para-block para-block" data-line="8;mail.md:268"><code>home_mailbox = .maildir/</code></pre></li>
+<li data-line="8;mail.md:270">
+<p data-line="8;mail.md:270"><span data-line="8;mail.md::270"></span>Remember to reload your postfix settings!
 </p></li></ol>
 
-<p data-line="8;mail.md:297"><span data-line="8;mail.md::297"></span>Use mutt to send an email to your school email address. Compare sending an email
+<p data-line="8;mail.md:272"><span data-line="8;mail.md::272"></span>Use mutt to send an email to your school email address. Compare sending an email
 with postfix using the sendmail command in the command line and sending an email
-through mutt. In particular, what does the <span data-line="8;mail.md::299"></span><code class="code">from</code><span data-line="8;mail.md::299"></span> field look like in the email
-you sent from mutt? If it doesn<span data-line="8;mail.md::300"></span>&#39;<span data-line="8;mail.md::300"></span>t match the one from sendmail, you may need to
-configure mutt to have the correct <span data-line="8;mail.md::301"></span><code class="code">from</code><span data-line="8;mail.md::301"></span> field. To do so, create a file in your
-home directory called <span data-line="8;mail.md::302"></span><code class="code">.muttrc</code><span data-line="8;mail.md::302"></span> and add the following line to the file:
+through mutt. In particular, what does the <span data-line="8;mail.md::274"></span><code class="code">from</code><span data-line="8;mail.md::274"></span> field look like in the email
+you sent from mutt? If it doesn<span data-line="8;mail.md::275"></span>&#39;<span data-line="8;mail.md::275"></span>t match the one from sendmail, you may need to
+configure mutt to have the correct <span data-line="8;mail.md::276"></span><code class="code">from</code><span data-line="8;mail.md::276"></span> field. To do so, create a file in your
+home directory called <span data-line="8;mail.md::277"></span><code class="code">.muttrc</code><span data-line="8;mail.md::277"></span> and add the following line to the file:
 </p>
-<pre class="para-block fenced para-block" data-line="8;mail.md:303" data-line-code="8;mail.md:304"><code data-line="8;mail.md:304">set from=&quot;&lt;user&gt;@&lt;machine-name&gt;.sys.cs.hmc.edu&quot;</code></pre><h2 id="aliases"  data-line="8;mail.md:307" ><span data-line="8;mail.md::307"></span>Aliases</h2>
-<p data-line="8;mail.md:309"><span data-line="8;mail.md::309"></span>The next step is to set up aliases, or mailing lists. This allows you to
+<pre class="para-block fenced para-block" data-line="8;mail.md:278" data-line-code="8;mail.md:279"><code data-line="8;mail.md:279">set from=&quot;&lt;user&gt;@&lt;machine-name&gt;.sys.cs.hmc.edu&quot;</code></pre><h2 id="aliases"  data-line="8;mail.md:282" ><span data-line="8;mail.md::282"></span>Aliases</h2>
+<p data-line="8;mail.md:284"><span data-line="8;mail.md::284"></span>The next step is to set up aliases, or mailing lists. This allows you to
 add emails to a list and send a message to that list. The CS department
 uses TONS of aliases for various clinic and research groups as well as
 courses and staff/faculty lists.
 </p>
-<p class="indent" data-line="8;mail.md:314"><span data-line="8;mail.md::314"></span>In the directory <span data-line="8;mail.md::314"></span><code class="code">/etc/mail</code><span data-line="8;mail.md::314"></span>, there should be a file called <span data-line="8;mail.md::314"></span><code class="code">aliases</code><span data-line="8;mail.md::314"></span>.
+<p class="indent" data-line="8;mail.md:289"><span data-line="8;mail.md::289"></span>In the directory <span data-line="8;mail.md::289"></span><code class="code">/etc/mail</code><span data-line="8;mail.md::289"></span>, there should be a file called <span data-line="8;mail.md::289"></span><code class="code">aliases</code><span data-line="8;mail.md::289"></span>.
 If not, go ahead and create it. Make sure you have at least these two
-aliases: <span data-line="8;mail.md::316"></span><code class="code">MAILER-DAEMON:postmaster</code><span data-line="8;mail.md::316"></span> and <span data-line="8;mail.md::316"></span><code class="code">postmaster:root</code><span data-line="8;mail.md::316"></span>. These are
+aliases: <span data-line="8;mail.md::291"></span><code class="code">MAILER-DAEMON:postmaster</code><span data-line="8;mail.md::291"></span> and <span data-line="8;mail.md::291"></span><code class="code">postmaster:root</code><span data-line="8;mail.md::291"></span>. These are
 aliases that are required by the system. 
 </p>
-<p class="indent" data-line="8;mail.md:319"><span data-line="8;mail.md::319"></span>Next, go to the file
-/etc/postfix/main.cf. and find <span data-line="8;mail.md::320"></span>&#8220;Alias Database&#8221;<span data-line="8;mail.md::320"></span>. Uncomment the
-line for <span data-line="8;mail.md::321"></span><code class="code">alias_maps</code><span data-line="8;mail.md::321"></span> that contains <span data-line="8;mail.md::321"></span><code class="code">hash</code><span data-line="8;mail.md::321"></span> and the correct
-file pathway (/etc/mail/aliases). If none of the lines match exactly, go
-ahead and write your own. Also uncomment the correct <span data-line="8;mail.md::323"></span><code class="code">alias_database</code><span data-line="8;mail.md::323"></span>
-line with the same file pathway. <span data-line="8;mail.md::324"></span><code class="code">hash</code><span data-line="8;mail.md::324"></span> means that postfix will create
+<p class="indent" data-line="8;mail.md:294"><span data-line="8;mail.md::294"></span>Next, go to the file
+/etc/postfix/main.cf. and find <span data-line="8;mail.md::295"></span>&#8220;Alias Database&#8221;<span data-line="8;mail.md::295"></span>. Uncomment the
+line for <span data-line="8;mail.md::296"></span><code class="code">alias_maps</code><span data-line="8;mail.md::296"></span> that contains <span data-line="8;mail.md::296"></span><code class="code">hash</code><span data-line="8;mail.md::296"></span> and the correct
+file (/etc/mail/aliases). If none of the lines match exactly, go
+ahead and write your own. Also uncomment the correct <span data-line="8;mail.md::298"></span><code class="code">alias_database</code><span data-line="8;mail.md::298"></span>
+line with the same file. <span data-line="8;mail.md::299"></span><code class="code">hash</code><span data-line="8;mail.md::299"></span> means that postfix will create
 and reference a database (.db) file. You do not need to create the .db
 file, postfix will automatically generate it for you!
 </p>
-<p class="indent" data-line="8;mail.md:328"><span data-line="8;mail.md::328"></span>Set up a mail alias and add your email to it.
+<p class="indent" data-line="8;mail.md:303"><span data-line="8;mail.md::303"></span>Edit <span data-line="8;mail.md::303"></span><code class="code">/etc/mail/aliases</code><span data-line="8;mail.md::303"></span> to set up a mail alias and add your email to it.
 You may need to use sendmail from the command line and not Mutt to
 send an email to an alias. The syntax is:
-<span data-line="8;mail.md::331"></span><code class="code">alias_name:email_1,email_2,...</code><span data-line="8;mail.md::331"></span>. In order for the change to take
-effect, you must run the command <span data-line="8;mail.md::332"></span><code class="code">newaliases</code><span data-line="8;mail.md::332"></span> as root. If you ever want
+<span data-line="8;mail.md::306"></span><code class="code">alias_name:email_1,email_2,...</code><span data-line="8;mail.md::306"></span>. In order for the change to take
+effect, you must run the command <span data-line="8;mail.md::307"></span><code class="code">newaliases</code><span data-line="8;mail.md::307"></span> as root. If you ever want
 to reference multiple alias files, you can add the additional files to
-the correct lines in main.cf (<span data-line="8;mail.md::334"></span><code class="code">alias_maps</code><span data-line="8;mail.md::334"></span> and <span data-line="8;mail.md::334"></span><code class="code">alias_database</code><span data-line="8;mail.md::334"></span>). Don’t
-forget to reference them with <span data-line="8;mail.md::335"></span><code class="code">hash</code><span data-line="8;mail.md::335"></span> since they are database files.
-</p><h2 id="scavenger-hunt"  data-line="8;mail.md:337" ><span data-line="8;mail.md::337"></span>Scavenger Hunt!</h2>
-<p data-line="8;mail.md:339"><span data-line="8;mail.md::339"></span>Your final task is to go on a quest! The first step is to send an email
-to bacon<span data-line="8;mail.md::340"></span>@crispy.sys.cs.hmc.edu<span data-line="8;mail.md::340"></span> and follow the instructions from there
+the correct lines in main.cf (<span data-line="8;mail.md::309"></span><code class="code">alias_maps</code><span data-line="8;mail.md::309"></span> and <span data-line="8;mail.md::309"></span><code class="code">alias_database</code><span data-line="8;mail.md::309"></span>). Don<span data-line="8;mail.md::309"></span>&#39;<span data-line="8;mail.md::309"></span>t
+forget to reference them with <span data-line="8;mail.md::310"></span><code class="code">hash</code><span data-line="8;mail.md::310"></span> since they are database files.
+</p><h2 id="scavenger-hunt"  data-line="8;mail.md:312" ><span data-line="8;mail.md::312"></span>Scavenger Hunt!</h2>
+<p data-line="8;mail.md:314"><span data-line="8;mail.md::314"></span>Your final task is to go on a quest! The first step is to send an email
+to bacon<span data-line="8;mail.md::315"></span>@crispy.sys.cs.hmc.edu<span data-line="8;mail.md::315"></span> and follow the instructions from there
 :)
-</p><h2 id="bonus--personalization"  data-line="8;mail.md:343" ><span data-line="8;mail.md::343"></span>Bonus: Personalization</h2>
-<p data-line="8;mail.md:345"><span data-line="8;mail.md::345"></span>Look up a sample .muttrc configuration file and personalize your inbox.
-Options you may want to set are <span data-line="8;mail.md::346"></span><code class="code">realname</code><span data-line="8;mail.md::346"></span>, to change the name that
-appears when you send email to someone; <span data-line="8;mail.md::347"></span><code class="code">editor</code><span data-line="8;mail.md::347"></span>, to change the text
+</p><h2 id="bonus--personalization"  data-line="8;mail.md:318" ><span data-line="8;mail.md::318"></span>Bonus: Personalization</h2>
+<p data-line="8;mail.md:320"><span data-line="8;mail.md::320"></span>Look up a sample .muttrc configuration file and personalize your inbox.
+Options you may want to set are <span data-line="8;mail.md::321"></span><code class="code">realname</code><span data-line="8;mail.md::321"></span>, to change the name that
+appears when you send email to someone; <span data-line="8;mail.md::322"></span><code class="code">editor</code><span data-line="8;mail.md::322"></span>, to change the text
 editor used to write emails from nano to something else (like vim); and
-<span data-line="8;mail.md::349"></span><code class="code">alias_file</code><span data-line="8;mail.md::349"></span>, to allow you set shorthand to send emails faster (for
-example, set <span data-line="8;mail.md::350"></span><code class="code">alias NAME EMAIL_ADDRESS</code><span data-line="8;mail.md::350"></span> so you can simply send an email
+<span data-line="8;mail.md::324"></span><code class="code">alias_file</code><span data-line="8;mail.md::324"></span>, to allow you set shorthand to send emails faster (for
+example, set <span data-line="8;mail.md::325"></span><code class="code">alias NAME EMAIL_ADDRESS</code><span data-line="8;mail.md::325"></span> so you can simply send an email
 to NAME without needing to type the entire address).
 </p>
-<p class="indent" data-line="8;mail.md:353"><span data-line="8;mail.md::353"></span>You can also set colors of text, like the From or Subject line of an
-email, error messages, or the color of the email that’s highlighted.
+<p class="indent" data-line="8;mail.md:328"><span data-line="8;mail.md::328"></span>You can also set colors of text, like the From or Subject line of an
+email, error messages, or the color of the email that<span data-line="8;mail.md::329"></span>&#39;<span data-line="8;mail.md::329"></span>s highlighted.
 Feel free to personalize as much as you want!
-</p><h2 id="bonus--vacation"  data-line="8;mail.md:357" ><span data-line="8;mail.md::357"></span>Bonus: Vacation</h2>
-<p data-line="8;mail.md:359"><span data-line="8;mail.md::359"></span>If you have extra time, you can try setting up your own auto-reply
+</p><h2 id="bonus--vacation"  data-line="8;mail.md:332" ><span data-line="8;mail.md::332"></span>Bonus: Vacation</h2>
+<p data-line="8;mail.md:334"><span data-line="8;mail.md::334"></span>If you have extra time, you can try setting up your own auto-reply
 email. This can be done through a postfix add-on program called
-<span data-line="8;mail.md::361"></span><code class="code">vacation</code><span data-line="8;mail.md::361"></span>. To begin your <span data-line="8;mail.md::361"></span><code class="code">vacation</code><span data-line="8;mail.md::361"></span>, start by running
+<span data-line="8;mail.md::336"></span><code class="code">vacation</code><span data-line="8;mail.md::336"></span>. To begin your <span data-line="8;mail.md::336"></span><code class="code">vacation</code><span data-line="8;mail.md::336"></span>, start by running
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:363"><code>vacation</code></pre>
-<p data-line="8;mail.md:365"><span data-line="8;mail.md::365"></span>This will create a <span data-line="8;mail.md::365"></span><code class="code">.vacation.msg</code><span data-line="8;mail.md::365"></span> file in your home directory. Edit it
+<pre class="para-block para-block" data-line="8;mail.md:338"><code>vacation</code></pre>
+<p data-line="8;mail.md:340"><span data-line="8;mail.md::340"></span>This will create a <span data-line="8;mail.md::340"></span><code class="code">.vacation.msg</code><span data-line="8;mail.md::340"></span> file in your home directory. Edit it
 as you so wish. The last thing you need to do is look for a .forward
 file in your home directory. The .forward file should only contain a
 single line of code:
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:370"><code>\username, &quot;|/usr/bin/vacation username&quot;</code></pre>
-<p data-line="8;mail.md:372"><span data-line="8;mail.md::372"></span>This will ensure that one copy of every incoming message will be sent to
-<span data-line="8;mail.md::373"></span><code class="code">username</code><span data-line="8;mail.md::373"></span> and another copy will be sent to the vacation program. After
+<pre class="para-block para-block" data-line="8;mail.md:345"><code>\username, &quot;|/usr/bin/vacation username&quot;</code></pre>
+<p data-line="8;mail.md:347"><span data-line="8;mail.md::347"></span>This will ensure that one copy of every incoming message will be sent to
+<span data-line="8;mail.md::348"></span><code class="code">username</code><span data-line="8;mail.md::348"></span> and another copy will be sent to the vacation program. After
 you do this, run
 </p>
-<pre class="para-block para-block" data-line="8;mail.md:376"><code>vacation -I</code></pre>
-<p data-line="8;mail.md:378"><span data-line="8;mail.md::378"></span>This will create a <span data-line="8;mail.md::378"></span><code class="code">.vacation.db</code><span data-line="8;mail.md::378"></span> file. Make sure both the
-<span data-line="8;mail.md::379"></span><code class="code">.vacation.msg</code><span data-line="8;mail.md::379"></span> and the <span data-line="8;mail.md::379"></span><code class="code">.vacation.db</code><span data-line="8;mail.md::379"></span> are owned by their respective
+<pre class="para-block para-block" data-line="8;mail.md:351"><code>vacation -I</code></pre>
+<p data-line="8;mail.md:353"><span data-line="8;mail.md::353"></span>This will create a <span data-line="8;mail.md::353"></span><code class="code">.vacation.db</code><span data-line="8;mail.md::353"></span> file. Make sure both the
+<span data-line="8;mail.md::354"></span><code class="code">.vacation.msg</code><span data-line="8;mail.md::354"></span> and the <span data-line="8;mail.md::354"></span><code class="code">.vacation.db</code><span data-line="8;mail.md::354"></span> are owned by their respective
 user. Otherwise, the vacation file will not work as desired.
 </p>
-<p class="indent" data-line="8;mail.md:382"><span data-line="8;mail.md::382"></span>As always, if something isn’t working make sure to check your mail log
-files to see what’s wrong.
-</p><h2 id="bonus--spamassassin"  data-line="8;mail.md:385" ><span data-line="8;mail.md::385"></span>Bonus: SpamAssassin</h2>
-<p data-line="8;mail.md:387"><span data-line="8;mail.md::387"></span>SpamAssassin is a thing you can install if you’re courageous.
+<p class="indent" data-line="8;mail.md:357"><span data-line="8;mail.md::357"></span>As always, if something isn<span data-line="8;mail.md::357"></span>&#39;<span data-line="8;mail.md::357"></span>t working make sure to check your mail log
+files to see what<span data-line="8;mail.md::358"></span>&#39;<span data-line="8;mail.md::358"></span>s wrong.
+</p><h2 id="bonus--spamassassin"  data-line="8;mail.md:360" ><span data-line="8;mail.md::360"></span>Bonus: SpamAssassin</h2>
+<p data-line="8;mail.md:362"><span data-line="8;mail.md::362"></span>SpamAssassin is a thing you can install if you<span data-line="8;mail.md::362"></span>&#39;<span data-line="8;mail.md::362"></span>re courageous.
+</p><h2 id="more-information"  data-line="8;mail.md:364" ><span data-line="8;mail.md::364"></span>More information</h2>
+<p data-line="8;mail.md:366"><span data-line="8;mail.md::366"></span>If you are curious and want to learn more about Postfix, these are good
+resources:
+</p>
+<p class="indent" data-line="8;mail.md:369"><span data-line="8;mail.md::369"></span>http:/www.linuxjournal.com/article/9454?page=0,0
+</p>
+<p class="indent" data-line="8;mail.md:371"><span data-line="8;mail.md::371"></span>http:/www.postfix.org/OVERVIEW.html
 </p>
 </body>
 </html>
