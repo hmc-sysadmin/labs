@@ -84,15 +84,6 @@ quicker than POP because it only downloads messages and attachments when
 you click on them. Thus, you can start reading through your email
 without waiting for every single message to load.
 
-### Web-based Interfaces 
-
-The popularity of web-based interfaces like GMail, Yahoo!Mail, and
-Outlook.com, fewer people use IMAP and POP. The disadvantage of these
-are that the user has to remain connected to the internet at all times
-in order to read their mail. In this day and age, this is not a problem
-for most people anymore. IMAP and POP are still really cool, and if you
-want to create your own email service, they’re the way to go!
-
 ## TLS CERTIFICATES AND SSL 
 
 ### SSL 
