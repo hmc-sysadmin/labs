@@ -285,6 +285,7 @@ home directory called `.muttrc` and add the following line to the file:
 ```
 set from="<user>@<machine-name>.sys.cs.hmc.edu"
 ```
+where you fill in your username and machine name (e.g., vm3).
 
 ## Aliases 
 
