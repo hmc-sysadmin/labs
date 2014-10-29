@@ -17,16 +17,18 @@ A severity level can be used to decide which messages are sent. The
 levels are standardized and identified by a number and/or a standard
 abbreviation:
 
-   Number   Description    Abbr.
-  -------- -------------- --------
-     0       Emergency     emerg
-     1         Alerts      alert
-     2        Critical      crit
-     3         Errors       err
-     4        Warnings      warn
-     5      Notification   notice
-     6      Information     info
-     7         Debug       debug
+ | --------- | ---------------- | --------- |
+ | Number    | Description      | Abbr.     |
+ | --------- | ---------------- | --------- |
+ | 0         | Emergency        | emerg     |
+ | 1         | Alerts           | alert     |
+ | 2         | Critical         | crit      |
+ | 3         | Errors           | err       |
+ | 4         | Warnings         | warn      |
+ | 5         | Notification     | notice    |
+ | 6         | Information      | info      |
+ | 7         | Debug            | debug     |
+ | --------- | ---------------- | --------  |
 
 There are also things called "facilities" which loosely relate to
 system processes, a way of categorizing messages. When a remote device
@@ -34,17 +36,19 @@ sends a message to a syslog server it includes one of the standard
 facility values (along with a severity level). Some of the common
 facilities are:
 
-        Code                         Explanation
-  ----------------- ---------------------------------------------
-        auth               authentication (login) messages
-        cron         messages from the memory-resident scheduler
-       daemon              messages from resident daemons
-        kern                       kernel messages
-         lpr         printer messages (used by JetDirect cards)
-        mail                   messages from Sendmail
-        user         messages from user-initiated processes/apps
-   local0 - local7                  user-defined
-       syslog          messages from the syslog process itself
+ | ------------------- | ----------------------------------------------- |
+ | Code                | Explanation                                     |
+ | ------------------- | ----------------------------------------------- |
+ | auth                | authentication (login) messages                 |
+ | cron                | messages from the memory-resident scheduler     |
+ | daemon              | messages from resident daemons                  |
+ | kern                | kernel messages                                 |
+ | lpr                 | printer messages (used by JetDirect cards)      |
+ | mail                | messages from Sendmail                          |
+ | user                | messages from user-initiated processes/apps     |
+ | local0 - local7     | user-defined                                    |
+ | syslog              | messages from the syslog process itself         |
+ | ------------------- | ----------------------------------------------- |
 
 One can specify different severity levels for different facilities so
 one can, for example, log all kernel messages but only emergency
