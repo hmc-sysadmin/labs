@@ -1,6 +1,10 @@
-# Logging 
-
+# Logging and Backups
 *Originally created by Paige Rinnert*
+
+In this lab, we'll explore ways of storing and investigating the past behavior
+of our systems.
+
+## Logging 
 
 Many logging servers use syslog, and since almost all machines use it,
 it is easy to to sync the logging of multiple devices. Once a syslog
@@ -261,13 +265,13 @@ edit not only the log file on your machine, but also determine that the
 logs were being saved remotely and delete logs off of the other machine.
 Possible, but more unlikely.
 
-### IMPORTANT! 
+## Important! 
 
 Before moving on, run the following command:
 
     sudo ./MysteriousScript1
 
-# BACKUPS 
+## Backups 
 
 Backups are an important part of any system, as you may well know if you
 have ever had your computer crash on you. Saving your files in backups
@@ -308,43 +312,16 @@ system that is completely open source.
         mkdir -p /amanda/state/{curinfo,log,index}
         mkdir -p /etc/amanda/MyConfig 
 
-2.  Copy the following config file into
-    `/etc/amanda/MyConfig/amanda.conf`. Notice that the files created in
+2.  Run the following commands to retrieve a configuration file for your backups
+
+        cd /etc/amanda/MyConfig/        
+        wget http://www.cs.hmc.edu/courses/current/sysadmin/amanda.conf
+
+3.  Open this config file and browse through it. Notice that the files created in
     the previous step are mentioned throughout the config file. Each
     backup will have its own folder and config file. If you want to, you
     can look at the example amanda.conf file that comes with the amanda
     install in /etc/amanda/DailySet1.
-
-        org "MyConfig"
-        infofile "/amanda/state/curinfo"  # This is the database directory
-        logdir "/amanda/state/log"        # This is the database for logs
-        indexdir "/amanda/state/index"    # This is the index directory
-        dumpuser "amanda"
-
-        tpchanger "chg-disk:/amanda/vtapes"  # The device to swap tapes
-        labelstr "MyData[0-9][0-9]"          # to label the tapes
-        autolabel "MyData%%" EMPTY VOLUME_ERROR
-        tapecycle 4    # specifies active volumes that Amanda will not overwrite
-        dumpcycle 3 days     # each disk gets a full backup at least this often
-        amrecover_changer "changer"
-
-        tapetype "TEST-TAPE"
-        define tapetype TEST-TAPE {
-          length 100 mbytes
-          filemark 4 kbytes
-        }
-
-        define dumptype simple-gnutar-local {
-            auth "local"
-            compress none
-            program "GNUTAR"
-        }
-
-        holdingdisk hd1 { #That's a one not an L
-            directory "/amanda/holding"
-            use 50 mbytes
-            chunksize 1 mbyte
-        } 
 
 3.  In the directory MyConfig, where you just created the config file
     amanda.conf, create the file `disklist` and put in the line below.
@@ -513,7 +490,7 @@ how to restore the files that have been backed up.
     If you run `ls` in your current directory, `/tmp/test-recovery`, you
     should see a copy of your home directory.
 
-### ACTIVITY! 
+### Backups: Activity
 
 
 Now that you’ve successfully backed up your home directory, let’s back
@@ -532,13 +509,13 @@ to actually perform the backup.
 
 <http://wiki.zmanda.com/index.php/GSWA/Recovering_Files>
 
-### IMPORTANT! 
+## Important! 
 
 Before continuing, run the following command:
 
     sudo ./MysteriousScript2
 
-# CRON JOBS 
+## Cron Jobs 
 
 
 Backups are so important that you should do them often, at regular
@@ -564,13 +541,13 @@ job should run. The numbers represent:
 So, this particular command removes the file `cron.weekly` at 4:19am
 every Sunday, Wednesday, and Saturday.
 
-**Add two lines to the crontab file to check the configuration of MyConfig
+### Cron Jobs: Activity
+
+Add two lines to the crontab file to check the configuration of MyConfig
 at 9pm and run a backup every day at 9:30pm. Set up amcheck so that
 instead of printing to standard output like it usually does, it mails
 the output to root. (Reminder: the amanda commands have man pages just
-like any other command!)**
+like any other command!)
 
-### Check your computer’s email 
-
-**Anything interesting in the root account?**
-
+## SysAdmin: Activity
+Check the root's mail.
