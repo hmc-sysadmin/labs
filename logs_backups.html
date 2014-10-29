@@ -335,43 +335,44 @@ mkdir -p /etc/amanda/MyConfig </code></pre></li>
 <pre class="para-block para-block" data-line="8;logs_backups.md:321"><code>cd /etc/amanda/MyConfig/        
 wget http://www.cs.hmc.edu/courses/current/sysadmin/amanda.conf</code></pre></li>
 <li data-line="8;logs_backups.md:324">
-<p data-line="8;logs_backups.md:324"><span data-line="8;logs_backups.md::324"></span>Open this config file and browse through it. Notice that the files created in
+<p data-line="8;logs_backups.md:324"><span data-line="8;logs_backups.md::324"></span>Open this config file and change the mailto configuration. Also,
+browse through the file. Notice that the files created in
 the previous step are mentioned throughout the config file. Each
 backup will have its own folder and config file. If you want to, you
 can look at the example amanda.conf file that comes with the amanda
 install in /etc/amanda/DailySet1.
 </p></li>
-<li data-line="8;logs_backups.md:330">
-<p data-line="8;logs_backups.md:330"><span data-line="8;logs_backups.md::330"></span>In the directory MyConfig, where you just created the config file
-amanda.conf, create the file <span data-line="8;logs_backups.md::331"></span><code class="code">disklist</code><span data-line="8;logs_backups.md::331"></span> and put in the line below.
+<li data-line="8;logs_backups.md:331">
+<p data-line="8;logs_backups.md:331"><span data-line="8;logs_backups.md::331"></span>In the directory MyConfig, where you just created the config file
+amanda.conf, create the file <span data-line="8;logs_backups.md::332"></span><code class="code">disklist</code><span data-line="8;logs_backups.md::332"></span> and put in the line below.
 All lines in the disklist have the format
-<span data-line="8;logs_backups.md::333"></span><code class="code">&lt;hostname&gt; &lt;diskname&gt; &lt;dumptype&gt;</code><span data-line="8;logs_backups.md::333"></span>. The hostname here is localhost
+<span data-line="8;logs_backups.md::334"></span><code class="code">&lt;hostname&gt; &lt;diskname&gt; &lt;dumptype&gt;</code><span data-line="8;logs_backups.md::334"></span>. The hostname here is localhost
 and the disk to back up is /home. The dumptype used here is the one
 that we just created in the config file.
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:337"><code>localhost /home simple-gnutar-local</code></pre></li>
-<li data-line="8;logs_backups.md:339">
-<p data-line="8;logs_backups.md:339"><span data-line="8;logs_backups.md::339"></span>Now we need to check that the configuration worked correctly. Since
+<pre class="para-block para-block" data-line="8;logs_backups.md:338"><code>localhost /home simple-gnutar-local</code></pre></li>
+<li data-line="8;logs_backups.md:340">
+<p data-line="8;logs_backups.md:340"><span data-line="8;logs_backups.md::340"></span>Now we need to check that the configuration worked correctly. Since
 the amanda commands are all located in /usr/sbin, we want to add
-this to the <span data-line="8;logs_backups.md::341"></span><code class="code">PATH</code><span data-line="8;logs_backups.md::341"></span> variable for amanda so that we can run the
+this to the <span data-line="8;logs_backups.md::342"></span><code class="code">PATH</code><span data-line="8;logs_backups.md::342"></span> variable for amanda so that we can run the
 commands without including the path every time. As the user amanda,
-run <span data-line="8;logs_backups.md::343"></span><code class="code">echo $PATH</code><span data-line="8;logs_backups.md::343"></span>. If /usr/sbin is not there, add this line to the
-<span data-line="8;logs_backups.md::344"></span><code class="code">.bashrc</code><span data-line="8;logs_backups.md::344"></span> file in amanda’s home directory (you may need to create
+run <span data-line="8;logs_backups.md::344"></span><code class="code">echo $PATH</code><span data-line="8;logs_backups.md::344"></span>. If /usr/sbin is not there, add this line to the
+<span data-line="8;logs_backups.md::345"></span><code class="code">.bashrc</code><span data-line="8;logs_backups.md::345"></span> file in amanda’s home directory (you may need to create
 the file if it doesn’t exist):
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:347"><code>export PATH=$PATH:/usr/sbin</code></pre>
-<p data-line="8;logs_backups.md:349"><span data-line="8;logs_backups.md::349"></span>To reference this file, now run the following command. Subsequent
-times, your updated path will be automatically added to the <span data-line="8;logs_backups.md::350"></span><code class="code">PATH</code><span data-line="8;logs_backups.md::350"></span>
+<pre class="para-block para-block" data-line="8;logs_backups.md:348"><code>export PATH=$PATH:/usr/sbin</code></pre>
+<p data-line="8;logs_backups.md:350"><span data-line="8;logs_backups.md::350"></span>To reference this file, now run the following command. Subsequent
+times, your updated path will be automatically added to the <span data-line="8;logs_backups.md::351"></span><code class="code">PATH</code><span data-line="8;logs_backups.md::351"></span>
 variable on restart.
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:353"><code>source ~/.bashrc</code></pre>
-<p data-line="8;logs_backups.md:355"><span data-line="8;logs_backups.md::355"></span>Now check the path variable again, and you should see /usr/sbin. Now
+<pre class="para-block para-block" data-line="8;logs_backups.md:354"><code>source ~/.bashrc</code></pre>
+<p data-line="8;logs_backups.md:356"><span data-line="8;logs_backups.md::356"></span>Now check the path variable again, and you should see /usr/sbin. Now
 you can run:
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:358"><code>amcheck MyConfig</code></pre>
-<p data-line="8;logs_backups.md:360"><span data-line="8;logs_backups.md::360"></span>The output should look something like this:
+<pre class="para-block para-block" data-line="8;logs_backups.md:359"><code>amcheck MyConfig</code></pre>
+<p data-line="8;logs_backups.md:361"><span data-line="8;logs_backups.md::361"></span>The output should look something like this:
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:362"><code>Amanda Tape Server Host Check
+<pre class="para-block para-block" data-line="8;logs_backups.md:363"><code>Amanda Tape Server Host Check
 -----------------------------
 NOTE: tapelist will be created on the next run.
 Holding disk /amanda/holding: 868352 kB disk space available, using 51200 
@@ -390,63 +391,63 @@ Amanda Backup Client Hosts Check
 Client check: 1 host checked in 7.089 seconds.  0 problems found.
 
 (brought to you by Amanda 3.3.3)</code></pre>
-<p data-line="8;logs_backups.md:382"><span data-line="8;logs_backups.md::382"></span>If there are any extra lines in your output that look like they
+<p data-line="8;logs_backups.md:383"><span data-line="8;logs_backups.md::383"></span>If there are any extra lines in your output that look like they
 might be errors, you will need to resolve these before moving on.
 </p></li>
-<li data-line="8;logs_backups.md:385">
-<p data-line="8;logs_backups.md:385"><span data-line="8;logs_backups.md::385"></span>Now you can run your first backup!
+<li data-line="8;logs_backups.md:386">
+<p data-line="8;logs_backups.md:386"><span data-line="8;logs_backups.md::386"></span>Now you can run your first backup!
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:387"><code>amdump MyConfig</code></pre>
-<p data-line="8;logs_backups.md:389"><span data-line="8;logs_backups.md::389"></span>The command should take a few seconds to run, that’s probably a good
-thing. When it’s finished, try <span data-line="8;logs_backups.md::390"></span><code class="code">echo $?</code><span data-line="8;logs_backups.md::390"></span>. If the result is anything
+<pre class="para-block para-block" data-line="8;logs_backups.md:388"><code>amdump MyConfig</code></pre>
+<p data-line="8;logs_backups.md:390"><span data-line="8;logs_backups.md::390"></span>The command should take a few seconds to run, that’s probably a good
+thing. When it’s finished, try <span data-line="8;logs_backups.md::391"></span><code class="code">echo $?</code><span data-line="8;logs_backups.md::391"></span>. If the result is anything
 other than 0, it means that amdump ended in an error state and did
 not run correctly. If it is 0, you’re golden.
 </p></li>
-<li data-line="8;logs_backups.md:394">
-<p data-line="8;logs_backups.md:394"><span data-line="8;logs_backups.md::394"></span>Now run this command:
+<li data-line="8;logs_backups.md:395">
+<p data-line="8;logs_backups.md:395"><span data-line="8;logs_backups.md::395"></span>Now run this command:
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:396"><code>amreport MyConfig &gt; /amanda/amandareport</code></pre>
-<p data-line="8;logs_backups.md:398"><span data-line="8;logs_backups.md::398"></span>This command puts the report from running the backup into a file in
+<pre class="para-block para-block" data-line="8;logs_backups.md:397"><code>amreport MyConfig &gt; /amanda/amandareport</code></pre>
+<p data-line="8;logs_backups.md:399"><span data-line="8;logs_backups.md::399"></span>This command puts the report from running the backup into a file in
 the amanda directory. Go view the file you just created. This is the
 output that gets emailed to CS staff whenever amanda runs a backup
 on Diffie.
 </p></li></ol>
 
-<p data-line="8;logs_backups.md:403"><span data-line="8;logs_backups.md::403"></span>Congratulations, you’ve finished your first backup! Now let’s figure out
+<p data-line="8;logs_backups.md:404"><span data-line="8;logs_backups.md::404"></span>Congratulations, you’ve finished your first backup! Now let’s figure out
 how to restore the files that have been backed up.
-</p><h3 id="restoring-a-backup"  data-line="8;logs_backups.md:406" ><span data-line="8;logs_backups.md::406"></span>Restoring a backup</h3>
-<ol class="loose" data-line="8;logs_backups.md:409">
-<li data-line="8;logs_backups.md:409">
-<p data-line="8;logs_backups.md:409"><span data-line="8;logs_backups.md::409"></span>There are a few changes you need to make to the amanda client
+</p><h3 id="restoring-a-backup"  data-line="8;logs_backups.md:407" ><span data-line="8;logs_backups.md::407"></span>Restoring a backup</h3>
+<ol class="loose" data-line="8;logs_backups.md:410">
+<li data-line="8;logs_backups.md:410">
+<p data-line="8;logs_backups.md:410"><span data-line="8;logs_backups.md::410"></span>There are a few changes you need to make to the amanda client
 configuration file,
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:411"><code>`/etc/amanda/amanda-client.conf`. Change the lines in this file to</code></pre>
-<p data-line="8;logs_backups.md:412"><span data-line="8;logs_backups.md::412"></span>match the ones below:
+<pre class="para-block para-block" data-line="8;logs_backups.md:412"><code>`/etc/amanda/amanda-client.conf`. Change the lines in this file to</code></pre>
+<p data-line="8;logs_backups.md:413"><span data-line="8;logs_backups.md::413"></span>match the ones below:
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:414"><code>conf &quot;MyConfig&quot;
+<pre class="para-block para-block" data-line="8;logs_backups.md:415"><code>conf &quot;MyConfig&quot;
 index_server &quot;localhost&quot;
 tape_server &quot;localhost&quot;
 tapedev &quot;changer&quot;
 auth &quot;local&quot;</code></pre>
-<p data-line="8;logs_backups.md:420"><span data-line="8;logs_backups.md::420"></span>Don’t worry about the <span data-line="8;logs_backups.md::420"></span><code class="code">ssh_keys</code><span data-line="8;logs_backups.md::420"></span> line, just leave it as the empty
+<p data-line="8;logs_backups.md:421"><span data-line="8;logs_backups.md::421"></span>Don’t worry about the <span data-line="8;logs_backups.md::421"></span><code class="code">ssh_keys</code><span data-line="8;logs_backups.md::421"></span> line, just leave it as the empty
 string.
 </p></li>
-<li data-line="8;logs_backups.md:423">
-<p data-line="8;logs_backups.md:423"><span data-line="8;logs_backups.md::423"></span>Now we need to create a place where the backup will restore to. Go
-to <span data-line="8;logs_backups.md::424"></span><code class="code">/tmp</code><span data-line="8;logs_backups.md::424"></span> and create the directory <span data-line="8;logs_backups.md::424"></span><code class="code">test-recovery</code><span data-line="8;logs_backups.md::424"></span>. Go to that
+<li data-line="8;logs_backups.md:424">
+<p data-line="8;logs_backups.md:424"><span data-line="8;logs_backups.md::424"></span>Now we need to create a place where the backup will restore to. Go
+to <span data-line="8;logs_backups.md::425"></span><code class="code">/tmp</code><span data-line="8;logs_backups.md::425"></span> and create the directory <span data-line="8;logs_backups.md::425"></span><code class="code">test-recovery</code><span data-line="8;logs_backups.md::425"></span>. Go to that
 directory.
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:427"><code>mkdir /tmp/test-recovery
+<pre class="para-block para-block" data-line="8;logs_backups.md:428"><code>mkdir /tmp/test-recovery
 cd /tmp/test-recovery</code></pre></li>
-<li data-line="8;logs_backups.md:430">
-<p data-line="8;logs_backups.md:430"><span data-line="8;logs_backups.md::430"></span>Now you’re ready to restore the files. Since you need permission to
-access files on the system, <span data-line="8;logs_backups.md::431"></span><code class="code">amrecover</code><span data-line="8;logs_backups.md::431"></span> needs to be run with sudo.
+<li data-line="8;logs_backups.md:431">
+<p data-line="8;logs_backups.md:431"><span data-line="8;logs_backups.md::431"></span>Now you’re ready to restore the files. Since you need permission to
+access files on the system, <span data-line="8;logs_backups.md::432"></span><code class="code">amrecover</code><span data-line="8;logs_backups.md::432"></span> needs to be run with sudo.
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:433"><code>amrecover MyConfig</code></pre>
-<p data-line="8;logs_backups.md:435"><span data-line="8;logs_backups.md::435"></span>You should see something similar to the following. Now amrecover
+<pre class="para-block para-block" data-line="8;logs_backups.md:434"><code>amrecover MyConfig</code></pre>
+<p data-line="8;logs_backups.md:436"><span data-line="8;logs_backups.md::436"></span>You should see something similar to the following. Now amrecover
 will prompt you to enter information.
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:438"><code>Using index server from environment AMANDA_SERVER (penguin)
+<pre class="para-block para-block" data-line="8;logs_backups.md:439"><code>Using index server from environment AMANDA_SERVER (penguin)
 AMRECOVER Version 3.3.3. Contacting server on penguin ...
 220 penguin AMANDA index server (3.3.3) ready.
 Setting restore date to today (2014-07-08)
@@ -457,95 +458,95 @@ Trying host localhost ...
 200 Dump host set to localhost.
 Use the setdisk command to choose dump disk to recover
 amrecover&gt;</code></pre>
-<p data-line="8;logs_backups.md:450"><span data-line="8;logs_backups.md::450"></span>Lines with errors begin with a 5 while the lines that work correctly
+<p data-line="8;logs_backups.md:451"><span data-line="8;logs_backups.md::451"></span>Lines with errors begin with a 5 while the lines that work correctly
 begin with a 2. If the program complains that the host is not in
 your disklist, set the host to localhost by typing the following.
 Otherwise, keep going.
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:455"><code>amrecover&gt; sethost localhost</code></pre></li>
-<li data-line="8;logs_backups.md:457">
-<p data-line="8;logs_backups.md:457"><span data-line="8;logs_backups.md::457"></span>Now set the disk to /home, the directory you backed up.
+<pre class="para-block para-block" data-line="8;logs_backups.md:456"><code>amrecover&gt; sethost localhost</code></pre></li>
+<li data-line="8;logs_backups.md:458">
+<p data-line="8;logs_backups.md:458"><span data-line="8;logs_backups.md::458"></span>Now set the disk to /home, the directory you backed up.
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:459"><code>amrecover&gt; setdisk /home</code></pre>
-<p data-line="8;logs_backups.md:461"><span data-line="8;logs_backups.md::461"></span>Amrecover should confirm that it did the proposed action by printing
+<pre class="para-block para-block" data-line="8;logs_backups.md:460"><code>amrecover&gt; setdisk /home</code></pre>
+<p data-line="8;logs_backups.md:462"><span data-line="8;logs_backups.md::462"></span>Amrecover should confirm that it did the proposed action by printing
 the following:
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:464"><code>200 Disk set to /home.</code></pre></li>
-<li data-line="8;logs_backups.md:466">
-<p data-line="8;logs_backups.md:466"><span data-line="8;logs_backups.md::466"></span>And add the name of your home directory (should be your user name):
+<pre class="para-block para-block" data-line="8;logs_backups.md:465"><code>200 Disk set to /home.</code></pre></li>
+<li data-line="8;logs_backups.md:467">
+<p data-line="8;logs_backups.md:467"><span data-line="8;logs_backups.md::467"></span>And add the name of your home directory (should be your user name):
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:468"><code>amrecover&gt; add &lt;directory name&gt;</code></pre>
-<p data-line="8;logs_backups.md:470"><span data-line="8;logs_backups.md::470"></span>Again, amrecover should confirm that it added the directory:
+<pre class="para-block para-block" data-line="8;logs_backups.md:469"><code>amrecover&gt; add &lt;directory name&gt;</code></pre>
+<p data-line="8;logs_backups.md:471"><span data-line="8;logs_backups.md::471"></span>Again, amrecover should confirm that it added the directory:
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:472"><code>Added directory &lt;directory name&gt;</code></pre></li>
-<li data-line="8;logs_backups.md:474">
-<p data-line="8;logs_backups.md:474"><span data-line="8;logs_backups.md::474"></span>Now you’re ready to extract files.
+<pre class="para-block para-block" data-line="8;logs_backups.md:473"><code>Added directory &lt;directory name&gt;</code></pre></li>
+<li data-line="8;logs_backups.md:475">
+<p data-line="8;logs_backups.md:475"><span data-line="8;logs_backups.md::475"></span>Now you’re ready to extract files.
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:476"><code>amrecover&gt; extract</code></pre>
-<p data-line="8;logs_backups.md:478"><span data-line="8;logs_backups.md::478"></span>Amrecover will ask you to confirm what you want to do, and if it
+<pre class="para-block para-block" data-line="8;logs_backups.md:477"><code>amrecover&gt; extract</code></pre>
+<p data-line="8;logs_backups.md:479"><span data-line="8;logs_backups.md::479"></span>Amrecover will ask you to confirm what you want to do, and if it
 looks right, type Y (make sure it is a capital Y or it will get
 angry with you).
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:482"><code>Extracting files using tape drive changer on host localhost.
+<pre class="para-block para-block" data-line="8;logs_backups.md:483"><code>Extracting files using tape drive changer on host localhost.
 The following tapes are needed: MyData01
 
 Extracting files using tape drive changer on host localhost.
 Load tape MyData01 now
 Continue [?/Y/n/s/d]? Y</code></pre>
-<p data-line="8;logs_backups.md:489"><span data-line="8;logs_backups.md::489"></span>Amrecover should list the recovered files, returning you to the
+<p data-line="8;logs_backups.md:490"><span data-line="8;logs_backups.md::490"></span>Amrecover should list the recovered files, returning you to the
 amrecover prompt. If so, you have successfully restored your home
 directory! That is the end of the recovery process, so type CTRL-D
 to exit amrecover and return to your command prompt.
 </p>
-<p data-line="8;logs_backups.md:494"><span data-line="8;logs_backups.md::494"></span>If you run <span data-line="8;logs_backups.md::494"></span><code class="code">ls</code><span data-line="8;logs_backups.md::494"></span> in your current directory, <span data-line="8;logs_backups.md::494"></span><code class="code">/tmp/test-recovery</code><span data-line="8;logs_backups.md::494"></span>, you
+<p data-line="8;logs_backups.md:495"><span data-line="8;logs_backups.md::495"></span>If you run <span data-line="8;logs_backups.md::495"></span><code class="code">ls</code><span data-line="8;logs_backups.md::495"></span> in your current directory, <span data-line="8;logs_backups.md::495"></span><code class="code">/tmp/test-recovery</code><span data-line="8;logs_backups.md::495"></span>, you
 should see a copy of your home directory.
 </p></li></ol>
-<h3 id="backups--activity"  data-line="8;logs_backups.md:497" ><span data-line="8;logs_backups.md::497"></span>Backups: Activity</h3>
-<p data-line="8;logs_backups.md:500"><span data-line="8;logs_backups.md::500"></span>Now that you’ve successfully backed up your home directory, let’s back
+<h3 id="backups--activity"  data-line="8;logs_backups.md:498" ><span data-line="8;logs_backups.md::498"></span>Backups: Activity</h3>
+<p data-line="8;logs_backups.md:501"><span data-line="8;logs_backups.md::501"></span>Now that you’ve successfully backed up your home directory, let’s back
 up more files using the same process. Add a new configuration called
-MyLogs to back up the disk <span data-line="8;logs_backups.md::502"></span><code class="code">/var/log</code><span data-line="8;logs_backups.md::502"></span>. To start out, as the amanda user
+MyLogs to back up the disk <span data-line="8;logs_backups.md::503"></span><code class="code">/var/log</code><span data-line="8;logs_backups.md::503"></span>. To start out, as the amanda user
 copy the MyConfig directory and name the new directory MyLogs. You will
 need to change the name of the configuration in
-<span data-line="8;logs_backups.md::505"></span><code class="code">/etc/amanda/MyLogs/amanda.conf</code><span data-line="8;logs_backups.md::505"></span> and <span data-line="8;logs_backups.md::505"></span><code class="code">/etc/amanda/amanda-client.conf</code><span data-line="8;logs_backups.md::505"></span>,
-and change the disk to back up in <span data-line="8;logs_backups.md::506"></span><code class="code">/etc/amanda/MyLogs/disklist</code><span data-line="8;logs_backups.md::506"></span>. Then
-run <span data-line="8;logs_backups.md::507"></span><code class="code">amcheck MyLogs</code><span data-line="8;logs_backups.md::507"></span> to check the new configuration and <span data-line="8;logs_backups.md::507"></span><code class="code">amdump MyLogs</code><span data-line="8;logs_backups.md::507"></span>
+<span data-line="8;logs_backups.md::506"></span><code class="code">/etc/amanda/MyLogs/amanda.conf</code><span data-line="8;logs_backups.md::506"></span> and <span data-line="8;logs_backups.md::506"></span><code class="code">/etc/amanda/amanda-client.conf</code><span data-line="8;logs_backups.md::506"></span>,
+and change the disk to back up in <span data-line="8;logs_backups.md::507"></span><code class="code">/etc/amanda/MyLogs/disklist</code><span data-line="8;logs_backups.md::507"></span>. Then
+run <span data-line="8;logs_backups.md::508"></span><code class="code">amcheck MyLogs</code><span data-line="8;logs_backups.md::508"></span> to check the new configuration and <span data-line="8;logs_backups.md::508"></span><code class="code">amdump MyLogs</code><span data-line="8;logs_backups.md::508"></span>
 to actually perform the backup.
-</p><h3 id="resources"  data-line="8;logs_backups.md:510" ><span data-line="8;logs_backups.md::510"></span>Resources</h3>
-<p data-line="8;logs_backups.md:512"><span data-line="8;logs_backups.md::512"></span><a href="http://wiki.zmanda.com/index.php/GSWA/Build_a_Basic_Configuration">http://wiki.zmanda.com/index.php/GSWA/Build_a_Basic_Configuration</a><span data-line="8;logs_backups.md::512"></span>
+</p><h3 id="resources"  data-line="8;logs_backups.md:511" ><span data-line="8;logs_backups.md::511"></span>Resources</h3>
+<p data-line="8;logs_backups.md:513"><span data-line="8;logs_backups.md::513"></span><a href="http://wiki.zmanda.com/index.php/GSWA/Build_a_Basic_Configuration">http://wiki.zmanda.com/index.php/GSWA/Build_a_Basic_Configuration</a><span data-line="8;logs_backups.md::513"></span>
 </p>
-<p class="indent" data-line="8;logs_backups.md:514"><span data-line="8;logs_backups.md::514"></span><a href="http://wiki.zmanda.com/index.php/GSWA/Recovering_Files">http://wiki.zmanda.com/index.php/GSWA/Recovering_Files</a><span data-line="8;logs_backups.md::514"></span>
-</p><h2 id="important"  data-line="8;logs_backups.md:516" ><span data-line="8;logs_backups.md::516"></span>Important!</h2>
-<p data-line="8;logs_backups.md:518"><span data-line="8;logs_backups.md::518"></span>Before continuing, run the following command:
+<p class="indent" data-line="8;logs_backups.md:515"><span data-line="8;logs_backups.md::515"></span><a href="http://wiki.zmanda.com/index.php/GSWA/Recovering_Files">http://wiki.zmanda.com/index.php/GSWA/Recovering_Files</a><span data-line="8;logs_backups.md::515"></span>
+</p><h2 id="important"  data-line="8;logs_backups.md:517" ><span data-line="8;logs_backups.md::517"></span>Important!</h2>
+<p data-line="8;logs_backups.md:519"><span data-line="8;logs_backups.md::519"></span>Before continuing, run the following command:
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:520"><code>sudo /root/MysteriousScript2</code></pre><h2 id="cron-jobs"  data-line="8;logs_backups.md:522" ><span data-line="8;logs_backups.md::522"></span>Cron Jobs</h2>
-<p data-line="8;logs_backups.md:525"><span data-line="8;logs_backups.md::525"></span>Backups are so important that you should do them often, at regular
+<pre class="para-block para-block" data-line="8;logs_backups.md:521"><code>sudo /root/MysteriousScript2</code></pre><h2 id="cron-jobs"  data-line="8;logs_backups.md:523" ><span data-line="8;logs_backups.md::523"></span>Cron Jobs</h2>
+<p data-line="8;logs_backups.md:526"><span data-line="8;logs_backups.md::526"></span>Backups are so important that you should do them often, at regular
 intervals. It can be difficult to remember to do backups, so that is one
 of the reasons that cron jobs exist. Cron jobs automate processes so
 they will run at set intervals, which is perfect for keeping a system’s
 backups up-to-date.
 </p>
-<p class="indent" data-line="8;logs_backups.md:531"><span data-line="8;logs_backups.md::531"></span>The cron jobs running on your system are listed in the <span data-line="8;logs_backups.md::531"></span><code class="code">/etc/crontab</code><span data-line="8;logs_backups.md::531"></span>.
+<p class="indent" data-line="8;logs_backups.md:532"><span data-line="8;logs_backups.md::532"></span>The cron jobs running on your system are listed in the <span data-line="8;logs_backups.md::532"></span><code class="code">/etc/crontab</code><span data-line="8;logs_backups.md::532"></span>.
 Go take a look at the file. Here is a sample line from this file:
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:534"><code>19 4 * * 0,3,6  root    rm -f /var/spool/cron/lastrun/cron.weekly</code></pre>
-<p data-line="8;logs_backups.md:536"><span data-line="8;logs_backups.md::536"></span>The last part of the line is fairly straightforward. <span data-line="8;logs_backups.md::536"></span><code class="code">root</code><span data-line="8;logs_backups.md::536"></span> is the user
+<pre class="para-block para-block" data-line="8;logs_backups.md:535"><code>19 4 * * 0,3,6  root    rm -f /var/spool/cron/lastrun/cron.weekly</code></pre>
+<p data-line="8;logs_backups.md:537"><span data-line="8;logs_backups.md::537"></span>The last part of the line is fairly straightforward. <span data-line="8;logs_backups.md::537"></span><code class="code">root</code><span data-line="8;logs_backups.md::537"></span> is the user
 running the command, and following root is the command itself. The
 beginning of the line may look ambiguous, but it describes how often the
 job should run. The numbers represent:
 </p>
-<pre class="para-block para-block" data-line="8;logs_backups.md:541"><code>19        4        *                *        0,3,6
+<pre class="para-block para-block" data-line="8;logs_backups.md:542"><code>19        4        *                *        0,3,6
 minutes   hours    day (of month)   month    day (of week)
 (0-59)    (0-23)   (1-31)           (1-12)   (0-6)         # allowable values</code></pre>
-<p data-line="8;logs_backups.md:545"><span data-line="8;logs_backups.md::545"></span>So, this particular command removes the file <span data-line="8;logs_backups.md::545"></span><code class="code">cron.weekly</code><span data-line="8;logs_backups.md::545"></span> at 4:19am
+<p data-line="8;logs_backups.md:546"><span data-line="8;logs_backups.md::546"></span>So, this particular command removes the file <span data-line="8;logs_backups.md::546"></span><code class="code">cron.weekly</code><span data-line="8;logs_backups.md::546"></span> at 4:19am
 every Sunday, Wednesday, and Saturday.
-</p><h3 id="cron-jobs--activity"  data-line="8;logs_backups.md:548" ><span data-line="8;logs_backups.md::548"></span>Cron Jobs: Activity</h3>
-<p data-line="8;logs_backups.md:550"><span data-line="8;logs_backups.md::550"></span>Add two lines to the crontab file to check the configuration of MyConfig
+</p><h3 id="cron-jobs--activity"  data-line="8;logs_backups.md:549" ><span data-line="8;logs_backups.md::549"></span>Cron Jobs: Activity</h3>
+<p data-line="8;logs_backups.md:551"><span data-line="8;logs_backups.md::551"></span>Add two lines to the crontab file to check the configuration of MyConfig
 at 9pm and run a backup every day at 9:30pm. Set up amcheck so that
 instead of printing to standard output like it usually does, it mails
 the output to root. (Reminder: the amanda commands have man pages just
 like any other command!)
-</p><h2 id="sysadmin--activity"  data-line="8;logs_backups.md:556" ><span data-line="8;logs_backups.md::556"></span>SysAdmin: Activity</h2>
-<p data-line="8;logs_backups.md:557"><span data-line="8;logs_backups.md::557"></span>Check the root<span data-line="8;logs_backups.md::557"></span>&#39;<span data-line="8;logs_backups.md::557"></span>s mail.
+</p><h2 id="sysadmin--activity"  data-line="8;logs_backups.md:557" ><span data-line="8;logs_backups.md::557"></span>SysAdmin: Activity</h2>
+<p data-line="8;logs_backups.md:558"><span data-line="8;logs_backups.md::558"></span>Check the root<span data-line="8;logs_backups.md::558"></span>&#39;<span data-line="8;logs_backups.md::558"></span>s mail.
 </p>
 </body>
 </html>

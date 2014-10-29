@@ -273,7 +273,7 @@ Possible, but more unlikely.
 
 Before moving on, run the following command:
 
-    sudo ./MysteriousScript1
+    sudo /root/MysteriousScript1
 
 ## Backups 
 
@@ -321,7 +321,8 @@ system that is completely open source.
         cd /etc/amanda/MyConfig/        
         wget http://www.cs.hmc.edu/courses/current/sysadmin/amanda.conf
 
-3.  Open this config file and browse through it. Notice that the files created in
+3.  Open this config file and change the mailto configuration. Also,
+    browse through the file. Notice that the files created in
     the previous step are mentioned throughout the config file. Each
     backup will have its own folder and config file. If you want to, you
     can look at the example amanda.conf file that comes with the amanda
@@ -517,7 +518,7 @@ to actually perform the backup.
 
 Before continuing, run the following command:
 
-    sudo ./MysteriousScript2
+    sudo /root/MysteriousScript2
 
 ## Cron Jobs 
 
