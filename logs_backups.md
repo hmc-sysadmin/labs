@@ -381,7 +381,7 @@ system that is completely open source.
         (brought to you by Amanda 3.3.3)
 
     If there are any extra lines in your output that look like they
-    might be errors, you will need to resolve these before moving on.
+    might be errors, you might need to resolve these before moving on.
 
 5.  Now you can run your first backup!
 
