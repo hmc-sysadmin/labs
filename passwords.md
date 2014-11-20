@@ -347,6 +347,8 @@ for that file or directory.
 
 Set up mutt to send encrypted email using gpg public/private keys.
 
+[INCLUDE="encrypted_mail.md"]
+
 ## Readings and other references 
 
  A brief introduction to what encryption is and the various problems
