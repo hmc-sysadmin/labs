@@ -94,8 +94,6 @@ keyserver.
     `public.key` can be whatever name you want. It's helpful to have it
     be something that's easily identifiable.
 
-    **TODO:** put the public key in NFS
-
     Once that's done, put your key in the NFS-mounted directory 
     `/mnt/local/keys`. You can also email your key to your friend
     Once you've done that, all they have to
