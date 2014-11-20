@@ -101,7 +101,7 @@ keyserver.
     Once you've done that, all they have to
     do is import it:
 
-        gpg --import public.key
+        gpg --import <public.key>
 
 2.  Keyservers
 
