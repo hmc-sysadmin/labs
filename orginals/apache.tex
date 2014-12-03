@@ -1,0 +1,407 @@
+\documentclass[11pt]{article}
+\usepackage{inputenc}
+\usepackage{ucs}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{titling}
+\usepackage{hyperref}
+\usepackage[margin=1in]{geometry}
+
+\setlength{\droptitle}{-1in}
+
+\usepackage{courier}
+\setlength{\parindent}{0.2in}
+
+
+\title{System Administration Lab 9: Apache and OpenSSL Installation and Configuration\vspace{-2ex}}
+\author{Huting Lin and Jeff Milling}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{ABOUT APACHE}
+
+Apache HTTP server has been the most prevalent web server software on the internet since 1996. Made by The Apache Software Foundation, Apache HTTP server is an open source HTTP web server with support for a wide variety of web frameworks and services. Learning Apache and Apache configuration is an essential part of any system administrator's training.
+
+\section*{SETUP}
+
+\textit{For more information and/or additional optional installations concerning Apache, visit:} \url{<http://wiki.gentoo.org/wiki/Apache#OpenRC>} 
+
+\begin{enumerate}
+
+\item Portage, Gentoo's package management system, uses USE flags to help determine which dependencies to install in order to support your packages. View \\* \verb|/etc/portage/make.conf| to check that support is enabled for the apache2 package on your machine. apache2 should be included in the USE variable:
+
+ \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, showstringspaces=false]
+USE="... apache2 ..."
+\end{lstlisting}
+
+  \item OpenRC is a dependency based init system that can be used to start and stop as well as configure runlevels (and many other things too) for services.  For launching and restarting on OpenRC, run the following commands as root
+  
+  Start the Apache Server:
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+/etc/init.d/apache2 start
+\end{lstlisting}
+  Add Apache to the default runlevel:
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+rc-update add apache2 default
+\end{lstlisting}
+  Restart the Apache service:
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+/etc/init.d/apache2 restart
+\end{lstlisting}
+  Reload Apache configuration files: 
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+/etc/init.d/apache2 reload
+\end{lstlisting}
+
+  \item To verify the IP interfaces and ports that Apache is listening to, run this command as root:
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+netstat -tulpen | grep apache
+\end{lstlisting}
+  We should get two lines similar to the following:
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
+tcp     0     0 0.0.0.0:80      0.0.0.0:*     
+LISTEN     0     10932720 	4544/apache2
+tcp     0     0 0.0.0.0:443     0.0.0.0:*     
+LISTEN     0     10932716 	4544/apache2
+\end{lstlisting}
+   The two most important parts of the lines are the third and fifth fields, ones that should show 0.0.0.0:80/443 (or :::80/443) and LISTEN. The value of 0.0.0.0:80/443 in the third field indicates all available IPv4 addresses while :::80/443 indicates all available addresses includeing IPv6 addresses. The LISTEN value in the fifth field tells us that Apache is accepting connections from the corresponding address(es).
+
+  \item Apache has two main configuration files in the system:
+   \begin{itemize}
+    \item Gentoo's apache2 init script configuration file \verb|/etc/conf.d/apache2|
+    \item Apache server's conventional configuration file \verb|/etc/apache2/httpd.conf|
+   \end{itemize}
+   Though we're not changing anything in these two files, it would be a good idea to look at them and understand what they do.
+   
+   \begin{description}
+    \item[-]Gentoo's init script configuration file:
+    \\* The only active line in this file is:
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, showstringspaces=false]
+APACHE2_OPTS="-D DEFAULT_VHOST -D INFO -D SSL 
+-D SSL_DEFAULT_VHOST -D LANGUAGE" 
+(the one on your system may be a bit different)
+\end{lstlisting}
+       This line defines options that will be interpreted by the various configuration files using the \verb|<IfDefine option-name>| statement to activate or deactivate some part of the whole configuration, usually modules. Modules are first and third-party patches to Apache that install more functions for Apache to use.
+     
+     \item[-]Apache server's conventional configuration file - \verb|httpd.conf|
+      \\*  This file is actually only an entry file, or an entry point for users in a file form, since Apache's whole configuration is split in many files in the \verb|/etc/apache2/| directory, assembled and connected together using the \textbf{Include} directive.
+      \\*[1mm] NOTE: Module configuration files (files in \verb|/etc/apache2/modules.d|) almost always start with \verb|<IfDefine module-name>|. For this reason, the content of those files will ONLY be assembled with the rest of the configuration if the \verb|-D module-name| flag in the \verb|APACHE2_OPTS| variable mentioned above is set to the matching option. The \verb|00_default_settings.conf| configuration file is an exception to this rule since it doesn't start with an \verb|IfDefine| statement and therefore is always included in the resulting configuration.
+    \end{description}
+    
+  \item Check to see if everything is installed correctly by going to \verb|http://localhost| using a browser program (such as elinks or links) on the actual machine. The screen should show \textbf{``It works!''} across the top. NOTE: If you don't have a browser program, you can install elinks using:
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em] 
+emerge -av elinks
+\end{lstlisting}
+
+\end {enumerate}
+
+\section*{CREATING NAME-BASED VIRTUAL HOSTS}
+``Name-based virtual hosts'' is a fancy name for what we implement to allow our servers to respond to multiple urls. Without virtual hosts, your webserver would only respond to http://localhost and/or (your-server).net. We create name-based virtual hosts so that our server responds to other prefixes, like www.(your-server).net, or admin.(your-server).net. For (your-server), you can name it anything you want.
+
+\textit{For more information visit:}
+\url{<http://gentoovps.net/apache-vhost/>}
+
+\begin{enumerate}
+
+  \item First, we need to make a directory/site root for the new server:
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em] 
+mkdir -p /var/www/net.(your-server).www/htdocs
+\end{lstlisting}
+  NOTE: The \verb|-p| option tells mkdir to create the parent directories of the target directory if they don't exist.
+
+  \item Then, enter the directory that stores all the configuration files of virtual hosts.
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em] 
+cd /etc/apache2/vhosts.d
+\end{lstlisting}
+
+  \item Create the file \verb|net.(your server).www.conf| and, in the file, type the following. Try to think about the purpose of each line as you write them. Each line is explained below.
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 3em, showstringspaces=false] 
+<IfDefine DEFAULT_VHOST>
+ <VirtualHost *:80>
+  ServerName www.(your server).net
+  ServerAlias (your server).net
+  ServerAdmin (name)@(your server).net
+  DocumentRoot "/var/www/net.(your server).www/htdocs"
+  <Directory "/var/www/net.(your server).www/htdocs">
+   Options Indexes FollowSymLinks
+   AllowOverride All
+   Order allow,deny
+   Allow from all
+  </Directory>
+ </VirtualHost>
+</IfDefine>
+\end{lstlisting}
+    \begin{description}
+      \item[-] The \verb|<IfDefine test>...</IfDefine>| section is used to mark directives that are conditional. The directives within an \verb|<IfDefine>| section are only processed if the test is true. If test is false, everything between the start and end markers is ignored.
+      \item[-] The \verb|<VirtualHost>...</VirtualHost>| section encloses a group of directives that apply only to a particular virtual host. It also states which IP address(es) the vhost replies to.
+      \begin{itemize}
+        \item \verb|ServerName| is pretty self-explanatory in that it establishes the name of the server. \verb|ServerAlias| is also self-explanatory in that it sets the other possible url's that can redirect to this particular virtual host.
+        \item \verb|ServerAdmin| sets the contact address that the server includes in any error messages it returns to the client.
+        \item \verb|DocumentRoot| sets the directory from which httpd will serve files.
+      \end{itemize}
+      \item[-] The \verb|<Directory>...</Directory>| section encloses directives that will apply to the named directory, sub-directories of that directory, and the files within the respective directories.
+      \begin{itemize}
+        \item The \verb|Options| directive controls which server features, usually those considered extra features, are available in a particular directory.
+        \item \verb|AllowOverride| establishes which directives in \verb|.htaccess| files are allowed to override earlier configurations.
+        \item The \verb|Order| directive controls the default access state of the site/page, and the order in which the \verb|Allow| and \verb|Deny| directives are evaluated.
+        \item \verb|Allow| controls which hosts can access an area of the server, as its name suggests.
+      \end{itemize}
+    \end{description}
+    \textit{For more detailed explanations and examples, visit:} 
+    \\* \url{http://httpd.apache.org/docs/2.2/mod/core.html#ifdefine}
+    \\* \emph{and}
+    \\* \url{http://httpd.apache.org/docs/2.2/mod/mod_authz_host.html#allow}
+    
+  \item Now, enter \verb|/var/www/|, the directory that stores the server files. Once there, create the directories for the pages just established.
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em] 
+mkdir -p net.(your server).www/htdocs
+\end{lstlisting}
+  To check if that worked, use the command 
+  \verb|ls -l| to make sure the directories were created.
+    
+  \item Create an easy \verb|index.html| in the directory just created \\*(\verb|/var/www/net.(your server).www/htdocs|) and add the following to the file:
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false] 
+<html>
+ <head> 
+  <title>www</title>
+ </head>
+ <body>
+ <h1>This is the www page</h1>
+ </body>
+</html>
+\end{lstlisting}
+
+  \item Now, restart and reload apache to save the changes (See ``For Launching and Restarting on OpenRC").
+  
+  \item To locally associate the IP address with the server name, edit \verb|/etc/hosts| and add the following values for 127.0.0.1.
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false] 
+127.0.0.1 ...www.(your server).net
+\end{lstlisting}
+
+  \item Check to see if everything's working by using a browser program to go to \\*\verb|www.(your server).net|.
+
+  \item Now, since the more the merrier, let's create an admin page alongside the main page we just created.
+  \\* [1mm] NOTE: Remember to edit the new admin config file, specifically the \textbf{ServerName, DocumentRoot, \emph{and} Directory} directives to reflect the change from a www page to an admin page. \textbf{ServerAlias} can be deleted. Also, don't forget to make the necessary changes to the HTML file as well.
+  
+\end{enumerate}
+
+
+\section*{APACHE SECURITY CONFIGURATIONS}
+
+As a system administrator it is your job to not only make sure that the system is fully functioning, but also to make sure the system is secure and safe. There are a wide variety of nefarious exploits and incorrect usages that open up when your system is hosting a web service, including Apache. But if properly configured, it is possible to prevent a majority of the security vulnerabilities in existence today.
+
+\vspace{5mm}
+
+NOTE: We will be configuring the admin website to have these settings.
+
+\begin {itemize}
+
+  \item IP Restricted- set so that only certain IP addresses/machines can access the site
+  
+  \begin {enumerate}
+
+    \item Since our website was just created, it has some of the weakest security measures available right now. As such, we'll just start with something simple and build up from there. Since we are working on the admin site, open the configuration file for the admin page with a text editor. We will just use vim for now.
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false] 
+vim /etc/apache2/vhosts.d/net.(your server).admin.conf
+\end{lstlisting}
+    
+    \item In the \verb|<Directory ...>| section, change the \verb|Allow| directive from \textbf{all} to the IP addresses that you want to allow access. In this case, change it to \textbf{127.0.0.1}.
+    
+    \item Don't forget to reload apache!
+    
+    \item Now your web page will only serve the site's files to the localhost address. Add your friend's IP's to allow them to access your site in the future. (For now, Apache isn't properly configured to accept nonlocal connections.) 
+    \\*[2mm] \textbf{NOTE:} Because of how simple it is to change one's own IP address, this form of security is almost useless unless paired with password protection, to ensure it is your friend querying you, and encrypted traffic, to make sure no one else can overhear the exchange of information (and passwords!).
+  \end{enumerate}
+  
+  \item Password Protected- set so that one would have to provide a valid user-password combination to see the site
+  \begin{enumerate}
+  
+    \item If you go to the admin page right now, you will be given immediate access due to the fact that the only line of defense is IP Restriction. So, let's add Password Protection. In \verb|/var/www/net.(your server).admin/htdocs|, create a file called \verb|.htaccess|. This file is located here instead of the traditional directory for config files because, as a rule of \verb|.htaccess| files, they must be located in the directory they would be affecting. So it will go in the \verb|htdocs| directory, where the HTML files will keep it company.
+    
+    \item In \verb|.htacces|, type the following (each line is explained below):
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 9em, showstringspaces=false] 
+AuthUserFile /var/www/net.(your server).admin/conf/admin-auth
+AuthGroupFile /dev/null
+AuthName "Admin only area"
+AuthType Basic
+
+<Limit GET POST>
+ require valid-user
+</Limit>
+\end{lstlisting}
+    \begin{description}
+      \item[-] \verb|AuthUserFile| tells the server which text file contains the list of users and passwords for authentication. \verb|AuthGroupFile| has a similar function but for groups instead.
+      \item[-] The \verb|AuthName| directive sets the name of the authorization realm for a directory, giving the client a hint as to which user-password combinations to use.
+      \item[-] Like its name suggests, \verb|AuthType| sets the type of configuration the server would have.
+      \item[-] \verb|<Limit>| and \verb|</Limit>| restrict enclosed access controls to only certain HTTP methods. \emph{Require} selects which authenticated users can access a resource.
+    \end{description}
+    \textit{For more information and examples, visit:}
+    \\* \url{http://httpd.apache.org/docs/2.2/mod/mod_authn_file.html}
+    \\* \emph{and}
+    \\* \url{http://httpd.apache.org/docs/2.2/mod/core.html#require}
+
+    \item Security of files is important too. So, as a precaution, change the permissions and ownership of .htaccess so you and apache can access the file, but only the owner can write in it. The backslash indicates that the line extends to the next line.
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false] 
+chgrp apache \
+/var/www/net.(your server).admin/htdocs/.htaccess
+
+chmod 640 \
+/var/www/net.(your server).admin/htdocs/.htaccess
+\end{lstlisting}
+
+    \item Make the directory \verb|conf| in the admin page's directory in \\*\verb|/var/www/net.(your-server).admin/|. Once that's done, we will create the password file that will contain all the user-password combinations.
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 10em, showstringspaces=false] 
+htpasswd -c /var/www/net.(your server).admin/conf/admin-auth \
+(USER)
+\end{lstlisting}
+    To add more users later, you would use the same command but without the \emph{-c} option. 
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 8em, showstringspaces=false] 
+htpasswd /var/www/net.(your server).admin/conf/admin-auth \
+(USER)
+\end{lstlisting}
+  
+    \item Now, protect the password file the same way as you did for .htaccess
+  
+    \item To ``activate'' password protection, we would need to edit the admin page's config file once more. In \verb|/etc/apache2/vhosts.d/net.(your server).admin.conf|, change the \verb|AllowOverride| directive from \textbf{all} to \textbf{AuthConfig}. Then, after the \verb|Allow| directive, add the line:
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false] 
+Satisfy All
+\end{lstlisting}
+    This makes it so that incoming requests have to satisfy both the \verb|require| and \verb|Allow| directive settings.
+    
+    \item Don't forget to reload apache!
+    
+    \item Now try it out! You shoul be greeted with a login page instead this time around, meaning that the configuration changes worked. P.S. You may have to reload the page (ctrl-R) in order for the page to reflect the fact that your user-password combination was correct.
+  
+  \end{enumerate}
+  
+  \item SSL (partial)- set so that there is the option of accessing the site through an ssl-encrypted network
+  \begin{enumerate}
+  
+    \item Though your page is now somewhat secure, the connection between a machine and the server is still unguarded. A secure, encrypted ssl connection is called on by typing \verb|https://| in the url. However, if you try it now, you would only get the localhost default page since the admin page is not configured to listen to port 443. Now, since OpenSSL should already be installed, we would go straight to generating the encryption key and certificate:
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false] 
+#generate key:
+  openssl genrsa 2048 > net.(your server).key
+#generate certificate
+  openssl req -new -x509 -nodes -sha1 -key \
+  net.(your server).key > net.(your server).crt
+\end{lstlisting}
+
+In the above code, make sure that the option -sha1 contains the number one and not a lowercase l. Here is a sample output of the first command:
+
+  \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false] 
+Generating RSA private key, 2048 bit long modulus
+.........+++
+....................................+++
+e is 65537 (0x10001)
+\end{lstlisting}
+   When it asks for information, you can fill in however much you want.
+    
+    \item Now, move the files to a more reasonable place, such as \verb|/etc/apache2|
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false] 
+mv *.crt *.key /etc/apache2
+\end{lstlisting}
+
+    \item Check to make sure \verb|APACHE2_OPTS| in \verb|/etc/conf.d/apache2| has \verb|SSL| and \verb|SSL_DEFAULT_VHOST|.
+    
+    \item \verb|NameVirtualHost| is a required directive if one wants to configure name-based virtual hosts. It specifies the IP address on which the server will receive and answer requests for the virtual hosts, usually used when more than one vhost listens to the same IP address. So, in \verb|/etc/apache2/vhosts.d/00_default_ssl_vhost.conf|, under the \textbf{Listen} line in the file, add the following:
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 6em, showstringspaces=false] 
+NameVirtualHost *:443
+\end{lstlisting}
+
+    \item Next, we need to configure the admin page to actually have a virtual host to answer an SSL connection request. This is because the virtual host already established only listens to requests on port 80, while SSL connections use port 443. Also, with its different configurations, the ``non-secure'' vhost and the SSL vhost have to remain separate. So, enter the config file for the admin page and, directly after the line \verb|</VirtualHost>|, add the following:
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 8em, showstringspaces=false] 
+<IfDefine SSL>
+ <IfModule ssl_module>
+  <VirtualHost *:443>
+   SSLEngine on
+   SSLCertificateFile /etc/apache2/net.(your server).crt
+   SSLCertificateKeyFile /etc/apache2/net.(your server).key
+   
+   ServerName admin.(your server).net
+   
+   SSLOptions StrictRequire
+   SSLProtocol all -SSLv2
+   
+   SSLCipherSuite RC4-SHA:AES128-SHA:HIGH:!aNULL:!MD5
+   SSLHonorCipherOrder on
+   
+   DocumentRoot "/var/www/net.(your server).admin/htdocs"
+   <Directory "/var/www/net.(your server).admin/htdocs">
+    SSLRequireSSL
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+   </Directory>
+  </VirtualHost>
+ </IfModule>
+</IfDefine>
+\end{lstlisting}
+    \begin{description}
+      \item[-] The \verb|<IfDefine>| is mentioned before, and the \verb|<IfModule>| section encloses directives that are conditional on the presence of a specific module.
+      \item[-] \verb|VirtualHost| still has the same function, though in this case it considers the SSL default port of 443 instead.
+      \begin{itemize}
+        \item The \verb|SSLEngine| directive toggles the usage of the SSL/TLS Protocol Engine, which is responsible for creating SSL/TLS connections.
+        \item For \verb|SSLCertificateFile| and \verb|SSLCertificateKeyFile|, their names are self-explanatory. They establish the full path to the SSL key and certificate files created earlier.
+        \item \verb|SSLOptions| is used to control various run-time options on a per-directory basis
+        \item Just like its name, \verb|SSLProtocol| is used to control which SSL protocol mod\_ssl would use when establishing the server environment.
+        \item \verb|SSLCipherSuite| establishes which Cipher Suites are available for negotiation in a SSL handshake. Meanwhile, \verb|SSLHonorCipherOrder|, when enabled, means that connections will prefer the server's cipher preference order when choosing a cipher.
+      \end{itemize}
+      \item[-] In the \verb|<Directory>| section, whose file condition should stay the same, the \verb|SSLRequireSSL| directory denies the client access when SSL is not used for the HTTP request a.k.a. HTTPS is not used, though it isn't as effective as the next configuration.
+    \end{description}
+    \textbf{ERROR!!} If you encounter the SSL error "unable to get local issuer certificate," there is a way to fix it! Go to the file \verb|00_default_ssl_vhost.conf| and change the \verb|SSLCertificateKeyFile| and \verb|SSLCertificateFile| to the path of certificate and key you created.
+    
+    NOTE: There shoud be two lines of \verb|</IfDefine>| at the end of the config file. This is because the new \verb|<IfDefine>| section is nested within our \verb|<IfDefine DEFAULT_VHOST>| section.
+    \\* \textit{For more information and examples, visit:}
+    \\* \url{http://httpd.apache.org/docs/2.2/mod/mod_ssl.html}
+    
+    \item Don't forget to reload apache!
+    
+    \item Now you can try this out by using \verb|https://| in place of \verb|http://|. Since the certificate created is extremely sketchy, some browsers would ask if you really want to continue. Follow the steps to progress, and you should find yourself at the admin page once again. With the current settings, you will only go through a ssl-secured network when \verb|https://| is used. \verb|http://| will still go through normal, unsecure connections.
+  
+  \end{enumerate}
+  
+  \item SSL (required)- set so that all attempts to access the site will go through ssl-encryption
+  \begin{enumerate}
+  
+    \item This is actually really simple. in the \verb|<VirtualHost *:80>| section of the admin's conf file, add the following lines:
+    \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em, framexrightmargin = 8em, showstringspaces=false] 
+RewriteEngine On
+RewriteCond %{HTTPS} !on
+RewriteRule ^/(.*) https://%{SERVER_NAME}%{REQUEST_URI} [R]
+\end{lstlisting}
+    \begin{description}
+      \item[-] Like SSLEngine, the \verb|RewriteEngine| directive enables or disables the runtime rewriting engine.
+      \item[-] \verb|RewriteCond| defines the condition under which rewriting will take place, while \verb|RewriteRule| defines the rules for the rewriting engine.
+    \end{description}
+    \textit{For more information and examples, visit:}
+    \\* \url{http://httpd.apache.org/docs/current/mod/mod_rewrite.html}
+    
+    \item Don't forget to reload apache!
+    
+    \item Now, when you try to access \verb|http://...|, it should automatically connect to \verb|https://...|. In other words, you will always go through a secure connection!
+  
+  \end{enumerate}
+
+\end{itemize}
+
+Great! Now you have configured a (relatively) secure website, with an even more secure admin site. You're probably aware by now that others \emph{still} can't connect to your shiny new website. That doesn't make your boss very happy, so it is your job as the system administrator to get that working.
+
+\begin{itemize}
+	  \item Configure your server to accept nonlocal connections, and access the local DNS server at %insert DNS IP here
+      to add your site's IP to its lists.
+      \item You'll have to add your IP address to \verb|00_default_vhost.conf|, 
+      \\* \verb|net.(your server).(page).conf|, and the conf files of other pages that you would like to let others access.
+      \item Remember that the virtual hosts for regular and SSL have to stay separate. This also means that the IP addresses they answer to have to be distinguished from each other too.
+\end{itemize}
+
+
+
+\end{document}
