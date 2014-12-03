@@ -559,21 +559,3 @@ through SSL.**
 
 Great! Now you have configured a (relatively) secure website, with an
 even more secure admin site. 
-
-You're probably aware by now that others
-*still* can't connect to your shiny new website. That doesn't make your
-boss very happy, so it is your job as the system administrator to get
-that working.
-
--   Configure your server to accept nonlocal connections, and access the
-    local DNS server at to add your site's IP to its lists.
-
--   You'll have to add your IP address to `00_default_vhost.conf`,\
-    `net.(your server).(page).conf`, and the conf files of other pages
-    that you would like to let others access.
-
--   Remember that the virtual hosts for regular and SSL have to stay
-    separate. This also means that the IP addresses they answer to have
-    to be distinguished from each other too.
-
-
