@@ -422,251 +422,222 @@ permissions and ownership of .htaccess so you and apache can access the file,
 but only the owner can write in it. The backslash indicates that the line
 extends to the next line.
 </p>
-<pre class="para-block para-block" data-line="8;apache.md:380"><code>   chgrp apache \
-   /var/www/net.(your server).admin/htdocs/.htaccess
+<pre class="para-block para-block" data-line="8;apache.md:380"><code>   chgrp apache /var/www/net.(your server).admin/htdocs/.htaccess
 
-   chmod 640 \
-   /var/www/net.(your server).admin/htdocs/.htaccess</code></pre></li>
-<li data-line="8;apache.md:386">
-<p data-line="8;apache.md:386"><span data-line="8;apache.md::386"></span>Make the directory <span data-line="8;apache.md::386"></span><code class="code">conf</code><span data-line="8;apache.md::386"></span> in the admin page<span data-line="8;apache.md::386"></span>&#39;<span data-line="8;apache.md::386"></span>s directory in <span data-line="8;apache.md::386"></span><code class="code">/var/www/net
-.(your-server).admin/</code><span data-line="8;apache.md::387"></span>. Once that<span data-line="8;apache.md::387"></span>&#39;<span data-line="8;apache.md::387"></span>s done, we will create the password file
+   chmod 640 /var/www/net.(your server).admin/htdocs/.htaccess</code></pre></li>
+<li data-line="8;apache.md:384">
+<p data-line="8;apache.md:384"><span data-line="8;apache.md::384"></span>Make the directory <span data-line="8;apache.md::384"></span><code class="code">conf</code><span data-line="8;apache.md::384"></span> in the admin page<span data-line="8;apache.md::384"></span>&#39;<span data-line="8;apache.md::384"></span>s directory in <span data-line="8;apache.md::384"></span><code class="code">/var/www/net
+.(your-server).admin/</code><span data-line="8;apache.md::385"></span>. Once that<span data-line="8;apache.md::385"></span>&#39;<span data-line="8;apache.md::385"></span>s done, we will create the password file
 that will contain all the user-password combinations.
 </p>
-<pre class="para-block fenced para-block" data-line="8;apache.md:389" data-line-code="8;apache.md:390"><code data-line="8;apache.md:390">   htpasswd -c /var/www/net.(your server).admin/conf/admin-auth (USER)</code></pre>
-<p data-line="8;apache.md:393"><span data-line="8;apache.md::393"></span>Later, if you<span data-line="8;apache.md::393"></span>&#39;<span data-line="8;apache.md::393"></span>d like to add more users, you would use the same command but
-without the <span data-line="8;apache.md::394"></span><code class="code">-c</code><span data-line="8;apache.md::394"></span> option.
+<pre class="para-block fenced para-block" data-line="8;apache.md:387" data-line-code="8;apache.md:388"><code data-line="8;apache.md:388">   htpasswd -c /var/www/net.(your server).admin/conf/admin-auth (USER)</code></pre>
+<p data-line="8;apache.md:391"><span data-line="8;apache.md::391"></span>Later, if you<span data-line="8;apache.md::391"></span>&#39;<span data-line="8;apache.md::391"></span>d like to add more users, you would use the same command but
+without the <span data-line="8;apache.md::392"></span><code class="code">-c</code><span data-line="8;apache.md::392"></span> option.
 </p>
-<pre class="para-block fenced para-block" data-line="8;apache.md:395" data-line-code="8;apache.md:396"><code data-line="8;apache.md:396">   htpasswd /var/www/net.(your server).admin/conf/admin-auth (USER)</code></pre></li>
-<li data-line="8;apache.md:399">
-<p data-line="8;apache.md:399"><span data-line="8;apache.md::399"></span>Now, protect the password file the same way as you did for
-  <span data-line="8;apache.md::400"></span><code class="code">.htaccess</code><span data-line="8;apache.md::400"></span>
+<pre class="para-block fenced para-block" data-line="8;apache.md:393" data-line-code="8;apache.md:394"><code data-line="8;apache.md:394">   htpasswd /var/www/net.(your server).admin/conf/admin-auth (USER)</code></pre></li>
+<li data-line="8;apache.md:397">
+<p data-line="8;apache.md:397"><span data-line="8;apache.md::397"></span>Now, protect the password file the same way as you did for
+  <span data-line="8;apache.md::398"></span><code class="code">.htaccess</code><span data-line="8;apache.md::398"></span>
 </p></li>
-<li data-line="8;apache.md:402">
-<p data-line="8;apache.md:402"><span data-line="8;apache.md::402"></span>To <span data-line="8;apache.md::402"></span>&#8220;activate&#8221;<span data-line="8;apache.md::402"></span> password protection, we would need to edit the
-  admin page<span data-line="8;apache.md::403"></span>&#39;<span data-line="8;apache.md::403"></span>s config file once more. In
-  <span data-line="8;apache.md::404"></span><code class="code">/etc/apache2/vhosts.d/net.(your server).admin.conf</code><span data-line="8;apache.md::404"></span>, change the
-  <span data-line="8;apache.md::405"></span><code class="code">AllowOverride</code><span data-line="8;apache.md::405"></span> directive from <span data-line="8;apache.md::405"></span><strong>all</strong><span data-line="8;apache.md::405"></span> to <span data-line="8;apache.md::405"></span><strong>AuthConfig</strong><span data-line="8;apache.md::405"></span>. Then,
-  after the <span data-line="8;apache.md::406"></span><code class="code">Allow</code><span data-line="8;apache.md::406"></span> directive, add the line:
-</p>
-<pre class="para-block para-block" data-line="8;apache.md:408"><code>  Satisfy All</code></pre>
-<p data-line="8;apache.md:410"><span data-line="8;apache.md::410"></span>  This makes it so that incoming requests have to satisfy both the
-  <span data-line="8;apache.md::411"></span><code class="code">require</code><span data-line="8;apache.md::411"></span> and <span data-line="8;apache.md::411"></span><code class="code">Allow</code><span data-line="8;apache.md::411"></span> directive settings.
-</p>
-<ol class="loose" start="7" data-line="8;apache.md:413">
-<li data-line="8;apache.md:413">
-<p data-line="8;apache.md:413"><span data-line="8;apache.md::413"></span>Don<span data-line="8;apache.md::413"></span>&#39;<span data-line="8;apache.md::413"></span>t forget to reload apache!
-</p></li>
-<li data-line="8;apache.md:415">
-<p data-line="8;apache.md:415"><span data-line="8;apache.md::415"></span>Now try it out! You shoul be greeted with a login page instead
-this time around, meaning that the configuration changes worked.
-P.S. You may have to reload the page (ctrl-R) in order for the
-page to reflect the fact that your user-password combination was
-correct.
+<li data-line="8;apache.md:400">
+<p data-line="8;apache.md:400"><span data-line="8;apache.md::400"></span>Now try it out! You should be greeted with a login page instead this time
+around, meaning that the configuration changes worked. P.S. You may have to
+reload the page (ctrl-R) in order for the page to reflect the fact that your
+user-password combination was correct.
 </p></li></ol>
+<h3 id="step-3--provide-an-encrypted-connection-to-the-site"  data-line="8;apache.md:405" ><span data-line="8;apache.md::405"></span>Step 3: Provide an encrypted connection to the site.</h3>
+<p class="para-continue" data-line="8;apache.md:407"><span data-line="8;apache.md::407"></span>Though your page is now somewhat secure, the connection between a machine and
+the server is still unguarded. A secure, encrypted ssl connection is called on
+by typing <span data-line="8;apache.md::409"></span><code class="code">https://</code><span data-line="8;apache.md::409"></span> in the url. However, if you try it now, you would only get
+the localhost default page since the admin page is not configured to listen to
+port 443. Now, since OpenSSL should already be installed, we can go straight
+to generating the encryption key and certificate:
+</p>
+<ol class="loose" data-line="8;apache.md:414">
+<li data-line="8;apache.md:414">
+<p data-line="8;apache.md:414"><span data-line="8;apache.md::414"></span>In your home directory, generate an SSL key
+</p>
+<pre class="para-block para-block" data-line="8;apache.md:416"><code>     openssl genrsa 2048 &gt; net.(your server).key</code></pre></li>
+<li data-line="8;apache.md:418">
+<p data-line="8;apache.md:418"><span data-line="8;apache.md::418"></span>In your home directory, generate an SSL certificate
+</p>
+<pre class="para-block fenced para-block" data-line="8;apache.md:419" data-line-code="8;apache.md:420"><code data-line="8;apache.md:420">   openssl req -new -x509 -nodes -sha1 -key net.(your server).key &gt; net.(your server).crt</code></pre>
+<p data-line="8;apache.md:423"><span data-line="8;apache.md::423"></span>In the above command, make sure that the option<span data-line="8;apache.md::423"></span> <span data-line="8;apache.md::423"></span>-sha1 contains the number one
+and not a lowercase l. When it asks for information, you can fill in however
+much you want.
+</p></li>
+<li data-line="8;apache.md:427">
+<p data-line="8;apache.md:427"><span data-line="8;apache.md::427"></span>Move the key and certificate files to <span data-line="8;apache.md::427"></span><code class="code">/etc/apache2</code><span data-line="8;apache.md::427"></span>
+</p></li>
+<li data-line="8;apache.md:429">
+<p data-line="8;apache.md:429"><span data-line="8;apache.md::429"></span>Check to make sure <span data-line="8;apache.md::429"></span><code class="code">APACHE2_OPTS</code><span data-line="8;apache.md::429"></span> in <span data-line="8;apache.md::429"></span><code class="code">/etc/conf.d/apache2</code><span data-line="8;apache.md::429"></span> has
+   <span data-line="8;apache.md::430"></span><code class="code">SSL</code><span data-line="8;apache.md::430"></span> and <span data-line="8;apache.md::430"></span><code class="code">SSL_DEFAULT_VHOST</code><span data-line="8;apache.md::430"></span>.
+</p></li>
+<li data-line="8;apache.md:432">
+<p data-line="8;apache.md:432"><span data-line="8;apache.md::432"></span><code class="code">NameVirtualHost</code><span data-line="8;apache.md::432"></span> is a required directive if one wants to configure name-
+based virtual hosts. It specifies the IP address on which the server will
+receive and answer requests for the virtual hosts, usually used when more than
+one vhost listens to the same IP address. So, in
+<span data-line="8;apache.md::436"></span><code class="code">/etc/apache2/vhosts.d/00_default_ssl_vhost.conf</code><span data-line="8;apache.md::436"></span>, under the <span data-line="8;apache.md::436"></span><strong>Listen</strong><span data-line="8;apache.md::436"></span> line
+in the file, add the following:
+</p>
+<pre class="para-block fenced para-block" data-line="8;apache.md:438" data-line-code="8;apache.md:439"><code data-line="8;apache.md:439">   NameVirtualHost *:443</code></pre></li>
+<li data-line="8;apache.md:442">
+<p data-line="8;apache.md:442"><span data-line="8;apache.md::442"></span>Next, we need to configure the admin page to actually have a
+  virtual host to answer an SSL connection request. This is
+  because the virtual host that is already established only listens to
+  requests on port 80, while SSL connections use port 443. Also,
+  with its different configurations, the <span data-line="8;apache.md::446"></span>&#8220;non-secure&#8221;<span data-line="8;apache.md::446"></span> vhost and
+  the SSL vhost have to remain separate. So, enter the config file
+  for the admin page and, directly after the line
+  <span data-line="8;apache.md::449"></span><code class="code">&lt;/VirtualHost&gt;</code><span data-line="8;apache.md::449"></span>, add the following:
+</p>
+<pre class="para-block para-block" data-line="8;apache.md:451"><code>  &lt;IfDefine SSL&gt;
+   &lt;IfModule ssl_module&gt;
+    &lt;VirtualHost *:443&gt;
+     SSLEngine on
+     SSLCertificateFile /etc/apache2/net.(your server).crt
+     SSLCertificateKeyFile /etc/apache2/net.(your server).key
+     
+     ServerName admin.(your server).net
+     
+     SSLOptions StrictRequire
+     SSLProtocol all -SSLv2
+     
+     SSLCipherSuite RC4-SHA:AES128-SHA:HIGH:!aNULL:!MD5
+     SSLHonorCipherOrder on
+     
+     DocumentRoot &quot;/var/www/net.(your server).admin/htdocs&quot;
+     &lt;Directory &quot;/var/www/net.(your server).admin/htdocs&quot;&gt;
+      SSLRequireSSL
+      Options Indexes FollowSymLinks
+      AllowOverride All
+      Order allow,deny
+      Allow from all
+     &lt;/Directory&gt;
+    &lt;/VirtualHost&gt;
+   &lt;/IfModule&gt;
+  &lt;/IfDefine&gt;</code></pre>
+<ul class="loose" data-line="8;apache.md:478">
+<li data-line="8;apache.md:478">
+<p data-line="8;apache.md:478"><span data-line="8;apache.md::478"></span>The <span data-line="8;apache.md::478"></span><code class="code">&lt;IfDefine&gt;</code><span data-line="8;apache.md::478"></span> is mentioned before, and the <span data-line="8;apache.md::478"></span><code class="code">&lt;IfModule&gt;</code><span data-line="8;apache.md::478"></span>
+  section encloses directives that are conditional on the
+  presence of a specific module.
+</p></li>
+<li data-line="8;apache.md:482">
+<p data-line="8;apache.md:482"><span data-line="8;apache.md::482"></span><code class="code">VirtualHost</code><span data-line="8;apache.md::482"></span> still has the same function, though in this
+  case it considers the SSL default port of 443 instead.
+</p>
+<ul class="loose" data-line="8;apache.md:485">
+<li data-line="8;apache.md:485">
+<p data-line="8;apache.md:485"><span data-line="8;apache.md::485"></span>The <span data-line="8;apache.md::485"></span><code class="code">SSLEngine</code><span data-line="8;apache.md::485"></span> directive toggles the usage of the
+SSL/TLS Protocol Engine, which is responsible for
+creating SSL/TLS connections.
+</p></li>
+<li data-line="8;apache.md:489">
+<p data-line="8;apache.md:489"><span data-line="8;apache.md::489"></span>For <span data-line="8;apache.md::489"></span><code class="code">SSLCertificateFile</code><span data-line="8;apache.md::489"></span> and <span data-line="8;apache.md::489"></span><code class="code">SSLCertificateKeyFile</code><span data-line="8;apache.md::489"></span>,
+their names are self-explanatory. They establish the
+full path to the SSL key and certificate files created
+earlier.
+</p></li>
+<li data-line="8;apache.md:494">
+<p data-line="8;apache.md:494"><span data-line="8;apache.md::494"></span><code class="code">SSLOptions</code><span data-line="8;apache.md::494"></span> is used to control various run-time options
+on a per-directory basis
+</p></li>
+<li data-line="8;apache.md:497">
+<p data-line="8;apache.md:497"><span data-line="8;apache.md::497"></span>Just like its name, <span data-line="8;apache.md::497"></span><code class="code">SSLProtocol</code><span data-line="8;apache.md::497"></span> is used to control
+which SSL protocol mod<span data-line="8;apache.md::498"></span>_<span data-line="8;apache.md::498"></span>ssl would use when establishing
+the server environment.
+</p></li>
+<li data-line="8;apache.md:501">
+<p data-line="8;apache.md:501"><span data-line="8;apache.md::501"></span><code class="code">SSLCipherSuite</code><span data-line="8;apache.md::501"></span> establishes which Cipher Suites are
+available for negotiation in a SSL handshake. Meanwhile,
+<span data-line="8;apache.md::503"></span><code class="code">SSLHonorCipherOrder</code><span data-line="8;apache.md::503"></span>, when enabled, means that
+connections will prefer the server<span data-line="8;apache.md::504"></span>&#39;<span data-line="8;apache.md::504"></span>s cipher preference
+order when choosing a cipher.
+</p></li></ul>
+</li>
+<li data-line="8;apache.md:507">
+<p data-line="8;apache.md:507"><span data-line="8;apache.md::507"></span>In the <span data-line="8;apache.md::507"></span><code class="code">&lt;Directory&gt;</code><span data-line="8;apache.md::507"></span> section, whose file condition should
+  stay the same, the <span data-line="8;apache.md::508"></span><code class="code">SSLRequireSSL</code><span data-line="8;apache.md::508"></span> directory denies the
+  client access when SSL is not used for the HTTP request
+  a.k.a. HTTPS is not used, though it isn<span data-line="8;apache.md::510"></span>&#39;<span data-line="8;apache.md::510"></span>t as effective as
+  the next configuration.
+</p>
+<p data-line="8;apache.md:513"><span data-line="8;apache.md::513"></span>  <span data-line="8;apache.md::513"></span><strong>Warning</strong><span data-line="8;apache.md::513"></span>: Notice that you allow connections over SSL from <span data-line="8;apache.md::513"></span><em>all</em><span data-line="8;apache.md::513"></span>
+  IP addresses. You can change <span data-line="8;apache.md::514"></span><code class="code">Allow from all</code><span data-line="8;apache.md::514"></span> to allow from only
+  certain IPs, as you did for the non-SSL version.
+</p>
+<p data-line="8;apache.md:517"><span data-line="8;apache.md::517"></span>NOTE: There should be two lines of <span data-line="8;apache.md::517"></span><code class="code">&lt;/IfDefine&gt;</code><span data-line="8;apache.md::517"></span> at the end of
+the config file. This is because the new <span data-line="8;apache.md::518"></span><code class="code">&lt;IfDefine&gt;</code><span data-line="8;apache.md::518"></span> section is
+nested within our <span data-line="8;apache.md::519"></span><code class="code">&lt;IfDefine DEFAULT_VHOST&gt;</code><span data-line="8;apache.md::519"></span> section.<span data-line="8;apache.md::519"></span><br>
+<span data-line="8;apache.md::520"></span><em>For more information and examples, visit:</em><span data-line="8;apache.md::520"></span><br>
+<span data-line="8;apache.md::521"></span><a href="http://httpd.apache.org/docs/2.2/mod/mod_ssl.html">http://httpd.apache.org/docs/2.2/mod/mod_ssl.html</a><span data-line="8;apache.md::521"></span>
+</p></li></ul>
 </li></ol>
 
-<ul class="loose" data-line="8;apache.md:421">
-<li data-line="8;apache.md:421">
-<p data-line="8;apache.md:421"><span data-line="8;apache.md::421"></span>SSL (partial)- set so that there is the option of accessing the site
-through an ssl-encrypted network
+<p data-line="8;apache.md:523"><span data-line="8;apache.md::523"></span>Now you can try this out by using <span data-line="8;apache.md::523"></span><code class="code">https://</code><span data-line="8;apache.md::523"></span> in place of <span data-line="8;apache.md::523"></span><code class="code">http://</code><span data-line="8;apache.md::523"></span>. Since the
+certificate created is extremely sketchy, some browsers might ask if you really
+want to continue. Follow the steps to progress, and you should find yourself at
+the admin page once again. With the current settings, you will only go through a
+ssl-secured network when <span data-line="8;apache.md::527"></span><code class="code">https://</code><span data-line="8;apache.md::527"></span> is used. <span data-line="8;apache.md::527"></span><code class="code">http://</code><span data-line="8;apache.md::527"></span> will still go through
+normal, unsecure connections.
 </p>
-<ol class="loose" data-line="8;apache.md:424">
-<li data-line="8;apache.md:424">
-<p data-line="8;apache.md:424"><span data-line="8;apache.md::424"></span>Though your page is now somewhat secure, the connection between
-a machine and the server is still unguarded. A secure, encrypted
-ssl connection is called on by typing <span data-line="8;apache.md::426"></span><code class="code">https://</code><span data-line="8;apache.md::426"></span> in the url.
-However, if you try it now, you would only get the localhost
-default page since the admin page is not configured to listen to
-port 443. Now, since OpenSSL should already be installed, we
-would go straight to generating the encryption key and
-certificate:
-</p>
-<pre class="para-block para-block" data-line="8;apache.md:433"><code>#generate key:
-  openssl genrsa 2048 &gt; net.(your server).key
-#generate certificate
-  openssl req -new -x509 -nodes -sha1 -key \
-  net.(your server).key &gt; net.(your server).crt</code></pre>
-<p data-line="8;apache.md:439"><span data-line="8;apache.md::439"></span>In the above code, make sure that the option<span data-line="8;apache.md::439"></span> <span data-line="8;apache.md::439"></span>-sha1 contains the
-number one and not a lowercase l. Here is a sample output of the
-first command:
-</p>
-<pre class="para-block para-block" data-line="8;apache.md:443"><code>Generating RSA private key, 2048 bit long modulus
-.........+++
-....................................+++
-e is 65537 (0x10001)</code></pre>
-<p data-line="8;apache.md:448"><span data-line="8;apache.md::448"></span>When it asks for information, you can fill in however much you
-want.
-</p></li>
-<li data-line="8;apache.md:451">
-<p data-line="8;apache.md:451"><span data-line="8;apache.md::451"></span>Now, move the files to a more reasonable place, such as
-<span data-line="8;apache.md::452"></span><code class="code">/etc/apache2</code><span data-line="8;apache.md::452"></span>
-</p>
-<pre class="para-block para-block" data-line="8;apache.md:454"><code>mv *.crt *.key /etc/apache2</code></pre></li>
-<li data-line="8;apache.md:456">
-<p data-line="8;apache.md:456"><span data-line="8;apache.md::456"></span>Check to make sure <span data-line="8;apache.md::456"></span><code class="code">APACHE2_OPTS</code><span data-line="8;apache.md::456"></span> in <span data-line="8;apache.md::456"></span><code class="code">/etc/conf.d/apache2</code><span data-line="8;apache.md::456"></span> has
-<span data-line="8;apache.md::457"></span><code class="code">SSL</code><span data-line="8;apache.md::457"></span> and <span data-line="8;apache.md::457"></span><code class="code">SSL_DEFAULT_VHOST</code><span data-line="8;apache.md::457"></span>.
-</p></li>
-<li data-line="8;apache.md:459">
-<p data-line="8;apache.md:459"><span data-line="8;apache.md::459"></span><code class="code">NameVirtualHost</code><span data-line="8;apache.md::459"></span> is a required directive if one wants to
-configure name-based virtual hosts. It specifies the IP address
-on which the server will receive and answer requests for the
-virtual hosts, usually used when more than one vhost listens to
-the same IP address. So, in
-<span data-line="8;apache.md::464"></span><code class="code">/etc/apache2/vhosts.d/00_default_ssl_vhost.conf</code><span data-line="8;apache.md::464"></span>, under the
-<span data-line="8;apache.md::465"></span><strong>Listen</strong><span data-line="8;apache.md::465"></span> line in the file, add the following:
-</p>
-<pre class="para-block para-block" data-line="8;apache.md:467"><code>NameVirtualHost *:443</code></pre></li>
-<li data-line="8;apache.md:469">
-<p data-line="8;apache.md:469"><span data-line="8;apache.md::469"></span>Next, we need to configure the admin page to actually have a
-virtual host to answer an SSL connection request. This is
-because the virtual host already established only listens to
-requests on port 80, while SSL connections use port 443. Also,
-with its different configurations, the <span data-line="8;apache.md::473"></span>&#8220;non-secure&#8221;<span data-line="8;apache.md::473"></span> vhost and
-the SSL vhost have to remain separate. So, enter the config file
-for the admin page and, directly after the line
-<span data-line="8;apache.md::476"></span><code class="code">&lt;/VirtualHost&gt;</code><span data-line="8;apache.md::476"></span>, add the following:
-</p>
-<pre class="para-block para-block" data-line="8;apache.md:478"><code>&lt;IfDefine SSL&gt;
- &lt;IfModule ssl_module&gt;
-  &lt;VirtualHost *:443&gt;
-   SSLEngine on
-   SSLCertificateFile /etc/apache2/net.(your server).crt
-   SSLCertificateKeyFile /etc/apache2/net.(your server).key
-   
-   ServerName admin.(your server).net
-   
-   SSLOptions StrictRequire
-   SSLProtocol all -SSLv2
-   
-   SSLCipherSuite RC4-SHA:AES128-SHA:HIGH:!aNULL:!MD5
-   SSLHonorCipherOrder on
-   
-   DocumentRoot &quot;/var/www/net.(your server).admin/htdocs&quot;
-   &lt;Directory &quot;/var/www/net.(your server).admin/htdocs&quot;&gt;
-    SSLRequireSSL
-    Options Indexes FollowSymLinks
-    AllowOverride All
-    Order allow,deny
-    Allow from all
-   &lt;/Directory&gt;
-  &lt;/VirtualHost&gt;
- &lt;/IfModule&gt;
-&lt;/IfDefine&gt;</code></pre>
-<p data-line="8;apache.md:505"><span data-line="8;apache.md::505"></span>-
-:   The <span data-line="8;apache.md::506"></span><code class="code">&lt;IfDefine&gt;</code><span data-line="8;apache.md::506"></span> is mentioned before, and the <span data-line="8;apache.md::506"></span><code class="code">&lt;IfModule&gt;</code><span data-line="8;apache.md::506"></span>
-</p>
-<pre class="para-block para-block" data-line="8;apache.md:507"><code>section encloses directives that are conditional on the
-presence of a specific module.</code></pre>
-<p data-line="8;apache.md:510"><span data-line="8;apache.md::510"></span>-
-:   <span data-line="8;apache.md::511"></span><code class="code">VirtualHost</code><span data-line="8;apache.md::511"></span> still has the same function, though in this
-</p>
-<pre class="para-block para-block" data-line="8;apache.md:512"><code>case it considers the SSL default port of 443 instead.
-
--   The `SSLEngine` directive toggles the usage of the
-    SSL/TLS Protocol Engine, which is responsible for
-    creating SSL/TLS connections.
-
--   For `SSLCertificateFile` and `SSLCertificateKeyFile`,
-    their names are self-explanatory. They establish the
-    full path to the SSL key and certificate files created
-    earlier.
-
--   `SSLOptions` is used to control various run-time options
-    on a per-directory basis
-
--   Just like its name, `SSLProtocol` is used to control
-    which SSL protocol mod\_ssl would use when establishing
-    the server environment.
-
--   `SSLCipherSuite` establishes which Cipher Suites are
-    available for negotiation in a SSL handshake. Meanwhile,
-    `SSLHonorCipherOrder`, when enabled, means that
-    connections will prefer the server&#39;s cipher preference
-    order when choosing a cipher.</code></pre>
-<p data-line="8;apache.md:536"><span data-line="8;apache.md::536"></span>-
-:   In the <span data-line="8;apache.md::537"></span><code class="code">&lt;Directory&gt;</code><span data-line="8;apache.md::537"></span> section, whose file condition should
-</p>
-<pre class="para-block para-block" data-line="8;apache.md:538"><code>stay the same, the `SSLRequireSSL` directory denies the
-client access when SSL is not used for the HTTP request
-a.k.a. HTTPS is not used, though it isn&#39;t as effective as
-the next configuration.</code></pre>
-<p data-line="8;apache.md:543"><span data-line="8;apache.md::543"></span><strong>ERROR!!</strong><span data-line="8;apache.md::543"></span> If you encounter the SSL error <span data-line="8;apache.md::543"></span>&#8220;unable to get local
-issuer certificate,&#8221;<span data-line="8;apache.md::544"></span> there is a way to fix it! Go to the file
-<span data-line="8;apache.md::545"></span><code class="code">00_default_ssl_vhost.conf</code><span data-line="8;apache.md::545"></span> and change the
-<span data-line="8;apache.md::546"></span><code class="code">SSLCertificateKeyFile</code><span data-line="8;apache.md::546"></span> and <span data-line="8;apache.md::546"></span><code class="code">SSLCertificateFile</code><span data-line="8;apache.md::546"></span> to the path of
+<p class="indent" data-line="8;apache.md:530"><span data-line="8;apache.md::530"></span>If you encounter the SSL error <span data-line="8;apache.md::530"></span>&#8220;unable to get local
+issuer certificate,&#8221;<span data-line="8;apache.md::531"></span> there is a way to fix it! Go to the file
+<span data-line="8;apache.md::532"></span><code class="code">00_default_ssl_vhost.conf</code><span data-line="8;apache.md::532"></span> and change the
+<span data-line="8;apache.md::533"></span><code class="code">SSLCertificateKeyFile</code><span data-line="8;apache.md::533"></span> and <span data-line="8;apache.md::533"></span><code class="code">SSLCertificateFile</code><span data-line="8;apache.md::533"></span> to the path of
 certificate and key you created.
 </p>
-<p data-line="8;apache.md:549"><span data-line="8;apache.md::549"></span>NOTE: There shoud be two lines of <span data-line="8;apache.md::549"></span><code class="code">&lt;/IfDefine&gt;</code><span data-line="8;apache.md::549"></span> at the end of
-the config file. This is because the new <span data-line="8;apache.md::550"></span><code class="code">&lt;IfDefine&gt;</code><span data-line="8;apache.md::550"></span> section is
-nested within our <span data-line="8;apache.md::551"></span><code class="code">&lt;IfDefine DEFAULT_VHOST&gt;</code><span data-line="8;apache.md::551"></span> section.<span data-line="8;apache.md::551"></span><br>
-<span data-line="8;apache.md::552"></span><em>For more information and examples, visit:</em><span data-line="8;apache.md::552"></span><br>
-<span data-line="8;apache.md::553"></span><a href="http://httpd.apache.org/docs/2.2/mod/mod_ssl.html">http://httpd.apache.org/docs/2.2/mod/mod_ssl.html</a><span data-line="8;apache.md::553"></span>
+<p class="indent para-continue" data-line="8;apache.md:536"><span data-line="8;apache.md::536"></span>Now you can set up your site so that <span data-line="8;apache.md::536"></span><strong>all attempts to access the site will go
+through SSL.</strong><span data-line="8;apache.md::537"></span>
+</p>
+<ol class="loose" data-line="8;apache.md:539">
+<li data-line="8;apache.md:539">
+<p data-line="8;apache.md:539"><span data-line="8;apache.md::539"></span>In the <span data-line="8;apache.md::539"></span><code class="code">&lt;VirtualHost *:80&gt;</code><span data-line="8;apache.md::539"></span>
+  section of the admin<span data-line="8;apache.md::540"></span>&#39;<span data-line="8;apache.md::540"></span>s conf file, add the following lines:
+</p>
+<pre class="para-block para-block" data-line="8;apache.md:542"><code>  RewriteEngine On
+  RewriteCond %{HTTPS} !on
+  RewriteRule ^/(.*) https://%{SERVER_NAME}%{REQUEST_URI} [R]</code></pre>
+<ul class="loose" data-line="8;apache.md:546">
+<li data-line="8;apache.md:546">
+<p data-line="8;apache.md:546"><span data-line="8;apache.md::546"></span>Like SSLEngine, the <span data-line="8;apache.md::546"></span><code class="code">RewriteEngine</code><span data-line="8;apache.md::546"></span> directive enables or
+  disables the runtime rewriting engine.
 </p></li>
-<li data-line="8;apache.md:555">
-<p data-line="8;apache.md:555"><span data-line="8;apache.md::555"></span>Don<span data-line="8;apache.md::555"></span>&#39;<span data-line="8;apache.md::555"></span>t forget to reload apache!
-</p></li>
-<li data-line="8;apache.md:557">
-<p data-line="8;apache.md:557"><span data-line="8;apache.md::557"></span>Now you can try this out by using <span data-line="8;apache.md::557"></span><code class="code">https://</code><span data-line="8;apache.md::557"></span> in place of
-<span data-line="8;apache.md::558"></span><code class="code">http://</code><span data-line="8;apache.md::558"></span>. Since the certificate created is extremely sketchy,
-some browsers would ask if you really want to continue. Follow
-the steps to progress, and you should find yourself at the admin
-page once again. With the current settings, you will only go
-through a ssl-secured network when <span data-line="8;apache.md::562"></span><code class="code">https://</code><span data-line="8;apache.md::562"></span> is used. <span data-line="8;apache.md::562"></span><code class="code">http://</code><span data-line="8;apache.md::562"></span>
-will still go through normal, unsecure connections.
-</p></li></ol>
+<li data-line="8;apache.md:549">
+<p data-line="8;apache.md:549"><span data-line="8;apache.md::549"></span><code class="code">RewriteCond</code><span data-line="8;apache.md::549"></span> defines the condition under which rewriting
+  will take place, while <span data-line="8;apache.md::550"></span><code class="code">RewriteRule</code><span data-line="8;apache.md::550"></span> defines the rules for
+  the rewriting engine.
+</p>
+<p data-line="8;apache.md:553"><span data-line="8;apache.md::553"></span><em>For more information and examples, visit:</em><span data-line="8;apache.md::553"></span><br>
+<span data-line="8;apache.md::554"></span><a href="http://httpd.apache.org/docs/current/mod/mod_rewrite.html">http://httpd.apache.org/docs/current/mod/mod_rewrite.html</a><span data-line="8;apache.md::554"></span>
+</p></li></ul>
 </li>
-<li data-line="8;apache.md:565">
-<p data-line="8;apache.md:565"><span data-line="8;apache.md::565"></span>SSL (required)- set so that all attempts to access the site will go
-through ssl-encryption
-</p>
-<ol class="loose" data-line="8;apache.md:568">
-<li data-line="8;apache.md:568">
-<p data-line="8;apache.md:568"><span data-line="8;apache.md::568"></span>This is actually really simple. in the <span data-line="8;apache.md::568"></span><code class="code">&lt;VirtualHost *:80&gt;</code><span data-line="8;apache.md::568"></span>
-section of the admin<span data-line="8;apache.md::569"></span>&#39;<span data-line="8;apache.md::569"></span>s conf file, add the following lines:
-</p>
-<pre class="para-block para-block" data-line="8;apache.md:571"><code>RewriteEngine On
-RewriteCond %{HTTPS} !on
-RewriteRule ^/(.*) https://%{SERVER_NAME}%{REQUEST_URI} [R]</code></pre>
-<p data-line="8;apache.md:575"><span data-line="8;apache.md::575"></span>-
-:   Like SSLEngine, the <span data-line="8;apache.md::576"></span><code class="code">RewriteEngine</code><span data-line="8;apache.md::576"></span> directive enables or
-</p>
-<pre class="para-block para-block" data-line="8;apache.md:577"><code>disables the runtime rewriting engine.</code></pre>
-<p data-line="8;apache.md:579"><span data-line="8;apache.md::579"></span>-
-:   <span data-line="8;apache.md::580"></span><code class="code">RewriteCond</code><span data-line="8;apache.md::580"></span> defines the condition under which rewriting
-</p>
-<pre class="para-block para-block" data-line="8;apache.md:581"><code>will take place, while `RewriteRule` defines the rules for
-the rewriting engine.</code></pre>
-<p data-line="8;apache.md:584"><span data-line="8;apache.md::584"></span><em>For more information and examples, visit:</em><span data-line="8;apache.md::584"></span><br>
-<span data-line="8;apache.md::585"></span><a href="http://httpd.apache.org/docs/current/mod/mod_rewrite.html">http://httpd.apache.org/docs/current/mod/mod_rewrite.html</a><span data-line="8;apache.md::585"></span>
-</p></li>
-<li data-line="8;apache.md:587">
-<p data-line="8;apache.md:587"><span data-line="8;apache.md::587"></span>Don<span data-line="8;apache.md::587"></span>&#39;<span data-line="8;apache.md::587"></span>t forget to reload apache!
-</p></li>
-<li data-line="8;apache.md:589">
-<p data-line="8;apache.md:589"><span data-line="8;apache.md::589"></span>Now, when you try to access <span data-line="8;apache.md::589"></span><code class="code">http://...</code><span data-line="8;apache.md::589"></span>, it should
-automatically connect to <span data-line="8;apache.md::590"></span><code class="code">https://...</code><span data-line="8;apache.md::590"></span>. In other words, you will
-always go through a secure connection!
+<li data-line="8;apache.md:556">
+<p data-line="8;apache.md:556"><span data-line="8;apache.md::556"></span>Now, when you try to access <span data-line="8;apache.md::556"></span><code class="code">http://...</code><span data-line="8;apache.md::556"></span>, it should
+  automatically connect to <span data-line="8;apache.md::557"></span><code class="code">https://...</code><span data-line="8;apache.md::557"></span>. In other words, you will
+  always go through a secure connection!
 </p></li></ol>
-</li></ul>
 
-<p class="para-continue" data-line="8;apache.md:593"><span data-line="8;apache.md::593"></span>Great! Now you have configured a (relatively) secure website, with an
-even more secure admin site. You<span data-line="8;apache.md::594"></span>&#39;<span data-line="8;apache.md::594"></span>re probably aware by now that others
-<span data-line="8;apache.md::595"></span><em>still</em><span data-line="8;apache.md::595"></span> can<span data-line="8;apache.md::595"></span>&#39;<span data-line="8;apache.md::595"></span>t connect to your shiny new website. That doesn<span data-line="8;apache.md::595"></span>&#39;<span data-line="8;apache.md::595"></span>t make your
+<p class="para-continue" data-line="8;apache.md:560"><span data-line="8;apache.md::560"></span>Great! Now you have configured a (relatively) secure website, with an
+even more secure admin site. You<span data-line="8;apache.md::561"></span>&#39;<span data-line="8;apache.md::561"></span>re probably aware by now that others
+<span data-line="8;apache.md::562"></span><em>still</em><span data-line="8;apache.md::562"></span> can<span data-line="8;apache.md::562"></span>&#39;<span data-line="8;apache.md::562"></span>t connect to your shiny new website. That doesn<span data-line="8;apache.md::562"></span>&#39;<span data-line="8;apache.md::562"></span>t make your
 boss very happy, so it is your job as the system administrator to get
 that working.
 </p>
-<ul class="loose" data-line="8;apache.md:599">
-<li data-line="8;apache.md:599">
-<p data-line="8;apache.md:599"><span data-line="8;apache.md::599"></span>Configure your server to accept nonlocal connections, and access the
-local DNS server at to add your site<span data-line="8;apache.md::600"></span>&#39;<span data-line="8;apache.md::600"></span>s IP to its lists.
+<ul class="loose" data-line="8;apache.md:566">
+<li data-line="8;apache.md:566">
+<p data-line="8;apache.md:566"><span data-line="8;apache.md::566"></span>Configure your server to accept nonlocal connections, and access the
+local DNS server at to add your site<span data-line="8;apache.md::567"></span>&#39;<span data-line="8;apache.md::567"></span>s IP to its lists.
 </p></li>
-<li data-line="8;apache.md:602">
-<p data-line="8;apache.md:602"><span data-line="8;apache.md::602"></span>You<span data-line="8;apache.md::602"></span>&#39;<span data-line="8;apache.md::602"></span>ll have to add your IP address to <span data-line="8;apache.md::602"></span><code class="code">00_default_vhost.conf</code><span data-line="8;apache.md::602"></span>,<span data-line="8;apache.md::602"></span><br>
-<span data-line="8;apache.md::603"></span><code class="code">net.(your server).(page).conf</code><span data-line="8;apache.md::603"></span>, and the conf files of other pages
+<li data-line="8;apache.md:569">
+<p data-line="8;apache.md:569"><span data-line="8;apache.md::569"></span>You<span data-line="8;apache.md::569"></span>&#39;<span data-line="8;apache.md::569"></span>ll have to add your IP address to <span data-line="8;apache.md::569"></span><code class="code">00_default_vhost.conf</code><span data-line="8;apache.md::569"></span>,<span data-line="8;apache.md::569"></span><br>
+<span data-line="8;apache.md::570"></span><code class="code">net.(your server).(page).conf</code><span data-line="8;apache.md::570"></span>, and the conf files of other pages
 that you would like to let others access.
 </p></li>
-<li data-line="8;apache.md:606">
-<p data-line="8;apache.md:606"><span data-line="8;apache.md::606"></span>Remember that the virtual hosts for regular and SSL have to stay
+<li data-line="8;apache.md:573">
+<p data-line="8;apache.md:573"><span data-line="8;apache.md::573"></span>Remember that the virtual hosts for regular and SSL have to stay
 separate. This also means that the IP addresses they answer to have
 to be distinguished from each other too.
 </p></li></ul>

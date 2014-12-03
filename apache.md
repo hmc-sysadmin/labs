@@ -377,11 +377,9 @@ information (and passwords!).
   but only the owner can write in it. The backslash indicates that the line
   extends to the next line.
 
-            chgrp apache \
-            /var/www/net.(your server).admin/htdocs/.htaccess
+            chgrp apache /var/www/net.(your server).admin/htdocs/.htaccess
 
-            chmod 640 \
-            /var/www/net.(your server).admin/htdocs/.htaccess
+            chmod 640 /var/www/net.(your server).admin/htdocs/.htaccess
 
   4. Make the directory `conf` in the admin page's directory in `/var/www/net
   .(your-server).admin/`. Once that's done, we will create the password file
@@ -399,63 +397,51 @@ information (and passwords!).
   5.  Now, protect the password file the same way as you did for
         `.htaccess`
 
-    8.  Now try it out! You shoul be greeted with a login page instead
-        this time around, meaning that the configuration changes worked.
-        P.S. You may have to reload the page (ctrl-R) in order for the
-        page to reflect the fact that your user-password combination was
-        correct.
+  6. Now try it out! You should be greeted with a login page instead this time
+  around, meaning that the configuration changes worked. P.S. You may have to
+  reload the page (ctrl-R) in order for the page to reflect the fact that your
+  user-password combination was correct.
 
--   SSL (partial)- set so that there is the option of accessing the site
-    through an ssl-encrypted network
+### Step 3: Provide an encrypted connection to the site.
 
-    1.  Though your page is now somewhat secure, the connection between
-        a machine and the server is still unguarded. A secure, encrypted
-        ssl connection is called on by typing `https://` in the url.
-        However, if you try it now, you would only get the localhost
-        default page since the admin page is not configured to listen to
-        port 443. Now, since OpenSSL should already be installed, we
-        would go straight to generating the encryption key and
-        certificate:
+Though your page is now somewhat secure, the connection between a machine and
+the server is still unguarded. A secure, encrypted ssl connection is called on
+by typing `https://` in the url. However, if you try it now, you would only get
+the localhost default page since the admin page is not configured to listen to
+port 443. Now, since OpenSSL should already be installed, we can go straight
+to generating the encryption key and certificate:
 
-            #generate key:
+  1. In your home directory, generate an SSL key
+
               openssl genrsa 2048 > net.(your server).key
-            #generate certificate
-              openssl req -new -x509 -nodes -sha1 -key \
-              net.(your server).key > net.(your server).crt
 
-        In the above code, make sure that the option -sha1 contains the
-        number one and not a lowercase l. Here is a sample output of the
-        first command:
+  1. In your home directory, generate an SSL certificate
+        ```
+        openssl req -new -x509 -nodes -sha1 -key net.(your server).key > net.(your server).crt
+        ```
+  
+  In the above command, make sure that the option -sha1 contains the number one
+  and not a lowercase l. When it asks for information, you can fill in however
+  much you want.
 
-            Generating RSA private key, 2048 bit long modulus
-            .........+++
-            ....................................+++
-            e is 65537 (0x10001)
+  1. Move the key and certificate files to `/etc/apache2`
 
-        When it asks for information, you can fill in however much you
-        want.
-
-    2.  Now, move the files to a more reasonable place, such as
-        `/etc/apache2`
-
-            mv *.crt *.key /etc/apache2
-
-    3.  Check to make sure `APACHE2_OPTS` in `/etc/conf.d/apache2` has
+  1. Check to make sure `APACHE2_OPTS` in `/etc/conf.d/apache2` has
         `SSL` and `SSL_DEFAULT_VHOST`.
 
-    4.  `NameVirtualHost` is a required directive if one wants to
-        configure name-based virtual hosts. It specifies the IP address
-        on which the server will receive and answer requests for the
-        virtual hosts, usually used when more than one vhost listens to
-        the same IP address. So, in
-        `/etc/apache2/vhosts.d/00_default_ssl_vhost.conf`, under the
-        **Listen** line in the file, add the following:
+  1. `NameVirtualHost` is a required directive if one wants to configure name-
+  based virtual hosts. It specifies the IP address on which the server will
+  receive and answer requests for the virtual hosts, usually used when more than
+  one vhost listens to the same IP address. So, in
+  `/etc/apache2/vhosts.d/00_default_ssl_vhost.conf`, under the **Listen** line
+  in the file, add the following:
+        ```
+        NameVirtualHost *:443
+        ```
 
-            NameVirtualHost *:443
-
-    5.  Next, we need to configure the admin page to actually have a
+  1.  Next, we need to configure the admin page to actually have a
         virtual host to answer an SSL connection request. This is
-        because the virtual host already established only listens to
+        because the virtual host that is already established only listens to
         requests on port 80, while SSL connections use port 443. Also,
         with its different configurations, the "non-secure" vhost and
         the SSL vhost have to remain separate. So, enter the config file
@@ -489,13 +475,11 @@ information (and passwords!).
              </IfModule>
             </IfDefine>
 
-        -
-        :   The `<IfDefine>` is mentioned before, and the `<IfModule>`
+        - The `<IfDefine>` is mentioned before, and the `<IfModule>`
             section encloses directives that are conditional on the
             presence of a specific module.
 
-        -
-        :   `VirtualHost` still has the same function, though in this
+        - `VirtualHost` still has the same function, though in this
             case it considers the SSL default port of 443 instead.
 
             -   The `SSLEngine` directive toggles the usage of the
@@ -520,65 +504,63 @@ information (and passwords!).
                 connections will prefer the server's cipher preference
                 order when choosing a cipher.
 
-        -
-        :   In the `<Directory>` section, whose file condition should
+        - In the `<Directory>` section, whose file condition should
             stay the same, the `SSLRequireSSL` directory denies the
             client access when SSL is not used for the HTTP request
             a.k.a. HTTPS is not used, though it isn't as effective as
             the next configuration.
 
-        **ERROR!!** If you encounter the SSL error "unable to get local
-        issuer certificate," there is a way to fix it! Go to the file
-        `00_default_ssl_vhost.conf` and change the
-        `SSLCertificateKeyFile` and `SSLCertificateFile` to the path of
-        certificate and key you created.
+            **Warning**: Notice that you allow connections over SSL from *all*
+            IP addresses. You can change `Allow from all` to allow from only
+            certain IPs, as you did for the non-SSL version.
 
-        NOTE: There shoud be two lines of `</IfDefine>` at the end of
+        NOTE: There should be two lines of `</IfDefine>` at the end of
         the config file. This is because the new `<IfDefine>` section is
         nested within our `<IfDefine DEFAULT_VHOST>` section.\
         *For more information and examples, visit:*\
         <http://httpd.apache.org/docs/2.2/mod/mod_ssl.html>
 
-    6.  Don't forget to reload apache!
+Now you can try this out by using `https://` in place of `http://`. Since the
+certificate created is extremely sketchy, some browsers might ask if you really
+want to continue. Follow the steps to progress, and you should find yourself at
+the admin page once again. With the current settings, you will only go through a
+ssl-secured network when `https://` is used. `http://` will still go through
+normal, unsecure connections.
 
-    7.  Now you can try this out by using `https://` in place of
-        `http://`. Since the certificate created is extremely sketchy,
-        some browsers would ask if you really want to continue. Follow
-        the steps to progress, and you should find yourself at the admin
-        page once again. With the current settings, you will only go
-        through a ssl-secured network when `https://` is used. `http://`
-        will still go through normal, unsecure connections.
+If you encounter the SSL error "unable to get local
+issuer certificate," there is a way to fix it! Go to the file
+`00_default_ssl_vhost.conf` and change the
+`SSLCertificateKeyFile` and `SSLCertificateFile` to the path of
+certificate and key you created.
 
--   SSL (required)- set so that all attempts to access the site will go
-    through ssl-encryption
+Now you can set up your site so that **all attempts to access the site will go
+through SSL.**
 
-    1.  This is actually really simple. in the `<VirtualHost *:80>`
+  1.  In the `<VirtualHost *:80>`
         section of the admin's conf file, add the following lines:
 
             RewriteEngine On
             RewriteCond %{HTTPS} !on
             RewriteRule ^/(.*) https://%{SERVER_NAME}%{REQUEST_URI} [R]
 
-        -
-        :   Like SSLEngine, the `RewriteEngine` directive enables or
+        - Like SSLEngine, the `RewriteEngine` directive enables or
             disables the runtime rewriting engine.
 
-        -
-        :   `RewriteCond` defines the condition under which rewriting
+        - `RewriteCond` defines the condition under which rewriting
             will take place, while `RewriteRule` defines the rules for
             the rewriting engine.
 
         *For more information and examples, visit:*\
         <http://httpd.apache.org/docs/current/mod/mod_rewrite.html>
-
-    2.  Don't forget to reload apache!
-
-    3.  Now, when you try to access `http://...`, it should
+  
+  1.  Now, when you try to access `http://...`, it should
         automatically connect to `https://...`. In other words, you will
         always go through a secure connection!
 
 Great! Now you have configured a (relatively) secure website, with an
-even more secure admin site. You're probably aware by now that others
+even more secure admin site. 
+
+You're probably aware by now that others
 *still* can't connect to your shiny new website. That doesn't make your
 boss very happy, so it is your job as the system administrator to get
 that working.
