@@ -399,19 +399,6 @@ information (and passwords!).
   5.  Now, protect the password file the same way as you did for
         `.htaccess`
 
-  6.  To "activate" password protection, we would need to edit the
-        admin page's config file once more. In
-        `/etc/apache2/vhosts.d/net.(your server).admin.conf`, change the
-        `AllowOverride` directive from **all** to **AuthConfig**. Then,
-        after the `Allow` directive, add the line:
-
-            Satisfy All
-
-        This makes it so that incoming requests have to satisfy both the
-        `require` and `Allow` directive settings.
-
-    7.  Don't forget to reload apache!
-
     8.  Now try it out! You shoul be greeted with a login page instead
         this time around, meaning that the configuration changes worked.
         P.S. You may have to reload the page (ctrl-R) in order for the
