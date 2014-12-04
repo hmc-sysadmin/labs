@@ -62,6 +62,14 @@ elinks
     system by running the following command:
 
         sudo emerge --ask --changed-use --deep @world
+        
+2. Apache uses localhost to connect internally, because of this, you 
+     need to make sure your /etc/hosts file is correctly configured.
+     Open `/etc/hosts` and edit the line:
+
+        127.0.0.1       SysAdmin_VM[#] localhost ...
+        
+     Replace the `#` with your VM's number
 
 ### Configure apache
 Apache has two main configuration files in the system:
