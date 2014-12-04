@@ -85,7 +85,7 @@ configuration, usually modules. Modules are first and
 third-party patches to Apache that install more functions for
 Apache to use.
 
-  1. Modify `/etc/conf.d/apache2` to add a `ServerName` configuration
+  1. Modify `/etc/apache2/httpd.conf` to add a `ServerName` configuration
         ```      
         ServerName vm(num).sys.cs.hmc.edu
         ```
