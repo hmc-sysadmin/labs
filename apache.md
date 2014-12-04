@@ -2,64 +2,54 @@
 
 *Originally created by Huting Lin and Jeff Milling*
 
+[Name resolution]: http://technet.microsoft.com/en-us/library/cc958812.aspx
+[Elinks]: http://elinks.or.cz/documentation/html/manual.html-chunked/ch03.html
 
-# ABOUT APACHE 
+This week, you'll configure and secure a web server on your VM that is capable
+serving multiple web sites. In all, you'll serve pages from three sites:
 
+   - `vm(num).sys.cs.hmc.edu`: the "default" website for your machine
+   - `www.(your server).net`: a virtual host that your machine can serve
+   - `admin.(your server).net`: a password-protected virtual host
 
-Apache HTTP server has been the most prevalent web server software on
-the internet since 1996. Made by The Apache Software Foundation, Apache
-HTTP server is an open source HTTP web server with support for a wide
-variety of web frameworks and services. Learning Apache and Apache
-configuration is an essential part of any system administrator's
-training.
+You'll also configure one of the sites to automatically serve pages via an
+encrypted channel, over SSL.
 
-# SETUP {#setup .unnumbered}
+## Background information
 
-## Ben
-1. Edit `/etc/hosts`
-    ```
-    127.0.0.1       localhost
-    ::1             localhost
-    134.173.40.198 adminvm5
-    ```
+Here is some reading and background information that may be useful for this lab:
 
-1. Edit `/etc/apache2/httpd.conf`
+Name resolution
+  : [A nice article][Name resolution] and reminder about how name resolution works, plus
+    instructions for configuring name resolution on UNIX and Windows.
 
-    ```
-    ServerName adminvm5.sys.cs.hmc.edu
-    ```
+Apache
+  : Apache HTTP server has been the most prevalent web server software on the
+    internet since 1996. Made by The Apache Software Foundation, Apache HTTP server
+    is an open source HTTP web server with support for a wide variety of web
+    frameworks and services. Learning Apache and Apache configuration is an
+    essential part of any system administrator's training.
 
-1. Start the service
+elinks
+  : A [console-based web browser][Elinks] that you can use on your VM to visit web pages.
 
-    ```
-    sudo rc-service apache2 start
-    ```
+## Getting started
 
-1. Verify it's working
+  1. Write down the URLs for the three websites you'll create. Fill in the
+  blanks with the appropriate information:
 
-  1. Is apache listening?
+     - `vm(num).sys.cs.hmc.edu`
+     - `www.(your server).net`
+     - `admin.(your server).net`
+ 
+  1. On your VM, open elinks and visit each site. You should be able to confirm
+  that each site is unreachable.
 
-        ```
-        sudo netstat -tulpen | grep apache
-        ```
+## Configure and start the web server on your VM
 
-    (see Hu's writeup below)
+### Configure your system
 
-  1. Visit in a browser:
-
-        ```
-        <vmname>.sys.cs.hmc.edu
-        ```
-
----
-
-
-
-*For more information and/or additional optional installations
-concerning Apache, visit:*
-[http://wiki.gentoo.org/wiki/Apache\#OpenRC\](http://wiki.gentoo.org/wiki/Apache#OpenRC)
-
-1.  Portage, Gentoo's package management system, uses USE flags to help
+1. Portage, Gentoo's package management system, uses USE flags to help
     determine which dependencies to install in order to support your
     packages. View\
     `/etc/portage/make.conf` to check that support is enabled for the
@@ -68,98 +58,81 @@ concerning Apache, visit:*
 
         USE="... apache2 ..."
 
+    If it's not, edit the file to add the apache2 USE flag, then update the
+    system by running the following command:
+
         sudo emerge --ask --changed-use --deep @world
 
-2.  OpenRC is a dependency based init system that can be used to start
-    and stop as well as configure runlevels (and many other things too)
-    for services. For launching and restarting on OpenRC, run the
-    following commands as root
+### Configure apache
+Apache has two main configuration files in the system:
 
-    Start the Apache Server:
-
-        /etc/init.d/apache2 start
-
-    Add Apache to the default runlevel:
-
-        rc-update add apache2 default
-
-    Restart the Apache service:
-
-        /etc/init.d/apache2 restart
-
-    Reload Apache configuration files:
-
-        /etc/init.d/apache2 reload
-
-3.  To verify the IP interfaces and ports that Apache is listening to,
-    run this command as root:
-
-        netstat -tulpen | grep apache
-
-    We should get two lines similar to the following:
-
-        tcp     0     0 0.0.0.0:80      0.0.0.0:*     
-        LISTEN     0     10932720   4544/apache2
-        tcp     0     0 0.0.0.0:443     0.0.0.0:*     
-        LISTEN     0     10932716   4544/apache2
-
-    The two most important parts of the lines are the third and fifth
-    fields, ones that should show 0.0.0.0:80/443 (or :::80/443) and
-    LISTEN. The value of 0.0.0.0:80/443 in the third field indicates all
-    available IPv4 addresses while :::80/443 indicates all available
-    addresses includeing IPv6 addresses. The LISTEN value in the fifth
-    field tells us that Apache is accepting connections from the
-    corresponding address(es).
-
-4.  Apache has two main configuration files in the system:
-
-    -   Gentoo's apache2 init script configuration file
+  -   Gentoo's apache2 init script configuration file
         `/etc/conf.d/apache2`
 
-    -   Apache server's conventional configuration file
+  -   Apache server's conventional configuration file
         `/etc/apache2/httpd.conf`
 
-    Though we're not changing anything in these two files, it would be a
-    good idea to look at them and understand what they do.
+Take a look at `/etc/conf.d/apache2`. The only active line in this file is:
 
+    APACHE2_OPTS="-D DEFAULT_VHOST -D INFO -D SSL -D SSL_DEFAULT_VHOST -D LANGUAGE" 
 
-        Gentoo's init script configuration file:\
-        The only active line in this file is:
+*(the one on your system may be a bit different)*
 
-            APACHE2_OPTS="-D DEFAULT_VHOST -D INFO -D SSL 
-            -D SSL_DEFAULT_VHOST -D LANGUAGE" 
-            (the one on your system may be a bit different)
+This line defines options that will be interpreted by the
+various configuration files using the `<IfDefine option-name>`
+statement to activate or deactivate some part of the whole
+configuration, usually modules. Modules are first and
+third-party patches to Apache that install more functions for
+Apache to use.
 
-        This line defines options that will be interpreted by the
-        various configuration files using the `<IfDefine option-name>`
-        statement to activate or deactivate some part of the whole
-        configuration, usually modules. Modules are first and
-        third-party patches to Apache that install more functions for
-        Apache to use.
+  1. Modify `/etc/conf.d/apache2` to add a `ServerName` configuration
+        ```      
+        ServerName vm(num).sys.cs.hmc.edu
+        ```
+     This line can go anywhere in the file.
 
+Apache server's conventional configuration file, `httpd.conf`, 
+is actually only an entry file, or an entry point for
+users in a file form, since Apache's whole configuration is
+split in many files in the `/etc/apache2/` directory, assembled
+and connected together using the **Include** directive.
 
-        Apache server's conventional configuration file - `httpd.conf`\
-        This file is actually only an entry file, or an entry point for
-        users in a file form, since Apache's whole configuration is
-        split in many files in the `/etc/apache2/` directory, assembled
-        and connected together using the **Include** directive.\
-        NOTE: Module configuration files (files in
-        `/etc/apache2/modules.d`) almost always start with
-        `<IfDefine module-name>`. For this reason, the content of those
-        files will ONLY be assembled with the rest of the configuration
-        if the `-D module-name` flag in the `APACHE2_OPTS` variable
-        mentioned above is set to the matching option. The
-        `00_default_settings.conf` configuration file is an exception to
-        this rule since it doesn't start with an `IfDefine` statement
-        and therefore is always included in the resulting configuration.
+NOTE: Module configuration files (files in
+`/etc/apache2/modules.d`) almost always start with
+`<IfDefine module-name>`. For this reason, the content of those
+files will ONLY be assembled with the rest of the configuration
+if the `-D module-name` flag in the `APACHE2_OPTS` variable
+mentioned above is set to the matching option. The
+`00_default_settings.conf` configuration file is an exception to
+this rule since it doesn't start with an `IfDefine` statement
+and therefore is always included in the resulting configuration.
 
-5.  Check to see if everything is installed correctly by going to
-    `http://localhost` using a browser program (such as elinks or links)
-    on the actual machine. The screen should show **"It works!"** across
-    the top. NOTE: If you don't have a browser program, you can install
-    elinks using:
+### Start Apache
 
-        emerge -av elinks
+1. Run the following command to start up your web server
+
+  ```
+  sudo rc-service apache2 start
+  ```
+
+## Visit your website
+Try to visit the URL for `vm(num).sys.cs.hmc.edu`, both on your VM (using elinks)
+and in a browser on your own machine. 
+
+*Note:* The websites on the VMs are accessible only to visitors with a Claremont
+IP address.
+
+If you're not able to reach the website
+from your VM, try editing `/etc/hosts` so that it looks something like this:
+
+    ```
+    127.0.0.1       localhost
+    ::1             localhost
+    (your IP)       vm(num).sys.cs.hmc.edu
+    ```
+
+If you're not able to reach the website from your own computer, you can try
+[configuring the local name database][Name resolution] in a similar way.
 
 ## Creating Name-based Virtual Hosts
 
@@ -266,7 +239,12 @@ Here's how to set up a virtual host on your machine:
 
         127.0.0.1 ...www.(your server).net
 
-1.  Restart and reload apache.
+1.  Reload apache's configuration with the following command:
+    ```
+    sudo rc-service apache2 reload
+    ```
+    **Every time you reconfigure apache, you'll need to reload the configuration
+    .**
 
 1.  Check to see if everything's working by using a browser to
     go to `www.(your server).net`. **You'll need to use a _local_ browser 
@@ -317,11 +295,11 @@ just start with something simple and build up from there.
   **127.0.0.1**. When you're done, reload apache. Now apache will only
   serve the site's files to the localhost address.
 
-  1.  Make sure that your friend can no longer access `admin.(your server).net`.
+  1.  Make sure that your partner can no longer access `admin.(your server).net`.
 
-  1. Add your friend's IP's to allow them to access your site. Make sure they
+  1. Add your partner's IP's to allow them to access your site. Make sure they
   can do it. Now apache will only serve the site's files to the localhost 
-  address and to your friend's IP address.
+  address and to your partner's IP address.
 
 
 Because of how simple it is to change one's own IP address, this form of
