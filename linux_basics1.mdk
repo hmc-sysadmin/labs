@@ -27,11 +27,6 @@ The filesystem is like a tree that consists of nested files and
 directories. It is important to be able to navigate this system so you
 can access and manipulate files.
 
-The general form of a linux command is as follows:
-```
-username@computername /your/current/directory $
-```
-
 ### Moving around
 
 The `cd` command changes the directory. Using
@@ -104,6 +99,7 @@ by the filename and you can scroll through the document.
   - Navigate to the `/LinuxBasics` directory and use less to see what's in 
   `treasureisland`. We will use this file in part 2 of the lab.
 
+
 ### `cp`
 This is the command to copy a file or directory. The syntax is
     `cp <target_file> <destination_file>.` If you want to copy the file to a
@@ -112,6 +108,9 @@ This is the command to copy a file or directory. The syntax is
     to copy all the files contained in the directory. 
 
   - Copy the `/LinuxBasics` directory to your home directory.
+
+  **Hint:** If this command doesn't work as you expect, you may have to apply
+  something from last week's lab to make it work.
 
 ### `mkdir`
 This command creates a directory. The syntax is `mkdir <directory_name>`. 
@@ -140,7 +139,7 @@ a different directory, you need to include the path to the new
 directory in the new filename. To rename a file, the syntax is
 `mv <old_filename> <new_filename>`. 
 
-  - Use `mv` to change the name of `ExampleSymLink` to a file named for your favorite treasure.
+  - Use `mv` to rename the file for your favorite pirate
 
 #### `rm`
 This is the command to remove files. The syntax is
@@ -171,8 +170,15 @@ these:
 echo ~
 
 echo $USER
+
+echo $PATH
 ```
-Now you are ready to begin your exploration of your Linux system!
+
+The `$PATH` variable is an ordered list of directories that your shell searches
+when you ask it to run a program. For example, when you ask your shell to run
+the `echo` program, it searches each of the directories in your `$PATH` until it
+finds one that contains a program called `echo`. You can find out where `echo`
+lives by running the command `which echo`.
 
 ## man pages
 
