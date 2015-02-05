@@ -2,13 +2,531 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <meta name="generator" content="Madoko, version 0.6.3-beta" />
+  <meta name="generator" content="Madoko, version 0.8.2-beta" />
   <meta name="viewport" content="initial-scale=1.0" />
   <meta name="author" content="Annie Christy, Lisa Goeller, Huting Lin, Jozi McKiernan, and Paige Rinnert" />
   <title>Linux Basics</title>
-  <link rel="stylesheet" type="text/css" href="madoko.css">
-  <link rel="stylesheet" type="text/css" href="./writeup.css">
-  <script type="text/x-mathjax-config">
+  <style  class="link">
+/* ---------------------------------------------------
+   Various settings to display madoko elements correctly.
+   For example, lines in tables or a table of contents.
+
+   All rules use specific madoko classes and never just
+   a generic element. This means one can safely include
+   this CSS into any web page without affecting non-madoko
+   content.
+----------------------------------------------------*/
+
+/* The table of contents */
+.madoko .toc>.tocblock .tocblock .tocblock {
+  margin-left: 2.5em;
+}
+
+.madoko .toc>.tocblock .tocblock {
+  margin-left: 1.7em;
+}
+
+.madoko .toc>.tocblock>.tocitem {
+  font-weight: bold;
+}
+
+.madoko .toc {
+  margin-top: 1em;
+}
+
+/* Paragraphs */
+.madoko p.para-continue {
+  margin-bottom: 0pt;
+}
+
+.madoko .para-block+p {
+  margin-top: 0pt;
+}
+
+.madoko ul.para-block, .madoko ol.para-block {
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+}
+
+.madoko ul.para-end, .madoko ol.para-end {
+  margin-bottom: 1em;
+}
+
+.madoko dl {
+  margin-left: 0em;
+}
+
+/* Local page links do not get an underline unless hovering */
+.madoko a.localref {
+  text-decoration: none;
+}
+.madoko a.localref:hover {
+  text-decoration: underline;
+}
+
+/* Footnotes */
+.madoko .footnotes {
+  font-size: smaller;
+  margin-top: 2em;
+}
+
+.madoko .footnotes hr {
+  width: 50%;
+  text-align: left;
+}
+
+.madoko .footnote { 
+  margin-left: 1em;
+}
+.madoko .footnote-before {
+  margin-left: -1em;
+  width: 1em;
+  display: inline-block;
+}
+
+/* Abstract */
+.madoko .abstract>p:first-child:before {
+  content: "Abstract. ";
+  font-weight: bold;
+}
+
+.madoko .abstract {
+  margin-left: 2.7em;
+  margin-right: 2.7em;
+  font-size: small;
+}
+
+
+/* Alignment */
+.madoko .align-center, .madoko .align-center>p {
+  text-align: center !important;
+}
+
+.madoko .align-center pre {
+  text-align: left;
+}
+
+.madoko .align-center>* {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.madoko .align-left, .madoko .align-left>p {
+  text-align: left !important;
+}
+
+.madoko .align-left>* {
+  margin-left: 0pt !important;
+  margin-right: auto !important;
+}
+
+.madoko .align-right, .madoko .align-right>p {
+  text-align: right !important;
+}
+
+.madoko .align-right>* {
+  margin-left: auto !important;
+  margin-right: 0pt !important;
+}
+
+.madoko .align-center>table,
+.madoko .align-left>table,
+.madoko .align-right>table {
+  text-align: left !important;
+}
+
+
+/* Equations, Figure's etc. */
+.madoko .equation-before {
+  float: right;
+}
+
+
+/* Bibliography */
+.madoko .bibitem {
+  font-size: smaller;
+}
+
+.madoko .bib-numeric .bibitem {
+  margin-left: 3em;
+  text-indent: -3em;
+}
+
+.madoko .bibitem-before {
+  display: none;
+}
+
+.madoko .bib-numeric .bibitem-before {
+  display: inline-block;
+  width: 3em;
+  text-align: right;
+}
+
+.madoko .bibliography {
+}
+
+.madoko .bibsearch {
+  font-size: x-small;
+  text-decoration:none;
+  color: black;
+  font-family: "Segoe UI Symbol", Symbola;
+}
+
+/* General */
+.madoko .block, .madoko .figure, .madoko .bibitem, .madoko .equation {
+  margin-top: 1ex;
+  margin-bottom: 1ex;
+}
+
+.madoko .figure {
+  padding: 0.5em;
+  margin-left: 0pt;
+  margin-right: 0pt;
+}
+
+.madoko .hidden {
+  display: none;
+}
+
+.madoko .invisible {
+  visibility: hidden;
+}
+
+.madoko.preview .invisible {
+  visibility: visible;
+  opacity: 0.5;
+}
+.madoko.preview[data-view=full] .invisible {
+  visibility: hidden;
+}
+
+.madoko code.code, .madoko span.code {
+  white-space: pre-wrap;
+}
+
+.madoko hr, hr.madoko {
+  border: none;
+  border-bottom: black solid 1px;
+  margin-bottom: 0.5ex;
+}
+
+.madoko .framed>*:first-child {
+  margin-top: 0pt;
+}
+.madoko .framed>*:last-child {
+  margin-bottom: 0pt;
+}
+
+
+/* Title, authors */
+.madoko .title {
+  font-size: xx-large;
+  font-weight: bold;
+  margin-bottom: 1ex;
+}
+
+.madoko .subtitle {
+  font-size: x-large;
+  margin-bottom: 1ex;
+  margin-top: -1ex;
+}
+
+.madoko .titleblock>* {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.madoko .titleblock table {
+  width: 80%;
+}
+
+.madoko .authorblock .author {
+  font-size: large;
+}
+
+.madoko .titlenote {
+  margin-top: -0.5ex;
+  margin-bottom: 1.5ex;
+}
+
+/* Lists */
+
+.madoko ul.list-star {
+  list-style-type: disc;
+}
+
+.madoko ul.list-dash {
+    list-style-type: none !important;
+}
+
+.madoko ul.list-dash > li:before {
+    content: "\2013"; 
+    position: absolute;
+    margin-left: -1em; 
+}
+
+.madoko ul.list-plus {
+  list-style-type: square;
+}
+
+/* Tables */
+.madoko table.madoko {
+  border-collapse: collapse;
+}
+.madoko td, .madoko th {
+  padding: 0ex 0.5ex;
+  margin: 0pt;
+  vertical-align: top;
+}
+
+.madoko .cell-border-left {
+  border-left: 1px solid black;
+}
+.madoko .cell-border-right {
+  border-right: 1px solid black;
+}
+
+
+.madoko thead>tr:first-child>.cell-line,
+.madoko tbody:first-child>tr:first-child>.cell-line {
+  border-top: 1px solid black;
+  border-bottom: none;
+}
+
+.madoko .cell-line, .madoko .cell-double-line {
+  border-bottom: 1px solid black;
+  border-top: none;
+}
+
+.madoko .cell-double-line {
+  border-top: 1px solid black;
+  padding-top: 1.5px !important;
+}
+
+
+/* Math Pre */
+.madoko .input-mathpre .MathJax_Display, .madoko .input-mathpre .math-display {
+  text-align: left !important;
+}
+
+.madoko div.input-mathpre {
+  margin-top: 1.5ex;
+  margin-bottom: 1ex;
+}
+
+.madoko .math-rendering {
+  color: gray;
+}
+
+
+/*---------------------------------------------------------------------------
+  Default style for syntax highlighting
+---------------------------------------------------------------------------*/
+
+.highlighted                        { color: black; }
+.highlighted .token.identifier      { }
+.highlighted .token.operators       { }
+.highlighted .token.keyword         { color: blue }
+.highlighted .token.string          { color: maroon } 
+.highlighted .token.string.escape   { color: gray }
+.highlighted .token.comment         { color: darkgreen }
+.highlighted .token.comment.doc     { font-style: normal }
+.highlighted .token.constant        { color: purple; }
+.highlighted .token.entity          {  }
+.highlighted .token.tag             { color: blue }
+.highlighted .token.info-token      { color: black }
+.highlighted .token.warn-token      { color: black }
+.highlighted .token.error-token     { color: darkred }
+.highlighted .token.debug-token     { color: gray }
+.highlighted .token.regexp          { color: maroon }
+.highlighted .token.attribute.name  { color: navy }
+.highlighted .token.attribute.value { color: maroon }
+.highlighted .token.constructor     { color: purple }
+.highlighted .token.namespace       { color: navy }
+.highlighted .token.header          { color: navy }
+.highlighted .token.type            { color: teal } 
+.highlighted .token.type.delimiter  { color: teal; } 
+.highlighted .token.predefined      { color: navy }
+.highlighted .token.invalid         { border-bottom: red dotted 1px }
+.highlighted .token.code            { color: maroon }
+.highlighted .token.code.keyword    { color: navy }
+.highlighted .token.typevar         { font-style: italic; }
+
+.highlighted .token.delimiter   {  } /* .[curly,square,parenthesis,angle,array,bracket] */
+.highlighted .token.number      {  }    /* .[hex,octal,binary,float] */
+.highlighted .token.variable    {  }  /* .[name,value]  */
+.highlighted .token.meta        { color: navy }      /* .[content] */
+
+.highlighted .token.bold            { font-weight: bold; }
+.highlighted .token.italic          { font-style: italic; }
+
+
+/* Pretty formatting of code */
+.madoko pre.pretty, .madoko code.pretty { 
+  font-family: Cambria,Times,Georgia,serif;
+  font-size: 100%;
+}
+
+.madoko .pretty table {
+  border-collapse: collapse;
+}
+.madoko .pretty td {
+  padding: 0em;
+}
+.madoko .pretty td.empty {
+  min-width: 1.5ex;
+}
+.madoko .pretty td.expander {
+  width: 100em;
+}
+.madoko .pretty .token.identifier         { font-style: italic }
+.madoko .pretty .token.constructor        { font-style: italic }
+
+
+/* ---------------------------------------------------
+   Styling for full documents
+----------------------------------------------------*/
+body.madoko, .madoko-body {
+  font-family: Cambria,"Times New Roman","Liberation Serif","Times",serif;
+  -webkit-text-size-adjust: 100%; /* so math displays well on mobile devices */
+}
+
+body.madoko, .madoko-body, body.madoko.preview[data-view=full] {
+  padding: 1em 16% 1em 12%;
+}
+
+body.madoko.preview {
+  padding: 0em 2em 0em 2em;
+}
+
+.madoko p,
+.madoko li {
+  text-align: justify;
+}
+
+/* style headings nicer, especially h5 and h6 */
+.madoko h1, .madoko h2, .madoko h3, .madoko h4 { 
+  margin-top: 1.22em; 
+  margin-bottom: 1ex;
+}
+.madoko h1+p, .madoko h2+p, .madoko h3+p, .madoko h4+p, .madoko h5+p  { 
+  margin-top: 1ex;    
+}
+.madoko h5, .madoko h6 { 
+  margin-top: 1ex;
+  font-size: 1em;
+}
+.madoko h5 { 
+  margin-bottom: 0.5ex;
+}
+.madoko h5 + p {
+  margin-top: 0.5ex;
+}
+.madoko h6 { 
+  margin-bottom: 0pt;
+}
+.madoko h6 + p {
+  margin-top: 0pt;
+}
+
+
+/* Fix monospace display (see http://code.stephenmorley.org/html-and-css/fixing-browsers-broken-monospace-font-handling/) */
+.madoko pre, .madoko code, .madoko kbd, .madoko samp, .madoko tt, .madoko .monospace, .madoko .token.indent, .madoko .reveal pre, .madoko .reveal code, .madoko .email {
+  font-family: Consolas,"Andale Mono WT","Andale Mono",Lucida Console,Monaco,monospace,monospace;
+  font-size: 0.85em;
+}
+.madoko pre code, .madoko .token.indent {
+  font-size: 0.95em;
+}
+
+.madoko pre code {
+  font-family: inherit !important;
+}
+
+/* Code prettify */
+.madoko ol.linenums li {
+  background-color: white;
+  list-style-type: decimal;
+}
+
+/* Merging */
+.madoko .remote {
+  background-color: #F0FFF0;
+}
+
+/* ---------------------------------------------------
+   Print settings
+----------------------------------------------------*/
+
+@media print {
+  body.madoko, .madoko-body {
+    font-size: 10pt;
+  }
+  @page {
+    margin: 1in 1.5in;
+  }
+}
+
+/* ---------------------------------------------------
+   Mobile device settings
+----------------------------------------------------*/
+
+@media only screen and (max-device-width:1024px) {
+  body.madoko, .madoko-body {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+}
+
+  </style>
+  <style  class="link">
+@media print {
+  @page {
+     margin: 0.5in;
+  }
+
+  h1, h2, h3 { page-break-after: avoid }
+  li {page-break-inside: avoid;}
+
+  a.footnote-backref {
+    display: none;
+  }
+
+  pre {
+    background-color: #cccccc;
+    border: 1px solid #cccccc;
+    padding: 10px;
+    font-size: small;
+  }
+
+}
+
+pre {
+  background-color: #eeeeff;
+  border: 1px solid #cccccc;
+  padding: 10px;
+}
+
+pre code {
+  border: none;
+  padding: none;
+  background-color: transparent;
+}
+
+code {
+  border: 1px solid #dddddd;
+  background-color: #f8f8f8;
+  padding: 1px;
+}
+
+div .figure {
+  width: 40%; 
+  margin: auto
+}
+
+  </style>
+<script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       tex2jax: {inlineMath: [['$','$']]},
        TeX: { 
@@ -22,411 +540,411 @@
       MathJax.InputJax.TeX.Definitions.environment['mdMathprearray'] = ['AMSarray',null,null,null,'l','0em','0em'];
     });
   </script>
-  <script type="text/javascript"
+  <script type="text/javascript" class="preview"
     src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
 
 </head>
 <body class="madoko">
 
-<h1 id="linux-basics-part-2"  data-line="8" ><span data-line=":8"></span>Linux Basics, Part 2</h1>
-<p data-line="9"><span data-line=":9"></span><em>Originally created by Annie Christy, Lisa Goeller, Huting Lin, Jozi McKiernan, and Paige Rinnert</em><span data-line=":9"></span>
-</p><h2 id="permissions"  data-line="11" ><span data-line=":11"></span>Permissions</h2>
-<p data-line="13"><span data-line=":13"></span>Every file has a ten-character string that defines its attributes. This
-string is listed first in the output of <span data-line=":14"></span><code class="code">ls -l</code><span data-line=":14"></span>.
+<h1 id="sec-linux-basics-part-2"  data-line="8"  style="bookmark:Linux Basics, Part 2"><span data-line="8"></span>Linux Basics, Part 2</h1>
+<p data-line="9"><span data-line="9"></span><em>Originally created by Annie Christy, Lisa Goeller, Huting Lin, Jozi McKiernan, and Paige Rinnert</em><span data-line="9"></span>
+</p><h2 id="sec-permissions"  data-line="11"  style="bookmark:Permissions"><span data-line="11"></span>Permissions</h2>
+<p data-line="13"><span data-line="13"></span>Every file has a ten-character string that defines its attributes. This
+string is listed first in the output of <span data-line="14"></span><code class="code code1">ls -l</code><span data-line="14"></span>.
 </p>
-<p class="indent" data-line="16"><span data-line=":16"></span>Here is one example from the output of <span data-line=":16"></span><code class="code">ls -l</code><span data-line=":16"></span>:
+<p class="indent" data-line="16"><span data-line="16"></span>Here is one example from the output of <span data-line="16"></span><code class="code code1">ls -l</code><span data-line="16"></span>:
 </p>
-<pre class="para-block fenced para-block" data-line="17" data-line-code="18"><code data-line="18">-rwxr--rw- 1 blackbeard users 3000 Jun 10 01:53 ocean.txt</code></pre>
-<p data-line="21"><span data-line=":21"></span>The command <span data-line=":21"></span><code class="code">ls -l</code><span data-line=":21"></span> shows other useful information, such as the creator of
+<pre class="para-block pre-fenced pre-fenced3" data-line="17" data-line-code="18"><code data-line="18">-rwxr--rw- 1 blackbeard users 3000 Jun 10 01:53 ocean.txt</code></pre>
+<p data-line="21"><span data-line="21"></span>The command <span data-line="21"></span><code class="code code1">ls -l</code><span data-line="21"></span> shows other useful information, such as the creator of
 the file (blackbeard), the group that owns the file (users), and the
 size of the file in bytes (3000), but here we are just going to focus on
 the permissions.
 </p>
-<p class="indent" data-line="26"><span data-line=":26"></span>The first character in the string <span data-line=":26"></span><code class="code">-rwxr–rw-</code><span data-line=":26"></span> gives its file type: 
-<span data-line=":27"></span><code class="code">-</code><span data-line=":27"></span> tells us that this is a regular file.
+<p class="indent" data-line="26"><span data-line="26"></span>The first character in the string <span data-line="26"></span><code class="code code1">-rwxr–rw-</code><span data-line="26"></span> gives its file type: 
+<span data-line="27"></span><code class="code code1">-</code><span data-line="27"></span> tells us that this is a regular file.
 </p>
-<p class="indent" data-line="29"><span data-line=":29"></span>The other nine characters represent the file<span data-line=":29"></span>&#39;<span data-line=":29"></span>s mode. Characters two
-through four (rwx) represent the owner<span data-line=":30"></span>&#39;<span data-line=":30"></span>s permissions, five through seven
-(<span data-line=":31"></span><code class="code">r--</code><span data-line=":31"></span>) represent the owning group<span data-line=":31"></span>&#39;<span data-line=":31"></span>s permissions, and eight through ten
-(<span data-line=":32"></span><code class="code">rw-</code><span data-line=":32"></span>) represent the world permissions, the permissions of everyone else.
-The permissions of the mode can be represented by three characters:
-</p><table class="madoko block" data-line="35">
-<thead><tr><th class="cell-line"></th><th class="cell-line"></th></tr>
-<tr><th> Symbol  </th><th> Description                                                                   </th></tr></thead>
+<p class="indent" data-line="29"><span data-line="29"></span>The other nine characters represent the file<span data-line="29"></span>&#39;<span data-line="29"></span>s mode. Characters two
+through four (rwx) represent the owner<span data-line="30"></span>&#39;<span data-line="30"></span>s permissions, five through seven
+(<span data-line="31"></span><code class="code code1">r--</code><span data-line="31"></span>) represent the owning group<span data-line="31"></span>&#39;<span data-line="31"></span>s permissions, and eight through ten
+(<span data-line="32"></span><code class="code code1">rw-</code><span data-line="32"></span>) represent the world (or <span data-line="32"></span>&#8220;other&#8221;<span data-line="32"></span>) permissions, the permissions of 
+everyone else. The permissions of the mode can be represented by three 
+characters:
+</p><table class="madoko block" data-line="36">
+<thead><tr><th class="cell-line" data-line="36"></th><th class="cell-line" data-line="36"></th></tr>
+<tr><th data-line="37"><span data-line="37"></span> Symbol  </th><th data-line="37"><span data-line="37"></span> Description                                                                   </th></tr></thead>
 <tbody><tr><td class="cell-line"></td><td class="cell-line"></td></tr>
-<tr><td> <code class="code">r</code>     </td><td> allows a file to be opened and read                                           </td></tr>
-<tr><td> <code class="code">w</code>     </td><td> allows a file to be written but does not allow files to be renamed or deleted </td></tr>
-<tr><td> <code class="code">x</code>     </td><td> allows a file to be treated as a program and be executable                    </td></tr>
-<tr><td class="cell-line"></td><td class="cell-line"></td></tr></tbody></table>
-<ul class="compact" data-line="43">
-<li data-line="43"><span data-line=":43"></span>Look at the permissions for <span data-line=":43"></span>~<span data-line=":43"></span>/LinuxBasics/the<span data-line=":43"></span>_<span data-line=":43"></span>sea. Can
+<tr><td data-line="39"><span data-line="39"></span> <span data-line="39"></span><code class="code code1">r</code><span data-line="39"></span>     </td><td data-line="39"><span data-line="39"></span> allows a file to be opened and read                                           </td></tr>
+<tr><td data-line="40"><span data-line="40"></span> <span data-line="40"></span><code class="code code1">w</code><span data-line="40"></span>     </td><td data-line="40"><span data-line="40"></span> allows a file to be written but does not allow files to be renamed or deleted </td></tr>
+<tr><td data-line="41"><span data-line="41"></span> <span data-line="41"></span><code class="code code1">x</code><span data-line="41"></span>     </td><td data-line="41"><span data-line="41"></span> allows a file to be treated as a program and be executable                    </td></tr>
+<tr><td class="cell-line" data-line="42"></td><td class="cell-line" data-line="42"></td></tr></tbody></table>
+<ul class="list-dash compact" data-line="44">
+<li data-line="44"><span data-line="44"></span>Look at the permissions for <span data-line="44"></span>~<span data-line="44"></span>/LinuxBasics/the<span data-line="44"></span>_<span data-line="44"></span>sea. Can
 you determine who has permissions to the file?
 </li></ul>
 
-<p data-line="46"><span data-line=":46"></span>File modes can also be expressed in binary and octal representations.
-Let<span data-line=":47"></span>&#39;<span data-line=":47"></span>s see how this works:
-</p><table class="madoko block" data-line="49">
-<thead><tr><th class="cell-line"></th><th class="cell-line"></th><th class="cell-line"></th></tr>
-<tr><th> Octal  </th><th> Binary   </th><th> File Mode   </th></tr></thead>
+<p data-line="47"><span data-line="47"></span>File modes can also be expressed in binary and octal representations.
+Let<span data-line="48"></span>&#39;<span data-line="48"></span>s see how this works:
+</p><table class="madoko block" data-line="50">
+<thead><tr><th class="cell-line" data-line="50"></th><th class="cell-line" data-line="50"></th><th class="cell-line" data-line="50"></th></tr>
+<tr><th data-line="51"><span data-line="51"></span> Octal  </th><th data-line="51"><span data-line="51"></span> Binary   </th><th data-line="51"><span data-line="51"></span> File Mode   </th></tr></thead>
 <tbody><tr><td class="cell-line"></td><td class="cell-line"></td><td class="cell-line"></td></tr>
-<tr><td> 0      </td><td> 000      </td><td> <code class="code">---</code>       </td></tr>
-<tr><td> 1      </td><td> 001      </td><td> <code class="code">--x</code>       </td></tr>
-<tr><td> 2      </td><td> 010      </td><td> <code class="code">-w-</code>       </td></tr>
-<tr><td> 3      </td><td> 011      </td><td> <code class="code">-wx</code>       </td></tr>
-<tr><td> 4      </td><td> 100      </td><td> <code class="code">r--</code>       </td></tr>
-<tr><td> 5      </td><td> 101      </td><td> <code class="code">r-x</code>       </td></tr>
-<tr><td> 6      </td><td> 110      </td><td> <code class="code">rw-</code>       </td></tr>
-<tr><td> 7      </td><td> 111      </td><td> <code class="code">rwx</code>       </td></tr>
-<tr><td class="cell-line"></td><td class="cell-line"></td><td class="cell-line"></td></tr></tbody></table>
-<p data-line="62"><span data-line=":62"></span>The permissions of a file will most often be 0 or 4-7 in the octal
+<tr><td data-line="53"><span data-line="53"></span> 0      </td><td data-line="53"><span data-line="53"></span> 000      </td><td data-line="53"><span data-line="53"></span> <span data-line="53"></span><code class="code code1">---</code><span data-line="53"></span>       </td></tr>
+<tr><td data-line="54"><span data-line="54"></span> 1      </td><td data-line="54"><span data-line="54"></span> 001      </td><td data-line="54"><span data-line="54"></span> <span data-line="54"></span><code class="code code1">--x</code><span data-line="54"></span>       </td></tr>
+<tr><td data-line="55"><span data-line="55"></span> 2      </td><td data-line="55"><span data-line="55"></span> 010      </td><td data-line="55"><span data-line="55"></span> <span data-line="55"></span><code class="code code1">-w-</code><span data-line="55"></span>       </td></tr>
+<tr><td data-line="56"><span data-line="56"></span> 3      </td><td data-line="56"><span data-line="56"></span> 011      </td><td data-line="56"><span data-line="56"></span> <span data-line="56"></span><code class="code code1">-wx</code><span data-line="56"></span>       </td></tr>
+<tr><td data-line="57"><span data-line="57"></span> 4      </td><td data-line="57"><span data-line="57"></span> 100      </td><td data-line="57"><span data-line="57"></span> <span data-line="57"></span><code class="code code1">r--</code><span data-line="57"></span>       </td></tr>
+<tr><td data-line="58"><span data-line="58"></span> 5      </td><td data-line="58"><span data-line="58"></span> 101      </td><td data-line="58"><span data-line="58"></span> <span data-line="58"></span><code class="code code1">r-x</code><span data-line="58"></span>       </td></tr>
+<tr><td data-line="59"><span data-line="59"></span> 6      </td><td data-line="59"><span data-line="59"></span> 110      </td><td data-line="59"><span data-line="59"></span> <span data-line="59"></span><code class="code code1">rw-</code><span data-line="59"></span>       </td></tr>
+<tr><td data-line="60"><span data-line="60"></span> 7      </td><td data-line="60"><span data-line="60"></span> 111      </td><td data-line="60"><span data-line="60"></span> <span data-line="60"></span><code class="code code1">rwx</code><span data-line="60"></span>       </td></tr>
+<tr><td class="cell-line" data-line="61"></td><td class="cell-line" data-line="61"></td><td class="cell-line" data-line="61"></td></tr></tbody></table>
+<p data-line="63"><span data-line="63"></span>The permissions of a file will most often be 0 or 4-7 in the octal
 representation.
 </p>
-<p class="indent para-continue" data-line="65"><span data-line=":65"></span>The <span data-line=":65"></span><code class="code">umask</code><span data-line=":65"></span> command sets the default permissions given to
+<p class="indent para-continue" data-line="66"><span data-line="66"></span>The <span data-line="66"></span><code class="code code1">umask</code><span data-line="66"></span> command sets the default permissions given to
 newly created files. When files are created, the default permissions are 666.
-Running <span data-line=":67"></span><code class="code">umask 0000</code><span data-line=":67"></span> would set the default permissions for new files to 666,
+Running <span data-line="68"></span><code class="code code1">umask 0000</code><span data-line="68"></span> would set the default permissions for new files to 666,
 which is rw-rw-rw-. The 000 means that none of the permissions are masked.
 (Ignore the first digit for now because it is only used for special modes).
 Changing the value of umask will mask permissions. For example, if you
 set umask to 0066, you will change the default file permissions to 600,
 which means that only the file creator can read, write, and execute the file.
 </p>
-<ul class="compact" data-line="74">
-<li data-line="74"><span data-line=":74"></span>Run <span data-line=":74"></span><code class="code">umask</code><span data-line=":74"></span> to see what the current default permissions are. Under
+<ul class="list-dash compact" data-line="75">
+<li data-line="75"><span data-line="75"></span>Run <span data-line="75"></span><code class="code code1">umask</code><span data-line="75"></span> to see what the current default permissions are. Under
 these default permissions, what are world users allowed to do?
 </li></ul>
 
-<p class="para-continue" data-line="77"><span data-line=":77"></span>OK, so now we know the default settings. But what if we wanted to change
+<p class="para-continue" data-line="78"><span data-line="78"></span>OK, so now we know the default settings. But what if we wanted to change
 the permissions of an already existing file? There are several
 techniques for changing file permissions.
 </p>
-<ol class="loose" data-line="81">
-<li data-line="81">
-<p data-line="81"><span data-line=":81"></span>Using <span data-line=":81"></span><code class="code">chmod</code><span data-line=":81"></span>
+<ol class="loose" data-line="82">
+<li data-line="82">
+<p data-line="82"><span data-line="82"></span>Using <span data-line="82"></span><code class="code code1">chmod</code><span data-line="82"></span>
 </p>
-<pre class="para-block fenced para-block" data-line="82" data-line-code="83"><code data-line="83">chmod &lt;octal #&gt; &lt;filename&gt;</code></pre>
-<p data-line="85"><span data-line=":85"></span>With octal representation, you can change the file<span data-line=":85"></span>&#39;<span data-line=":85"></span>s mode. For
+<pre class="para-block pre-fenced pre-fenced3" data-line="83" data-line-code="84"><code data-line="84">chmod &lt;octal #&gt; &lt;filename&gt;</code></pre>
+<p data-line="86"><span data-line="86"></span>With octal representation, you can change the file<span data-line="86"></span>&#39;<span data-line="86"></span>s mode. For
 example, if you were to input:
 </p>
-<pre class="para-block fenced para-block" data-line="87" data-line-code="88"><code data-line="88">chmod 600 MINE.txt</code></pre>
-<p data-line="90"><span data-line=":90"></span>This would set the permissions of the file MINE.txt so that only the
+<pre class="para-block pre-fenced pre-fenced3" data-line="88" data-line-code="89"><code data-line="89">chmod 600 MINE.txt</code></pre>
+<p data-line="91"><span data-line="91"></span>This would set the permissions of the file MINE.txt so that only the
 owner would be able to read and write the file.
 </p></li>
-<li data-line="93">
-<p data-line="93"><span data-line=":93"></span>Using <span data-line=":93"></span><code class="code">chown</code><span data-line=":93"></span>
+<li data-line="94">
+<p data-line="94"><span data-line="94"></span>Using <span data-line="94"></span><code class="code code1">chown</code><span data-line="94"></span>
 </p>
-<pre class="para-block fenced para-block" data-line="94" data-line-code="95"><code data-line="95">chown &lt;name&gt; &lt;filename&gt;</code></pre>
-<p data-line="97"><span data-line=":97"></span>This changes the ownership of the file to the specified user.
+<pre class="para-block pre-fenced pre-fenced3" data-line="95" data-line-code="96"><code data-line="96">chown &lt;name&gt; &lt;filename&gt;</code></pre>
+<p data-line="98"><span data-line="98"></span>This changes the ownership of the file to the specified user.
 </p>
-<pre class="para-block fenced para-block" data-line="98" data-line-code="99"><code data-line="99">chown :&lt;group&gt; &lt;filename&gt;</code></pre>
-<p data-line="101"><span data-line=":101"></span>This command changes the group ownership to the group <span data-line=":101"></span><code class="code">&lt;group&gt;</code><span data-line=":101"></span>.
+<pre class="para-block pre-fenced pre-fenced3" data-line="99" data-line-code="100"><code data-line="100">chown :&lt;group&gt; &lt;filename&gt;</code></pre>
+<p data-line="102"><span data-line="102"></span>This command changes the group ownership to the group <span data-line="102"></span><code class="code code1">&lt;group&gt;</code><span data-line="102"></span>.
 Note that you can use a combination of these two commands to change
 both individual and group owners at the same time:
 </p>
-<pre class="para-block fenced para-block" data-line="104" data-line-code="105"><code data-line="105">chown &lt;name&gt;:&lt;group&gt; &lt;filename&gt;</code></pre></li></ol>
-<h2 id="su-and-sudo" class="unnumbered"  data-line="108" ><span data-line=":108"></span>SU and SUDO</h2>
-<p data-line="110"><span data-line=":110"></span>If you try running chown or chmod on a file that you don<span data-line=":110"></span>&#39;<span data-line=":110"></span>t own, you<span data-line=":110"></span>&#39;<span data-line=":110"></span>ll
-notice that <span data-line=":111"></span><em>you can&#39;t</em><span data-line=":111"></span>. The only way to do this is to become another
+<pre class="para-block pre-fenced pre-fenced3" data-line="105" data-line-code="106"><code data-line="106">chown &lt;name&gt;:&lt;group&gt; &lt;filename&gt;</code></pre></li></ol>
+<h2 id="su-and-sudo" class="unnumbered"  data-line="109"  style="bookmark:SU and SUDO"><span data-line="109"></span>SU and SUDO</h2>
+<p data-line="111"><span data-line="111"></span>If you try running chown or chmod on a file that you don<span data-line="111"></span>&#39;<span data-line="111"></span>t own, you<span data-line="111"></span>&#39;<span data-line="111"></span>ll
+notice that <span data-line="112"></span><em>you can&#39;t</em><span data-line="112"></span>. The only way to do this is to become another
 user. To become another user, run the following command:
 </p>
-<pre class="para-block fenced para-block" data-line="113" data-line-code="114"><code data-line="114">su &lt;user&gt;</code></pre>
-<p data-line="116"><span data-line=":116"></span>You will then be prompted for the user<span data-line=":116"></span>&#39;<span data-line=":116"></span>s password. If you do not include
+<pre class="para-block pre-fenced pre-fenced3" data-line="114" data-line-code="115"><code data-line="115">su &lt;user&gt;</code></pre>
+<p data-line="117"><span data-line="117"></span>You will then be prompted for the user<span data-line="117"></span>&#39;<span data-line="117"></span>s password. If you do not include
 a username, the command line will assume that you wish to become the
 superuser. The superuser has power over everything and can change all
 permissions.
 </p>
-<p class="indent" data-line="121"><span data-line=":121"></span>To stop being a user in su, simply type exit into the command line and
+<p class="indent" data-line="122"><span data-line="122"></span>To stop being a user in su, simply type exit into the command line and
 hit enter.
 </p>
-<p class="indent" data-line="124"><span data-line=":124"></span>To run a single command using su, simply type:
+<p class="indent" data-line="125"><span data-line="125"></span>To run a single command using su, simply type:
 </p>
-<pre class="para-block fenced para-block" data-line="125" data-line-code="126"><code data-line="126">su -c &lt;command&gt;</code></pre>
-<p data-line="128"><span data-line=":128"></span>The sudo command also allows a user to get more privileges, but in a
+<pre class="para-block pre-fenced pre-fenced3" data-line="126" data-line-code="127"><code data-line="127">su -c &lt;command&gt;</code></pre>
+<p data-line="129"><span data-line="129"></span>The sudo command also allows a user to get more privileges, but in a
 much more controlled way. Because the administrator configures sudo, a
 user using sudo may not have full superuser powers. Sudo differs from su
-in that sudo usually requires a user<span data-line=":131"></span>&#39;<span data-line=":131"></span>s own password rather than the
-root<span data-line=":132"></span>&#39;<span data-line=":132"></span>s. Thus, sudo is a much safer command than su. The sudo syntax
+in that sudo usually requires a user<span data-line="132"></span>&#39;<span data-line="132"></span>s own password rather than the
+root<span data-line="133"></span>&#39;<span data-line="133"></span>s. Thus, sudo is a much safer command than su. The sudo syntax
 looks like this:
 </p>
-<pre class="para-block fenced para-block" data-line="134" data-line-code="135"><code data-line="135">sudo &lt;command&gt;</code></pre>
-<p class="para-continue" data-line="137"><span data-line=":137"></span>It is here that we as the CS Department remind you once again, <span data-line=":137"></span>&#8220;&#8221;<span data-line=":137"></span>With
-great power, comes great responsibility.<span data-line=":138"></span>&quot;<span data-line=":138"></span> Like Spiderman, when becoming
+<pre class="para-block pre-fenced pre-fenced3" data-line="135" data-line-code="136"><code data-line="136">sudo &lt;command&gt;</code></pre>
+<p class="para-continue" data-line="138"><span data-line="138"></span>It is here that we as the CS Department remind you once again, <span data-line="138"></span>&#8220;&#8221;<span data-line="138"></span>With
+great power, comes great responsibility.<span data-line="139"></span>&quot;<span data-line="139"></span> Like Spiderman, when becoming
 the superuser you become more than the average human. We only hope that
 you continue to use your powers for good.
 </p>
-<ul class="compact" data-line="142">
-<li data-line="142"><span data-line=":142"></span>Remember the <span data-line=":142"></span>~<span data-line=":142"></span>/LinuxBasics/arrr file you made? Well, it contains the names of
-the files you<span data-line=":143"></span>&#39;<span data-line=":143"></span>re going to need for the next part of the lab.
-However, there is one small problem: you don<span data-line=":144"></span>&#39;<span data-line=":144"></span>t have all the permissions
+<ul class="list-dash compact" data-line="143">
+<li data-line="143"><span data-line="143"></span>Remember the <span data-line="143"></span>~<span data-line="143"></span>/LinuxBasics/arrr file you made? Well, it contains the names of
+the files you<span data-line="144"></span>&#39;<span data-line="144"></span>re going to need for the next part of the lab.
+However, there is one small problem: you don<span data-line="145"></span>&#39;<span data-line="145"></span>t have all the permissions
 you need to modify them! Change the permissions on the files listed in
 arrr so that you have rwx access. (Hint:
 flags are your friend.)
 </li></ul>
-<h2 id="text-editors"  data-line="149" ><span data-line=":149"></span>Text Editors</h2>
-<p data-line="150"><span data-line=":150"></span>Navigate to the directory <span data-line=":150"></span><code class="code">pirate_editors</code><span data-line=":150"></span> and run:
+<h2 id="sec-text-editors"  data-line="150"  style="bookmark:Text Editors"><span data-line="150"></span>Text Editors</h2>
+<p data-line="151"><span data-line="151"></span>Navigate to the directory <span data-line="151"></span><code class="code code1">pirate_editors</code><span data-line="151"></span> and run:
 </p>
-<pre class="para-block fenced para-block" data-line="151" data-line-code="152"><code data-line="152">vim dreadpirate_instructions</code></pre>
-<p data-line="154"><span data-line=":154"></span>Then read the file and follow the directions to complete this part of
+<pre class="para-block pre-fenced pre-fenced3" data-line="152" data-line-code="153"><code data-line="153">vim dreadpirate_instructions</code></pre>
+<p data-line="155"><span data-line="155"></span>Then read the file and follow the directions to complete this part of
 the lab.
-</p><h2 id="treasure-hunt"  data-line="157" ><span data-line=":157"></span>Treasure Hunt!</h2>
-<p data-line="159"><span data-line=":159"></span>There is some treasure hidden on your machine, and we want to help you find it!
-In this part of the lab, we<span data-line=":160"></span>&#39;<span data-line=":160"></span>ll chart a course through a map to your treasure. 
+</p>
+<p class="indent" data-line="158"><span data-line="158"></span><em>If you&#39;re already a vim expert, but don&#39;t know much about emacs, you can
+do this part of the lab using emacs. Ask us how.</em><span data-line="159"></span>
+</p><h2 id="sec-treasure-hunt"  data-line="161"  style="bookmark:Treasure Hunt!"><span data-line="161"></span>Treasure Hunt!</h2>
+<p data-line="163"><span data-line="163"></span>There is some treasure hidden on your machine, and we want to help you find it!
+In this part of the lab, we<span data-line="164"></span>&#39;<span data-line="164"></span>ll chart a course through a map to your treasure. 
 Each step along the way may requre the use of a new tool: regular expressions.
-</p><h3 id="regular-expressions"  data-line="163" ><span data-line=":163"></span>Regular Expressions</h3>
-<p data-line="165"><span data-line=":165"></span>Regular expressions are a powerful tool for pattern matching. In fact,
+</p><h3 id="sec-regular-expressions"  data-line="167"  style="bookmark:Regular Expressions"><span data-line="167"></span>Regular Expressions</h3>
+<p data-line="169"><span data-line="169"></span>Regular expressions are a powerful tool for pattern matching. In fact,
 you were already using regular expressions when you ran the grep
 command! If you learn how to use regular expressions, you can match much
 more than just words; you will be able to match patterns like every word
-that starts with a j, or every file that contains a number in its name.<span data-line=":169"></span><br>
+that starts with a j, or every file that contains a number in its name.<span data-line="173"></span><br>
 </p>
-<p class="indent" data-line="171"><span data-line=":171"></span>Two programs that are commonly used with regular expressions are awk and
+<p class="indent" data-line="175"><span data-line="175"></span>Two programs that are commonly used with regular expressions are awk and
 sed. Awk is an interpreted language that is very good at processing text
-with regular expressions. Sed stands for <span data-line=":173"></span>&#8220;stream editor&#8221;<span data-line=":173"></span> and is a
+with regular expressions. Sed stands for <span data-line="177"></span>&#8220;stream editor&#8221;<span data-line="177"></span> and is a
 UNIX utility that allows the user to process files. The main difference
 between the two is that sed is simpler and easier to use to edit text
 while awk is a programming language in and of itself (vaguely similar to
 C) that can do a lot more than just edit text. If you are interested,
-you can research more about the history and use of awk and sed.<span data-line=":178"></span><br>
+you can research more about the history and use of awk and sed.<span data-line="182"></span><br>
 </p>
-<p class="indent" data-line="180"><span data-line=":180"></span>In this lab, you will mostly be using the sed command. You are
+<p class="indent" data-line="184"><span data-line="184"></span>In this lab, you will mostly be using the sed command. You are
 encouraged to read the sed man page to learn more about how the command
 works and to get comfortable with the available options. Two option
-flags you should definitely know about are<span data-line=":183"></span> <span data-line=":183"></span>-i and<span data-line=":183"></span> <span data-line=":183"></span>-e. The<span data-line=":183"></span> <span data-line=":183"></span>-e command
+flags you should definitely know about are<span data-line="187"></span> <span data-line="187"></span>-i and<span data-line="187"></span> <span data-line="187"></span>-e. The<span data-line="187"></span> <span data-line="187"></span>-e command
 will make the changes to the file and output the altered file to the
-command line without changing the saved version of the file. The<span data-line=":185"></span> <span data-line=":185"></span>-i
-option will edit the file in place.<span data-line=":186"></span><br>
+command line without changing the saved version of the file. The<span data-line="189"></span> <span data-line="189"></span>-i
+option will edit the file in place.<span data-line="190"></span><br>
 </p>
-<p class="indent" data-line="188"><span data-line=":188"></span>The regular expression metacharacters are <span data-line=":188"></span>^<span data-line=":188"></span> <span data-line=":188"></span>*<span data-line=":188"></span> <span data-line=":188"></span>-<span data-line=":188"></span> [ ]<span data-line=":188"></span> <span data-line=":188"></span>\<span data-line=":188"></span>{ } ?<span data-line=":188"></span> <span data-line=":188"></span>+ ( ) .
-and |.<span data-line=":189"></span><br>
+<p class="indent" data-line="192"><span data-line="192"></span>The regular expression metacharacters are <span data-line="192"></span>^<span data-line="192"></span> <span data-line="192"></span>*<span data-line="192"></span> <span data-line="192"></span>-<span data-line="192"></span> [ ]<span data-line="192"></span> <span data-line="192"></span>\<span data-line="192"></span>{ } ?<span data-line="192"></span> <span data-line="192"></span>+ ( ) .
+and |.<span data-line="193"></span><br>
 </p>
-<p class="indent" data-line="191"><span data-line=":191"></span>They each have different meanings. For example, <span data-line=":191"></span>^<span data-line=":191"></span> anchors the beginning
-of a line and <span data-line=":192"></span>$<span data-line=":192"></span> anchors the end of a line. The . is a character
+<p class="indent" data-line="195"><span data-line="195"></span>They each have different meanings. For example, <span data-line="195"></span>^<span data-line="195"></span> anchors the beginning
+of a line and <span data-line="196"></span>$<span data-line="196"></span> anchors the end of a line. The . is a character
 placeholder, so it could be replaced by any character. So, the regular
-expression<span data-line=":194"></span><br>
+expression<span data-line="198"></span><br>
 </p>
-<p class="indent" data-line="196"><span data-line=":196"></span><code class="code">&#39;^q..x.$&#39;</code><span data-line=":196"></span>
+<p class="indent" data-line="200"><span data-line="200"></span><code class="code code1">&#39;^q..x.$&#39;</code><span data-line="200"></span>
 </p>
-<p class="indent" data-line="198"><span data-line=":198"></span>will match with any word that is five characters long, starts with a q
+<p class="indent" data-line="202"><span data-line="202"></span>will match with any word that is five characters long, starts with a q
 and whose second-to-last character is an x. Note that single quotes are
 used to designate the regular expression as separate from any command.
 If your pattern involves single quotes, you will want to surround your
-regular expression with double quotes instead.<span data-line=":202"></span><br>
+regular expression with double quotes instead.<span data-line="206"></span><br>
 </p>
-<p class="indent" data-line="204"><span data-line=":204"></span>The<span data-line=":204"></span> [ ]<span data-line=":204"></span> characters allow you to designate multiple choices. So the
+<p class="indent" data-line="208"><span data-line="208"></span>The<span data-line="208"></span> [ ]<span data-line="208"></span> characters allow you to designate multiple choices. So the
 expression
 </p>
-<p class="indent" data-line="207"><span data-line=":207"></span><code class="code">&#39;^[ABC]&#39;</code><span data-line=":207"></span>
+<p class="indent" data-line="211"><span data-line="211"></span><code class="code code1">&#39;^[ABC]&#39;</code><span data-line="211"></span>
 </p>
-<p class="indent" data-line="209"><span data-line=":209"></span>will match any pattern that begins with a capital A, B, or C.<span data-line=":209"></span><br>
+<p class="indent" data-line="213"><span data-line="213"></span>will match any pattern that begins with a capital A, B, or C.<span data-line="213"></span><br>
 </p>
-<p class="indent" data-line="211"><span data-line=":211"></span>Obviously, this handout does not cover all there is to know about
+<p class="indent" data-line="215"><span data-line="215"></span>Obviously, this handout does not cover all there is to know about
 regular expressions. It will just serve as an introduction. However,
 regular expressions are very powerful and useful, so it is definitely
-worth your time to learn more!<span data-line=":214"></span><br>
+worth your time to learn more!<span data-line="218"></span><br>
 </p>
-<p class="indent" data-line="216"><span data-line=":216"></span>The clue that will lead you to the first step toward your treasure is hidden in
-the file treasureisland. To decode the message, you will need to follow
+<p class="indent" data-line="220"><span data-line="220"></span>The clue that will lead you to the first step toward your treasure is hidden in
+the file <span data-line="221"></span>~<span data-line="221"></span>/LinuxBasics/treasureisland. To decode the message, you will need to follow
 the instructions exactly for the message to appear. It is recommended
 that you save copies of your text file at different steps so that you
 can go back if you make mistakes. Several .diff files have been provided
-so you can check your progress.<span data-line=":221"></span><br>
+so you can check your progress.<span data-line="225"></span><br>
 </p>
-<p class="indent para-continue" data-line="223"><span data-line=":223"></span>Start by making a copy of the file treasureisland to work on so that you
-can keep a copy of the original for reference. (The file is located in
-the <span data-line=":225"></span>~<span data-line=":225"></span>/LinuxBasics directory.)
+<p class="indent para-continue" data-line="227"><span data-line="227"></span>Start by making a copy of the file treasureisland to work on so that you
+can keep a copy of the original for reference. Call the copy <span data-line="228"></span><code class="code code1">treasure.0</code><span data-line="228"></span>
 </p>
-<ol class="loose" data-line="227">
-<li data-line="227">
-<p data-line="227"><span data-line=":227"></span>It is often useful to perform find and replace operations on text
+<ol class="loose" data-line="231">
+<li data-line="231">
+<p data-line="231"><span data-line="231"></span>It is often useful to perform find and replace operations on text
 files. There is a simple sed command just for this purpose. Its
 basic form is:
 </p>
-<pre class="para-block para-block" data-line="231"><code>sed -i &#39;s/&lt;find&gt;/&lt;replace&gt;/g&#39; file.txt</code></pre>
-<p data-line="233"><span data-line=":233"></span>The<span data-line=":233"></span> <span data-line=":233"></span>-i option tells sed to edit the file in place. Replace
-<span data-line=":234"></span><<span data-line=":234"></span>find<span data-line=":234"></span>><span data-line=":234"></span> with the pattern that you want to search for. This can be a
+<pre class="para-block pre-indented" data-line="235"><code>sed &#39;s/&lt;find&gt;/&lt;replace&gt;/g&#39; file.txt</code></pre>
+<p data-line="237"><span data-line="237"></span>Replace
+<span data-line="238"></span><<span data-line="238"></span>find<span data-line="238"></span>><span data-line="238"></span> with the pattern that you want to search for. This can be a
 character or word, or using regular expressions, we can ask it to
 search for many different patterns! Whatever should take the place
-of the patterns should go in the position of <span data-line=":237"></span><<span data-line=":237"></span>replace<span data-line=":237"></span>><span data-line=":237"></span>. The
-leading s stands for <span data-line=":238"></span>&#8220;substitute&#8221;<span data-line=":238"></span> and the trailing g stands for
-<span data-line=":239"></span>&#8220;global.&#8221;<span data-line=":239"></span> If the g is left off, only the first instance of the
-pattern in each line will be replaced.<span data-line=":240"></span><br>
+of the patterns should go in the position of <span data-line="241"></span><<span data-line="241"></span>replace<span data-line="241"></span>><span data-line="241"></span>. The
+leading s stands for <span data-line="242"></span>&#8220;substitute&#8221;<span data-line="242"></span> and the trailing g stands for
+<span data-line="243"></span>&#8220;global.&#8221;<span data-line="243"></span> If the g is left off, only the first instance of the
+pattern in each line will be replaced.<span data-line="244"></span><br>
 </p>
-<p data-line="242"><span data-line=":242"></span>So, to remove all the extraneous punctuation that are not single
+<p data-line="246"><span data-line="246"></span>So, to remove all the extraneous punctuation that are not single
 quotes or periods and replace them with a space, we could use the
 following command:
 </p>
-<pre class="para-block para-block" data-line="246"><code>sed -i &#39;s/[?!,:;&quot;-]/ /g&#39; treasureisland</code></pre>
-<p data-line="248"><span data-line=":248"></span>Run this command now. If you like, it might be a good idea to run it
-with the<span data-line=":249"></span> <span data-line=":249"></span>-e option first, so that you can see what will happen to
-your file without actually changing it.
+<pre class="para-block pre-indented" data-line="250"><code>sed &#39;s/[?!,:;&quot;-]/ /g&#39; treasure.0 &gt; treasure.1</code></pre>
+<p data-line="252"><span data-line="252"></span>Run this command now. 
 </p></li>
-<li data-line="252">
-<p data-line="252"><span data-line=":252"></span>To remove apostrophes and replace them with spaces, we need to
+<li data-line="254">
+<p data-line="254"><span data-line="254"></span>To remove apostrophes and replace them with spaces, we need to
 surround the regular expression with double quotes instead of single
 quotes.
 </p>
-<pre class="para-block para-block" data-line="256"><code>sed -i &quot;s/&#39;/ /g&quot; treasureisland</code></pre>
-<p data-line="258"><span data-line=":258"></span>Run this command now.
+<pre class="para-block pre-indented" data-line="258"><code>sed &quot;s/&#39;/ /g&quot; treasure.1 &gt; treasure.2</code></pre>
+<p data-line="260"><span data-line="260"></span>Run this command now.
 </p></li>
-<li data-line="260">
-<p data-line="260"><span data-line=":260"></span>It is also useful to remove entire lines of a file by line number.
+<li data-line="262">
+<p data-line="262"><span data-line="262"></span>It is also useful to remove entire lines of a file by line number.
 If you want to quickly view the lines in a file, you can run
-<span data-line=":262"></span><code class="code">cat -n &lt;filename&gt;</code><span data-line=":262"></span> which will display all of the lines in a file by
+<span data-line="264"></span><code class="code code1">cat -n &lt;filename&gt;</code><span data-line="264"></span> which will display all of the lines in a file by
 line number. It is also useful to pipe the cat command through less,
 so that you can go back and view all the lines in a long file. The
 regular expression that allows us to remove lines from a file has
 the general form:
 </p>
-<pre class="para-block para-block" data-line="268"><code>sed -i &#39;&lt;line number&gt;d&#39; &lt;filename&gt;</code></pre>
-<p data-line="270"><span data-line=":270"></span>To remove multiple consecutive lines, the command looks like this:
+<pre class="para-block pre-indented" data-line="270"><code>sed &#39;&lt;line number&gt;d&#39; &lt;filename&gt; </code></pre>
+<p data-line="272"><span data-line="272"></span>To remove multiple consecutive lines, the command looks like this:
 </p>
-<pre class="para-block para-block" data-line="272"><code>sed -i &#39;&lt;starting line number&gt;,&lt;ending line number&gt;d&#39; &lt;filename&gt;</code></pre>
-<p data-line="274"><span data-line=":274"></span>It is even possible to remove several sets of consecutive lines by
+<pre class="para-block pre-indented" data-line="274"><code>sed &#39;&lt;starting line number&gt;,&lt;ending line number&gt;d&#39; &lt;filename&gt; </code></pre>
+<p data-line="276"><span data-line="276"></span>It is even possible to remove several sets of consecutive lines by
 using semicolons to separate the groups of lines that you want to
 delete:
 </p>
-<pre class="para-block para-block" data-line="278"><code>sed -i &#39;&lt;line number&gt;d;&lt;starting line number&gt;,&lt;ending line number&gt;d&#39; &lt;filename&gt;</code></pre>
-<p data-line="280"><span data-line=":280"></span>Note that a d is required after each grouping of lines that you want
+<pre class="para-block pre-indented" data-line="280"><code>sed &#39;&lt;line number&gt;d;&lt;starting line number&gt;,&lt;ending line number&gt;d&#39; &lt;filename&gt; </code></pre>
+<p data-line="282"><span data-line="282"></span>Note that a d is required after each grouping of lines that you want
 to delete.
 </p>
-<p data-line="283"><span data-line=":283"></span>We want to remove lines 1-27 from treasureisland. Do this by running
+<p data-line="285"><span data-line="285"></span>We want to remove lines 1-27 from treasureisland. Do this by running
 the following:
 </p>
-<pre class="para-block para-block" data-line="286"><code>sed -i &#39;1,27d&#39; treasureisland</code></pre></li>
-<li data-line="288">
-<p data-line="288"><span data-line=":288"></span>Next, we will combine find-replace syntax with the delete command
+<pre class="para-block pre-indented" data-line="288"><code>sed &#39;1,27d&#39; treasure.2 &gt; treasure.3</code></pre></li>
+<li data-line="290">
+<p data-line="290"><span data-line="290"></span>Next, we will combine find-replace syntax with the delete command
 and some more regular expression pattern matching to remove all
 lines in the file that do not begin with uppercase or lowercase L,
 T, K, A, or O. Do this now.
 </p>
-<pre class="para-block para-block" data-line="293"><code>sed -i &#39;/^[lLtTkKaAoO]/!d&#39; treasureisland</code></pre></li>
-<li data-line="295">
-<p data-line="295"><span data-line=":295"></span>The next step is to change the file so that all the characters are
-lowercase. For this, it is easier to use awk. Awk does not have an
-option to change a file in place, so we need to file the output into
-a temporary file, then overwrite the old file with the contents of
-the temporary file.
+<pre class="para-block pre-indented" data-line="295"><code>sed &#39;/^[lLtTkKaAoO]/!d&#39; treasure.3 &gt; treasure.4</code></pre></li>
+<li data-line="297">
+<p data-line="297"><span data-line="297"></span>The next step is to change the file so that all the characters are
+lowercase. For this, it is easier to use awk, which has a <span data-line="298"></span><code class="code code1">toLower</code><span data-line="298"></span> command.
 </p>
-<pre class="para-block para-block" data-line="301"><code>awk &#39;{print tolower($0)}&#39; treasureisland &gt; tempfile &amp;&amp; mv tempfile treasureisland</code></pre></li>
-<li data-line="303">
-<p data-line="303"><span data-line=":303"></span>Next, delete all the periods in the file. You can use the find and
+<pre class="para-block pre-indented" data-line="300"><code>awk &#39;{print tolower($0)}&#39; treasure.4 &gt; treasure.5</code></pre></li>
+<li data-line="302">
+<p data-line="302"><span data-line="302"></span>Next, delete all the periods in the file. You can use the find and
 replace command to do this, just make sure to replace with nothing,
 not with a space. Remember that a period is a metacharacter, so you
-will need to use the escape character to find it like this: <span data-line=":306"></span>\<span data-line=":306"></span>.
+will need to use the escape character to find it like this: <span data-line="305"></span>\<span data-line="305"></span>.
 </p></li>
-<li data-line="308">
-<p data-line="308"><span data-line=":308"></span>If we can remove specific lines, we should be able to add lines as
+<li data-line="307">
+<p data-line="307"><span data-line="307"></span>If we can remove specific lines, we should be able to add lines as
 well. The basic format of this regular expression is:
 </p>
-<pre class="para-block para-block" data-line="311"><code>sed -i &#39;&lt;line number&gt;i &lt;string&gt;&#39; &lt;filename&gt;</code></pre>
-<p data-line="313"><span data-line=":313"></span>Try it out by inserting the string <span data-line=":313"></span>&#8220;run&#8221;<span data-line=":313"></span> at line 9 in
+<pre class="para-block pre-indented" data-line="310"><code>sed &#39;&lt;line number&gt;i &lt;string&gt;&#39; &lt;filename&gt;</code></pre>
+<p data-line="312"><span data-line="312"></span>Try it out by inserting the string <span data-line="312"></span>&#8220;run&#8221;<span data-line="312"></span> at line 9 in
 treasureisland. Do not include the double quotes.
 </p></li>
-<li data-line="316">
-<p data-line="316"><span data-line=":316"></span>Now, insert the string <span data-line=":316"></span>&#8220;/usr/local/&#8221;<span data-line=":316"></span> at line 8 in treasureisland.
+<li data-line="315">
+<p data-line="315"><span data-line="315"></span>Now, insert the string <span data-line="315"></span>&#8220;/usr/local/&#8221;<span data-line="315"></span> at line 8 in treasureisland.
 It includes the / character, so you will need to use the escape
 character within the string to access it.
 </p>
-<p data-line="320"><span data-line=":320"></span>If you would like to check your work at this point, there is a file
-called regex<span data-line=":321"></span>_<span data-line=":321"></span>checks/step08check.txt stored in the directory. It contains the
+<p data-line="319"><span data-line="319"></span>If you would like to check your work at this point, there is a file
+called regex<span data-line="320"></span>_<span data-line="320"></span>checks/step08check.txt stored in the directory. It contains the
 correct file contents after the first eight steps. Check it against
 your file using the diff command. Remember that you can read the
 diff man page again to learn more about the command.
 </p>
-<pre class="para-block para-block" data-line="326"><code>diff </code></pre></li>
-<li data-line="328">
-<p data-line="328"><span data-line=":328"></span>Use the line removal command to remove lines 1-5, 11, 13-15, 17-34,
+<pre class="para-block pre-indented" data-line="325"><code>diff -u treasure.8 regex_checks/step08check.txt</code></pre></li>
+<li data-line="327">
+<p data-line="327"><span data-line="327"></span>Use the line removal command to remove lines 1-5, 11, 13-15, 17-34,
 and 37. Be careful! You will need to remove all the lines at the
 same time, or you might accidentally delete part of the clue.
 </p>
-<p data-line="332"><span data-line=":332"></span>There is another check file, called step09check.txt to check your
+<p data-line="331"><span data-line="331"></span>There is another check file, called step09check.txt to check your
 work after step 9.
 </p></li>
-<li data-line="335">
-<p data-line="335"><span data-line=":335"></span>Now, separate the text file so that each word is on its own line. Do
-this by replacing whitespace with a newline. Sed recognizes <span data-line=":336"></span>\<span data-line=":336"></span>s as
-whitespace and <span data-line=":337"></span>\<span data-line=":337"></span>n as a newline.
+<li data-line="334">
+<p data-line="334"><span data-line="334"></span>Now, separate the text file so that each word is on its own line. Do
+this by replacing whitespace with a newline. Sed recognizes <span data-line="335"></span>\<span data-line="335"></span>s as
+whitespace and <span data-line="336"></span>\<span data-line="336"></span>n as a newline.
 </p>
-<p data-line="339"><span data-line=":339"></span>Once again, a file for checking your work after this step is in the
+<p data-line="338"><span data-line="338"></span>Once again, a file for checking your work after this step is in the
 directory at step10check.txt.
 </p></li>
-<li data-line="342">
-<p data-line="342"><span data-line=":342"></span>Using the insertion syntax given above, insert a dash at line 74.
+<li data-line="341">
+<p data-line="341"><span data-line="341"></span>Using the insertion syntax given above, insert a dash at line 74.
 Now insert a dash at line 100.
 </p></li>
-<li data-line="345">
-<p data-line="345"><span data-line=":345"></span>Insert a period at line 149. Remember that a period is a
+<li data-line="344">
+<p data-line="344"><span data-line="344"></span>Insert a period at line 149. Remember that a period is a
 metacharacter.
 </p></li>
-<li data-line="348">
-<p data-line="348"><span data-line=":348"></span>Insert the character x at line 38.
+<li data-line="347">
+<p data-line="347"><span data-line="347"></span>Insert the character x at line 38.
 </p></li>
-<li data-line="350">
-<p data-line="350"><span data-line=":350"></span>Next, remove the following lines: 1, 3-33, 35-36, 39-49, 51-58,
+<li data-line="349">
+<p data-line="349"><span data-line="349"></span>Next, remove the following lines: 1, 3-33, 35-36, 39-49, 51-58,
 60-73, 76-87, 89-100, 102-120, and 122-149. Remember that you need
 to delete them all at once.
 </p>
-<p data-line="354"><span data-line=":354"></span>There is a file for checking your work after this step called
+<p data-line="353"><span data-line="353"></span>There is a file for checking your work after this step called
 step14check.txt.
 </p></li>
-<li data-line="357">
-<p data-line="357"><span data-line=":357"></span>Another useful regular expression will append two lines together:
+<li data-line="356">
+<p data-line="356"><span data-line="356"></span>Another useful regular expression will append two lines together:
 </p>
-<pre class="para-block para-block" data-line="359"><code>sed -i &#39;N;s/\n/ /&#39; file.txt</code></pre>
-<p data-line="361"><span data-line=":361"></span>This command is essentially replacing every newline character with a
+<pre class="para-block pre-indented" data-line="358"><code>sed &#39;N;s/\n/ /&#39; file.txt &gt; treasure.</code></pre>
+<p data-line="360"><span data-line="360"></span>This command is essentially replacing every newline character with a
 space. The N at the beginning of the regular expression will append
 the current line and the next line into the space of the pattern.
 Run the above command once on the treasureisland.txt file.
 </p></li>
-<li data-line="366">
-<p data-line="366"><span data-line=":366"></span>Some whitespace snuck into the file. Replace all instances of the
-string <span data-line=":367"></span><code class="code">local/ </code><span data-line=":367"></span> with the string <span data-line=":367"></span><code class="code">local/</code><span data-line=":367"></span> using the global
+<li data-line="365">
+<p data-line="365"><span data-line="365"></span>Some whitespace snuck into the file. Replace all instances of the
+string <span data-line="366"></span><code class="code code1">local/ </code><span data-line="366"></span> with the string <span data-line="366"></span><code class="code code1">local/</code><span data-line="366"></span> using the global
 find and replace command.
 </p></li>
-<li data-line="370">
-<p data-line="370"><span data-line=":370"></span>Run the command that will append two lines together <span data-line=":370"></span><em>three more
-times</em><span data-line=":371"></span>.
+<li data-line="369">
+<p data-line="369"><span data-line="369"></span>Run the command that will append two lines together <span data-line="369"></span><em>three more
+times</em><span data-line="370"></span>.
 </p></li>
-<li data-line="373">
-<p data-line="373"><span data-line=":373"></span>Now, replace all instances of the string <span data-line=":373"></span><code class="code"> - </code><span data-line=":373"></span> with the string
-<span data-line=":374"></span><code class="code">-</code><span data-line=":374"></span>. (The original string has two spaces around it. The new string should 
+<li data-line="372">
+<p data-line="372"><span data-line="372"></span>Now, replace all instances of the string <span data-line="372"></span><code class="code code1"> - </code><span data-line="372"></span> with the string
+<span data-line="373"></span><code class="code code1">-</code><span data-line="373"></span>. (The original string has two spaces around it. The new string should 
 have no spaces around it.)
 </p></li>
-<li data-line="377">
-<p data-line="377"><span data-line=":377"></span>Replace all instances of the string <span data-line=":377"></span><code class="code"> . </code><span data-line=":377"></span> with the string <span data-line=":377"></span><code class="code">.</code><span data-line=":377"></span>.
+<li data-line="376">
+<p data-line="376"><span data-line="376"></span>Replace all instances of the string <span data-line="376"></span><code class="code code1"> . </code><span data-line="376"></span> with the string <span data-line="376"></span><code class="code code1">.</code><span data-line="376"></span>.
 (The original string has two spaces around it. The new string should 
 have no spaces around it.)
 </p></li>
-<li data-line="381">
-<p data-line="381"><span data-line=":381"></span>Recall that in regular expressions, the <span data-line=":381"></span>$<span data-line=":381"></span> character represents the
+<li data-line="380">
+<p data-line="380"><span data-line="380"></span>Recall that in regular expressions, the <span data-line="380"></span>$<span data-line="380"></span> character represents the
 end of a line and the . character represents one character. Use
 these to write a regular expression that will delete the last two
 characters from every line in the file.
 </p></li>
-<li data-line="386">
-<p data-line="386"><span data-line=":386"></span>Now, replace any instance of <span data-line=":386"></span><code class="code">sh</code><span data-line=":386"></span> in the file with <span data-line=":386"></span><code class="code">py</code><span data-line=":386"></span>.
+<li data-line="385">
+<p data-line="385"><span data-line="385"></span>Now, replace any instance of <span data-line="385"></span><code class="code code1">sh</code><span data-line="385"></span> in the file with <span data-line="385"></span><code class="code code1">py</code><span data-line="385"></span>.
 </p>
-<p data-line="388"><span data-line=":388"></span>Open the file! If all went well, you will have a clue to send you to
+<p data-line="387"><span data-line="387"></span>Open the file! If all went well, you will have a clue to send you to
 the final step in the lab.
 </p></li></ol>
-<h2 id="executables"  data-line="391" ><span data-line=":391"></span>Executables</h2>
-<p data-line="393"><span data-line=":393"></span>Now that you have found the location of the executable file, you should
+<h2 id="sec-executables"  data-line="390"  style="bookmark:Executables"><span data-line="390"></span>Executables</h2>
+<p data-line="392"><span data-line="392"></span>Now that you have found the location of the executable file, you should
 run it. We will cover shell scripting and executables in another lab so
 for now all you need to know is how to run a file. To run most shell
 scripts, you will need to be in the same directory in the script, or
 know a path to the script. Invoke the scripting language at the
 beginning of the command line then the file name.
 </p>
-<p class="indent" data-line="400"><span data-line=":400"></span>For instance, to run a shell script called swabthedeck.sh, you would run
+<p class="indent" data-line="399"><span data-line="399"></span>For instance, to run a shell script called swabthedeck.sh, you would run
 the command:
 </p>
-<pre class="para-block para-block" data-line="403"><code>sh swabthedeck.sh</code></pre>
-<p data-line="405"><span data-line=":405"></span>Python and perl are also common scripting languages. To run a python
+<pre class="para-block pre-indented" data-line="402"><code>sh swabthedeck.sh</code></pre>
+<p data-line="404"><span data-line="404"></span>Python and perl are also common scripting languages. To run a python
 script called coconut.py, you would run the command:
 </p>
-<pre class="para-block para-block" data-line="408"><code>python coconut.py</code></pre>
-<p data-line="410"><span data-line=":410"></span>Try it out with the executable that you just discovered and see what
+<pre class="para-block pre-indented" data-line="407"><code>python coconut.py</code></pre>
+<p data-line="409"><span data-line="409"></span>Try it out with the executable that you just discovered and see what
 happens!
 </p>
+<div class="madokologo block" data-line="413" style="text-align:right;font-size:xx-small;margin-top:4em"><span data-line="414"></span>Created with&nbsp;<a href="https://www.madoko.net">Madoko.net</a>.</div>
 </body>
+
 </html>
