@@ -488,15 +488,17 @@ When `fortune-mod-all` is done installing, let's have some fun:
 
 Are there some other programs you'd like to install on your system? Go for it!
 Some possibilities include:
-   * `eix`, a package that lets you search for other packages
-   * [`app-misc/screen`](http://wiki.gentoo.org/wiki/Screen): a program that
+
+   - `eix`, a package that lets you search for other packages
+   - [`app-misc/screen`](http://wiki.gentoo.org/wiki/Screen): a program that
    lets you run multiple shells in the same terminal. This program can be
    helpful for running *other* programs that take a long time (e.g., `emerge`),
    even if you need to log out of your computer. Check out this 
    [helpful tutorial](http://www.rackaid.com/blog/linux-screen-tutorial-and-how-to/)
    (although, the installation commands are not correct; gentoo uses `portage`,
    not `yum`)
-   * `emacs`, you know, if you're not a vim person
+   - `emacs`, you know, if you're not a vim person
+
 *Note:* some of these packages may take time to install. It's best to install
 them when you're sure you can leave a terminal session open for awhile (or,
 better yet, use `screen`!)
