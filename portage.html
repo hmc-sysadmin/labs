@@ -2,13 +2,531 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <meta name="generator" content="Madoko, version 0.6.3-beta" />
+  <meta name="generator" content="Madoko, version 0.8.2-beta" />
   <meta name="viewport" content="initial-scale=1.0" />
   <meta name="author" content="Huting Lin" />
   <title>Package Management with Portage</title>
-  <link rel="stylesheet" type="text/css" href="madoko.css">
-  <link rel="stylesheet" type="text/css" href="./writeup.css">
-  <script type="text/x-mathjax-config">
+  <style  class="link">
+/* ---------------------------------------------------
+   Various settings to display madoko elements correctly.
+   For example, lines in tables or a table of contents.
+
+   All rules use specific madoko classes and never just
+   a generic element. This means one can safely include
+   this CSS into any web page without affecting non-madoko
+   content.
+----------------------------------------------------*/
+
+/* The table of contents */
+.madoko .toc>.tocblock .tocblock .tocblock {
+  margin-left: 2.5em;
+}
+
+.madoko .toc>.tocblock .tocblock {
+  margin-left: 1.7em;
+}
+
+.madoko .toc>.tocblock>.tocitem {
+  font-weight: bold;
+}
+
+.madoko .toc {
+  margin-top: 1em;
+}
+
+/* Paragraphs */
+.madoko p.para-continue {
+  margin-bottom: 0pt;
+}
+
+.madoko .para-block+p {
+  margin-top: 0pt;
+}
+
+.madoko ul.para-block, .madoko ol.para-block {
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+}
+
+.madoko ul.para-end, .madoko ol.para-end {
+  margin-bottom: 1em;
+}
+
+.madoko dl {
+  margin-left: 0em;
+}
+
+/* Local page links do not get an underline unless hovering */
+.madoko a.localref {
+  text-decoration: none;
+}
+.madoko a.localref:hover {
+  text-decoration: underline;
+}
+
+/* Footnotes */
+.madoko .footnotes {
+  font-size: smaller;
+  margin-top: 2em;
+}
+
+.madoko .footnotes hr {
+  width: 50%;
+  text-align: left;
+}
+
+.madoko .footnote { 
+  margin-left: 1em;
+}
+.madoko .footnote-before {
+  margin-left: -1em;
+  width: 1em;
+  display: inline-block;
+}
+
+/* Abstract */
+.madoko .abstract>p:first-child:before {
+  content: "Abstract. ";
+  font-weight: bold;
+}
+
+.madoko .abstract {
+  margin-left: 2.7em;
+  margin-right: 2.7em;
+  font-size: small;
+}
+
+
+/* Alignment */
+.madoko .align-center, .madoko .align-center>p {
+  text-align: center !important;
+}
+
+.madoko .align-center pre {
+  text-align: left;
+}
+
+.madoko .align-center>* {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.madoko .align-left, .madoko .align-left>p {
+  text-align: left !important;
+}
+
+.madoko .align-left>* {
+  margin-left: 0pt !important;
+  margin-right: auto !important;
+}
+
+.madoko .align-right, .madoko .align-right>p {
+  text-align: right !important;
+}
+
+.madoko .align-right>* {
+  margin-left: auto !important;
+  margin-right: 0pt !important;
+}
+
+.madoko .align-center>table,
+.madoko .align-left>table,
+.madoko .align-right>table {
+  text-align: left !important;
+}
+
+
+/* Equations, Figure's etc. */
+.madoko .equation-before {
+  float: right;
+}
+
+
+/* Bibliography */
+.madoko .bibitem {
+  font-size: smaller;
+}
+
+.madoko .bib-numeric .bibitem {
+  margin-left: 3em;
+  text-indent: -3em;
+}
+
+.madoko .bibitem-before {
+  display: none;
+}
+
+.madoko .bib-numeric .bibitem-before {
+  display: inline-block;
+  width: 3em;
+  text-align: right;
+}
+
+.madoko .bibliography {
+}
+
+.madoko .bibsearch {
+  font-size: x-small;
+  text-decoration:none;
+  color: black;
+  font-family: "Segoe UI Symbol", Symbola;
+}
+
+/* General */
+.madoko .block, .madoko .figure, .madoko .bibitem, .madoko .equation {
+  margin-top: 1ex;
+  margin-bottom: 1ex;
+}
+
+.madoko .figure {
+  padding: 0.5em;
+  margin-left: 0pt;
+  margin-right: 0pt;
+}
+
+.madoko .hidden {
+  display: none;
+}
+
+.madoko .invisible {
+  visibility: hidden;
+}
+
+.madoko.preview .invisible {
+  visibility: visible;
+  opacity: 0.5;
+}
+.madoko.preview[data-view=full] .invisible {
+  visibility: hidden;
+}
+
+.madoko code.code, .madoko span.code {
+  white-space: pre-wrap;
+}
+
+.madoko hr, hr.madoko {
+  border: none;
+  border-bottom: black solid 1px;
+  margin-bottom: 0.5ex;
+}
+
+.madoko .framed>*:first-child {
+  margin-top: 0pt;
+}
+.madoko .framed>*:last-child {
+  margin-bottom: 0pt;
+}
+
+
+/* Title, authors */
+.madoko .title {
+  font-size: xx-large;
+  font-weight: bold;
+  margin-bottom: 1ex;
+}
+
+.madoko .subtitle {
+  font-size: x-large;
+  margin-bottom: 1ex;
+  margin-top: -1ex;
+}
+
+.madoko .titleblock>* {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.madoko .titleblock table {
+  width: 80%;
+}
+
+.madoko .authorblock .author {
+  font-size: large;
+}
+
+.madoko .titlenote {
+  margin-top: -0.5ex;
+  margin-bottom: 1.5ex;
+}
+
+/* Lists */
+
+.madoko ul.list-star {
+  list-style-type: disc;
+}
+
+.madoko ul.list-dash {
+    list-style-type: none !important;
+}
+
+.madoko ul.list-dash > li:before {
+    content: "\2013"; 
+    position: absolute;
+    margin-left: -1em; 
+}
+
+.madoko ul.list-plus {
+  list-style-type: square;
+}
+
+/* Tables */
+.madoko table.madoko {
+  border-collapse: collapse;
+}
+.madoko td, .madoko th {
+  padding: 0ex 0.5ex;
+  margin: 0pt;
+  vertical-align: top;
+}
+
+.madoko .cell-border-left {
+  border-left: 1px solid black;
+}
+.madoko .cell-border-right {
+  border-right: 1px solid black;
+}
+
+
+.madoko thead>tr:first-child>.cell-line,
+.madoko tbody:first-child>tr:first-child>.cell-line {
+  border-top: 1px solid black;
+  border-bottom: none;
+}
+
+.madoko .cell-line, .madoko .cell-double-line {
+  border-bottom: 1px solid black;
+  border-top: none;
+}
+
+.madoko .cell-double-line {
+  border-top: 1px solid black;
+  padding-top: 1.5px !important;
+}
+
+
+/* Math Pre */
+.madoko .input-mathpre .MathJax_Display, .madoko .input-mathpre .math-display {
+  text-align: left !important;
+}
+
+.madoko div.input-mathpre {
+  margin-top: 1.5ex;
+  margin-bottom: 1ex;
+}
+
+.madoko .math-rendering {
+  color: gray;
+}
+
+
+/*---------------------------------------------------------------------------
+  Default style for syntax highlighting
+---------------------------------------------------------------------------*/
+
+.highlighted                        { color: black; }
+.highlighted .token.identifier      { }
+.highlighted .token.operators       { }
+.highlighted .token.keyword         { color: blue }
+.highlighted .token.string          { color: maroon } 
+.highlighted .token.string.escape   { color: gray }
+.highlighted .token.comment         { color: darkgreen }
+.highlighted .token.comment.doc     { font-style: normal }
+.highlighted .token.constant        { color: purple; }
+.highlighted .token.entity          {  }
+.highlighted .token.tag             { color: blue }
+.highlighted .token.info-token      { color: black }
+.highlighted .token.warn-token      { color: black }
+.highlighted .token.error-token     { color: darkred }
+.highlighted .token.debug-token     { color: gray }
+.highlighted .token.regexp          { color: maroon }
+.highlighted .token.attribute.name  { color: navy }
+.highlighted .token.attribute.value { color: maroon }
+.highlighted .token.constructor     { color: purple }
+.highlighted .token.namespace       { color: navy }
+.highlighted .token.header          { color: navy }
+.highlighted .token.type            { color: teal } 
+.highlighted .token.type.delimiter  { color: teal; } 
+.highlighted .token.predefined      { color: navy }
+.highlighted .token.invalid         { border-bottom: red dotted 1px }
+.highlighted .token.code            { color: maroon }
+.highlighted .token.code.keyword    { color: navy }
+.highlighted .token.typevar         { font-style: italic; }
+
+.highlighted .token.delimiter   {  } /* .[curly,square,parenthesis,angle,array,bracket] */
+.highlighted .token.number      {  }    /* .[hex,octal,binary,float] */
+.highlighted .token.variable    {  }  /* .[name,value]  */
+.highlighted .token.meta        { color: navy }      /* .[content] */
+
+.highlighted .token.bold            { font-weight: bold; }
+.highlighted .token.italic          { font-style: italic; }
+
+
+/* Pretty formatting of code */
+.madoko pre.pretty, .madoko code.pretty { 
+  font-family: Cambria,Times,Georgia,serif;
+  font-size: 100%;
+}
+
+.madoko .pretty table {
+  border-collapse: collapse;
+}
+.madoko .pretty td {
+  padding: 0em;
+}
+.madoko .pretty td.empty {
+  min-width: 1.5ex;
+}
+.madoko .pretty td.expander {
+  width: 100em;
+}
+.madoko .pretty .token.identifier         { font-style: italic }
+.madoko .pretty .token.constructor        { font-style: italic }
+
+
+/* ---------------------------------------------------
+   Styling for full documents
+----------------------------------------------------*/
+body.madoko, .madoko-body {
+  font-family: Cambria,"Times New Roman","Liberation Serif","Times",serif;
+  -webkit-text-size-adjust: 100%; /* so math displays well on mobile devices */
+}
+
+body.madoko, .madoko-body, body.madoko.preview[data-view=full] {
+  padding: 1em 16% 1em 12%;
+}
+
+body.madoko.preview {
+  padding: 0em 2em 0em 2em;
+}
+
+.madoko p,
+.madoko li {
+  text-align: justify;
+}
+
+/* style headings nicer, especially h5 and h6 */
+.madoko h1, .madoko h2, .madoko h3, .madoko h4 { 
+  margin-top: 1.22em; 
+  margin-bottom: 1ex;
+}
+.madoko h1+p, .madoko h2+p, .madoko h3+p, .madoko h4+p, .madoko h5+p  { 
+  margin-top: 1ex;    
+}
+.madoko h5, .madoko h6 { 
+  margin-top: 1ex;
+  font-size: 1em;
+}
+.madoko h5 { 
+  margin-bottom: 0.5ex;
+}
+.madoko h5 + p {
+  margin-top: 0.5ex;
+}
+.madoko h6 { 
+  margin-bottom: 0pt;
+}
+.madoko h6 + p {
+  margin-top: 0pt;
+}
+
+
+/* Fix monospace display (see http://code.stephenmorley.org/html-and-css/fixing-browsers-broken-monospace-font-handling/) */
+.madoko pre, .madoko code, .madoko kbd, .madoko samp, .madoko tt, .madoko .monospace, .madoko .token.indent, .madoko .reveal pre, .madoko .reveal code, .madoko .email {
+  font-family: Consolas,"Andale Mono WT","Andale Mono",Lucida Console,Monaco,monospace,monospace;
+  font-size: 0.85em;
+}
+.madoko pre code, .madoko .token.indent {
+  font-size: 0.95em;
+}
+
+.madoko pre code {
+  font-family: inherit !important;
+}
+
+/* Code prettify */
+.madoko ol.linenums li {
+  background-color: white;
+  list-style-type: decimal;
+}
+
+/* Merging */
+.madoko .remote {
+  background-color: #F0FFF0;
+}
+
+/* ---------------------------------------------------
+   Print settings
+----------------------------------------------------*/
+
+@media print {
+  body.madoko, .madoko-body {
+    font-size: 10pt;
+  }
+  @page {
+    margin: 1in 1.5in;
+  }
+}
+
+/* ---------------------------------------------------
+   Mobile device settings
+----------------------------------------------------*/
+
+@media only screen and (max-device-width:1024px) {
+  body.madoko, .madoko-body {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+}
+
+  </style>
+  <style  class="link">
+@media print {
+  @page {
+     margin: 0.5in;
+  }
+
+  h1, h2, h3 { page-break-after: avoid }
+  li {page-break-inside: avoid;}
+
+  a.footnote-backref {
+    display: none;
+  }
+
+  pre {
+    background-color: #cccccc;
+    border: 1px solid #cccccc;
+    padding: 10px;
+    font-size: small;
+  }
+
+}
+
+pre {
+  background-color: #eeeeff;
+  border: 1px solid #cccccc;
+  padding: 10px;
+}
+
+pre code {
+  border: none;
+  padding: none;
+  background-color: transparent;
+}
+
+code {
+  border: 1px solid #dddddd;
+  background-color: #f8f8f8;
+  padding: 1px;
+}
+
+div .figure {
+  width: 40%; 
+  margin: auto
+}
+
+  </style>
+<script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       tex2jax: {inlineMath: [['$','$']]},
        TeX: { 
@@ -22,240 +540,221 @@
       MathJax.InputJax.TeX.Definitions.environment['mdMathprearray'] = ['AMSarray',null,null,null,'l','0em','0em'];
     });
   </script>
-  <script type="text/javascript"
+  <script type="text/javascript" class="preview"
     src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
 
 </head>
 <body class="madoko">
 
-<h1 id="package-management-with-portage"  data-line="8;portage.md:1" ><span data-line="8;portage.md::1"></span>Package Management with Portage</h1>
-<p data-line="8;portage.md:3"><span data-line="8;portage.md::3"></span><em>Originally created by Huting Lin</em><span data-line="8;portage.md::3"></span>
-</p><h2 id="overview"  data-line="8;portage.md:5" ><span data-line="8;portage.md::5"></span>Overview</h2>
-<p data-line="8;portage.md:7"><span data-line="8;portage.md::7"></span>Portage is Gentoo<span data-line="8;portage.md::7"></span>&#39;<span data-line="8;portage.md::7"></span>s package management system. It<span data-line="8;portage.md::7"></span>&#39;<span data-line="8;portage.md::7"></span>s what you use to install
+<h1 id="sec-package-management-with-portage"  data-line="8;portage.md:1"  style="bookmark:Package Management with Portage"><span data-line="8;portage.md:1"></span>Package Management with Portage</h1>
+<p data-line="8;portage.md:3"><span data-line="8;portage.md:3"></span><em>Originally created by Huting Lin</em><span data-line="8;portage.md:3"></span>
+</p><h2 id="sec-overview"  data-line="8;portage.md:5"  style="bookmark:Overview"><span data-line="8;portage.md:5"></span>Overview</h2>
+<p data-line="8;portage.md:7"><span data-line="8;portage.md:7"></span>Portage is Gentoo<span data-line="8;portage.md:7"></span>&#39;<span data-line="8;portage.md:7"></span>s package management system. It<span data-line="8;portage.md:7"></span>&#39;<span data-line="8;portage.md:7"></span>s what you use to install
 and manage programs, libraries, etc. on Gentoo systems. In general, portage uses
-the term <span data-line="8;portage.md::9"></span><em>package</em><span data-line="8;portage.md::9"></span> to refer to something that can be installed on Gentoo. Most
-packages have <span data-line="8;portage.md::10"></span><em>dependencies</em><span data-line="8;portage.md::10"></span>, i.e., other packages whose installations are pre-
+the term <span data-line="8;portage.md:9"></span><em>package</em><span data-line="8;portage.md:9"></span> to refer to something that can be installed on Gentoo. Most
+packages have <span data-line="8;portage.md:10"></span><em>dependencies</em><span data-line="8;portage.md:10"></span>, i.e., other packages whose installations are pre-
 requisites for installing the desired package. Portage, and in particular, the
-<span data-line="8;portage.md::12"></span><code class="code">emerge</code><span data-line="8;portage.md::12"></span> command manages dependencies for the packages installed on the system.
-</p><h2 id="using-emerge-to-calculate-dependencies-for-a-package"  data-line="8;portage.md:14" ><span data-line="8;portage.md::14"></span>Using emerge to calculate dependencies for a package</h2>
-<p data-line="8;portage.md:16"><span data-line="8;portage.md::16"></span>emerge is one of the most important commands in relation to Portage.
+<span data-line="8;portage.md:12"></span><code class="code code1">emerge</code><span data-line="8;portage.md:12"></span> command manages dependencies for the packages installed on the system.
+</p><h2 id="sec-using-emerge-to-calculate-dependencies-for-a-package"  data-line="8;portage.md:14"  style="bookmark:Using emerge to calculate dependencies for a package"><span data-line="8;portage.md:14"></span>Using emerge to calculate dependencies for a package</h2>
+<p data-line="8;portage.md:16"><span data-line="8;portage.md:16"></span>emerge is one of the most important commands in relation to Portage.
 The command allows users to install packages, calculate dependencies, and more.
 </p>
-<p class="indent" data-line="8;portage.md:19"><span data-line="8;portage.md::19"></span>The emerge command has an option called <span data-line="8;portage.md::19"></span><code class="code">pretend</code><span data-line="8;portage.md::19"></span> that allows the user to see
-what the installation would do if it <span data-line="8;portage.md::20"></span><em>were</em><span data-line="8;portage.md::20"></span> to install a package, but it doesn<span data-line="8;portage.md::20"></span>&#39;<span data-line="8;portage.md::20"></span>t
+<p class="indent" data-line="8;portage.md:19"><span data-line="8;portage.md:19"></span>The emerge command has an option called <span data-line="8;portage.md:19"></span><code class="code code1">pretend</code><span data-line="8;portage.md:19"></span> that allows the user to see
+what the installation would do if it <span data-line="8;portage.md:20"></span><em>were</em><span data-line="8;portage.md:20"></span> to install a package, but it doesn<span data-line="8;portage.md:20"></span>&#39;<span data-line="8;portage.md:20"></span>t
 actually install the package.
 </p>
-<p class="indent" data-line="8;portage.md:23"><span data-line="8;portage.md::23"></span>As an example, let<span data-line="8;portage.md::23"></span>&#39;<span data-line="8;portage.md::23"></span>s pretend to install the <span data-line="8;portage.md::23"></span><em>cowsay</em><span data-line="8;portage.md::23"></span> package. The <span data-line="8;portage.md::23"></span><em>cowsay</em><span data-line="8;portage.md::23"></span>
+<p class="indent" data-line="8;portage.md:23"><span data-line="8;portage.md:23"></span>As an example, let<span data-line="8;portage.md:23"></span>&#39;<span data-line="8;portage.md:23"></span>s pretend to install the <span data-line="8;portage.md:23"></span><em>cowsay</em><span data-line="8;portage.md:23"></span> package. The <span data-line="8;portage.md:23"></span><em>cowsay</em><span data-line="8;portage.md:23"></span>
 package is a program that takes an input string and prints out ASCII art of a
 cow saying (or thinking) the string. Run the following command to pretend to
 install the package:
 </p>
-<pre class="para-block fenced para-block" data-line="8;portage.md:28" data-line-code="8;portage.md:29"><code data-line="8;portage.md:29">emerge --pretend cowsay</code></pre>
-<p class="para-continue" data-line="8;portage.md:32"><span data-line="8;portage.md::32"></span>The emerge program will describe all the dependencies of cowsay, along with
-each dependency<span data-line="8;portage.md::33"></span>&#39;<span data-line="8;portage.md::33"></span>s status (i.e., what emerge plans to do with each dependency).
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;portage.md:28" data-line-code="8;portage.md:29"><code data-line="8;portage.md:29">emerge --pretend cowsay</code></pre>
+<p class="para-continue" data-line="8;portage.md:32"><span data-line="8;portage.md:32"></span>The emerge program will describe all the dependencies of cowsay, along with
+each dependency<span data-line="8;portage.md:33"></span>&#39;<span data-line="8;portage.md:33"></span>s status (i.e., what emerge plans to do with each dependency).
 Here are the possible status values and their meanings:
 </p>
 <dl class="loose" data-line="8;portage.md:36">
-<dt class="dt" style='font-weight:bold'>N</dt>
-<dd class="dd" data-line="8;portage.md:36" style='margin-left:1.5em'>
-<p data-line="8;portage.md:36"><span data-line="8;portage.md::36"></span>package is completely new, so installing new package
+<dt class="dt" style="font-weight:bold">N</dt>
+<dd class="dd" data-line="8;portage.md:36" style="margin-left:1.5em">
+<p data-line="8;portage.md:36"><span data-line="8;portage.md:36"></span>package is completely new, so installing new package
 </p></dd>
-<dt class="dt" style='font-weight:bold'>S</dt>
-<dd class="dd" data-line="8;portage.md:39" style='margin-left:1.5em'>
-<p data-line="8;portage.md:39"><span data-line="8;portage.md::39"></span>new SLOT installation (can be installed side-by-side with other
-versions) <span data-line="8;portage.md::40"></span><em>discussed in more detail below</em><span data-line="8;portage.md::40"></span>
+<dt class="dt" style="font-weight:bold">S</dt>
+<dd class="dd" data-line="8;portage.md:39" style="margin-left:1.5em">
+<p data-line="8;portage.md:39"><span data-line="8;portage.md:39"></span>new SLOT installation (can be installed side-by-side with other
+versions) <span data-line="8;portage.md:40"></span><em>discussed in more detail below</em><span data-line="8;portage.md:40"></span>
 </p></dd>
-<dt class="dt" style='font-weight:bold'>U</dt>
-<dd class="dd" data-line="8;portage.md:43" style='margin-left:1.5em'>
-<p data-line="8;portage.md:43"><span data-line="8;portage.md::43"></span>updating to another version
+<dt class="dt" style="font-weight:bold">U</dt>
+<dd class="dd" data-line="8;portage.md:43" style="margin-left:1.5em">
+<p data-line="8;portage.md:43"><span data-line="8;portage.md:43"></span>updating to another version
 </p></dd>
-<dt class="dt" style='font-weight:bold'>D</dt>
-<dd class="dd" data-line="8;portage.md:46" style='margin-left:1.5em'>
-<p data-line="8;portage.md:46"><span data-line="8;portage.md::46"></span>downgrading to lower version since it seems better than current
+<dt class="dt" style="font-weight:bold">D</dt>
+<dd class="dd" data-line="8;portage.md:46" style="margin-left:1.5em">
+<p data-line="8;portage.md:46"><span data-line="8;portage.md:46"></span>downgrading to lower version since it seems better than current
 version
 </p></dd>
-<dt class="dt" style='font-weight:bold'>r</dt>
-<dd class="dd" data-line="8;portage.md:50" style='margin-left:1.5em'>
-<p data-line="8;portage.md:50"><span data-line="8;portage.md::50"></span>reinstall (forced)
+<dt class="dt" style="font-weight:bold">r</dt>
+<dd class="dd" data-line="8;portage.md:50" style="margin-left:1.5em">
+<p data-line="8;portage.md:50"><span data-line="8;portage.md:50"></span>reinstall (forced)
 </p></dd>
-<dt class="dt" style='font-weight:bold'>R</dt>
-<dd class="dd" data-line="8;portage.md:53" style='margin-left:1.5em'>
-<p data-line="8;portage.md:53"><span data-line="8;portage.md::53"></span>replacing/remerging same version
+<dt class="dt" style="font-weight:bold">R</dt>
+<dd class="dd" data-line="8;portage.md:53" style="margin-left:1.5em">
+<p data-line="8;portage.md:53"><span data-line="8;portage.md:53"></span>replacing/remerging same version
 </p></dd>
-<dt class="dt" style='font-weight:bold'>F</dt>
-<dd class="dd" data-line="8;portage.md:56" style='margin-left:1.5em'>
-<p data-line="8;portage.md:56"><span data-line="8;portage.md::56"></span>fetch restricted; must be manually downloaded
+<dt class="dt" style="font-weight:bold">F</dt>
+<dd class="dd" data-line="8;portage.md:56" style="margin-left:1.5em">
+<p data-line="8;portage.md:56"><span data-line="8;portage.md:56"></span>fetch restricted; must be manually downloaded
 </p></dd>
-<dt class="dt" style='font-weight:bold'>f</dt>
-<dd class="dd" data-line="8;portage.md:59" style='margin-left:1.5em'>
-<p data-line="8;portage.md:59"><span data-line="8;portage.md::59"></span>fetch restricted; already downloaded
+<dt class="dt" style="font-weight:bold">f</dt>
+<dd class="dd" data-line="8;portage.md:59" style="margin-left:1.5em">
+<p data-line="8;portage.md:59"><span data-line="8;portage.md:59"></span>fetch restricted; already downloaded
 </p></dd>
-<dt class="dt" style='font-weight:bold'>I</dt>
-<dd class="dd" data-line="8;portage.md:62" style='margin-left:1.5em'>
-<p data-line="8;portage.md:62"><span data-line="8;portage.md::62"></span>interactive/requires user input
+<dt class="dt" style="font-weight:bold">I</dt>
+<dd class="dd" data-line="8;portage.md:62" style="margin-left:1.5em">
+<p data-line="8;portage.md:62"><span data-line="8;portage.md:62"></span>interactive/requires user input
 </p></dd>
-<dt class="dt" style='font-weight:bold'>B</dt>
-<dd class="dd" data-line="8;portage.md:65" style='margin-left:1.5em'>
-<p data-line="8;portage.md:65"><span data-line="8;portage.md::65"></span>blocked by another package (unresolved conflict) 
-<span data-line="8;portage.md::66"></span><em>discussed in more detail below</em><span data-line="8;portage.md::66"></span>
+<dt class="dt" style="font-weight:bold">B</dt>
+<dd class="dd" data-line="8;portage.md:65" style="margin-left:1.5em">
+<p data-line="8;portage.md:65"><span data-line="8;portage.md:65"></span>blocked by another package (unresolved conflict) 
+<span data-line="8;portage.md:66"></span><em>discussed in more detail below</em><span data-line="8;portage.md:66"></span>
 </p></dd>
-<dt class="dt" style='font-weight:bold'>b</dt>
-<dd class="dd" data-line="8;portage.md:69" style='margin-left:1.5em'>
-<p data-line="8;portage.md:69"><span data-line="8;portage.md::69"></span>blocked by another package (automatically resolved conflict)
-</p></dd></dl><h2 id="installing-a-package"  data-line="8;portage.md:72" ><span data-line="8;portage.md::72"></span>Installing a package</h2>
-<p data-line="8;portage.md:74"><span data-line="8;portage.md::74"></span>Now install the package for real, by running:
+<dt class="dt" style="font-weight:bold">b</dt>
+<dd class="dd" data-line="8;portage.md:69" style="margin-left:1.5em">
+<p data-line="8;portage.md:69"><span data-line="8;portage.md:69"></span>blocked by another package (automatically resolved conflict)
+</p></dd></dl><h2 id="sec-installing-a-package"  data-line="8;portage.md:72"  style="bookmark:Installing a package"><span data-line="8;portage.md:72"></span>Installing a package</h2>
+<p data-line="8;portage.md:74"><span data-line="8;portage.md:74"></span>Now install the package for real, by running:
 </p>
-<pre class="para-block fenced para-block" data-line="8;portage.md:75" data-line-code="8;portage.md:76"><code data-line="8;portage.md:76">sudo emerge --ask cowsay</code></pre>
-<p data-line="8;portage.md:79"><span data-line="8;portage.md::79"></span>The <span data-line="8;portage.md::79"></span><code class="code">ask</code><span data-line="8;portage.md::79"></span> option lets you review what emerge plans to do, then consent. The
-program will download, configure, compile, and install <span data-line="8;portage.md::80"></span><em>cowsay</em><span data-line="8;portage.md::80"></span> and all its
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;portage.md:75" data-line-code="8;portage.md:76"><code data-line="8;portage.md:76">sudo emerge --ask cowsay</code></pre>
+<p data-line="8;portage.md:79"><span data-line="8;portage.md:79"></span>The <span data-line="8;portage.md:79"></span><code class="code code1">ask</code><span data-line="8;portage.md:79"></span> option lets you review what emerge plans to do, then consent. The
+program will download, configure, compile, and install <span data-line="8;portage.md:80"></span><em>cowsay</em><span data-line="8;portage.md:80"></span> and all its
 dependencies.
 </p>
-<p class="indent" data-line="8;portage.md:83"><span data-line="8;portage.md::83"></span>Now that <span data-line="8;portage.md::83"></span><em>cowsay</em><span data-line="8;portage.md::83"></span> is installed, you can run the program like so:
+<p class="indent" data-line="8;portage.md:83"><span data-line="8;portage.md:83"></span>Now that <span data-line="8;portage.md:83"></span><em>cowsay</em><span data-line="8;portage.md:83"></span> is installed, you can run the program like so:
 </p>
-<pre class="para-block fenced para-block" data-line="8;portage.md:84" data-line-code="8;portage.md:85"><code data-line="8;portage.md:85">cowsay hello world</code></pre><h2 id="removing-a-package"  data-line="8;portage.md:88" ><span data-line="8;portage.md::88"></span>Removing a package</h2>
-<p data-line="8;portage.md:90"><span data-line="8;portage.md::90"></span>To remove a package, we should first check how the removal would affect our
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;portage.md:84" data-line-code="8;portage.md:85"><code data-line="8;portage.md:85">cowsay hello world</code></pre><h2 id="sec-removing-a-package"  data-line="8;portage.md:88"  style="bookmark:Removing a package"><span data-line="8;portage.md:88"></span>Removing a package</h2>
+<p data-line="8;portage.md:90"><span data-line="8;portage.md:90"></span>To remove a package, we should first check how the removal would affect our
 system. We might think twice about removing a package on which lots of other
 things depend! 
 </p>
-<p class="indent" data-line="8;portage.md:94"><span data-line="8;portage.md::94"></span>For example, let<span data-line="8;portage.md::94"></span>&#39;<span data-line="8;portage.md::94"></span>s see what would happen if we were to remove <span data-line="8;portage.md::94"></span><em>python</em><span data-line="8;portage.md::94"></span>:
+<p class="indent" data-line="8;portage.md:94"><span data-line="8;portage.md:94"></span>For example, let<span data-line="8;portage.md:94"></span>&#39;<span data-line="8;portage.md:94"></span>s see what would happen if we were to remove <span data-line="8;portage.md:94"></span><em>python</em><span data-line="8;portage.md:94"></span>:
 </p>
-<pre class="para-block fenced para-block" data-line="8;portage.md:95" data-line-code="8;portage.md:96"><code data-line="8;portage.md:96">emerge --pretend --verbose --depclean python</code></pre>
-<p data-line="8;portage.md:99"><span data-line="8;portage.md::99"></span>The <span data-line="8;portage.md::99"></span><code class="code">depclean</code><span data-line="8;portage.md::99"></span> option asks emerge to remove the specified package, along with
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;portage.md:95" data-line-code="8;portage.md:96"><code data-line="8;portage.md:96">emerge --pretend --verbose --depclean python</code></pre>
+<p data-line="8;portage.md:99"><span data-line="8;portage.md:99"></span>The <span data-line="8;portage.md:99"></span><code class="code code1">depclean</code><span data-line="8;portage.md:99"></span> option asks emerge to remove the specified package, along with
 all dependencies of the package on which no other package depends.
 </p>
-<p class="indent" data-line="8;portage.md:102"><span data-line="8;portage.md::102"></span>You<span data-line="8;portage.md::102"></span>&#39;<span data-line="8;portage.md::102"></span>ll notice from the output that other packages depend on <span data-line="8;portage.md::102"></span><em>python</em><span data-line="8;portage.md::102"></span>, so emerge
-refuses to remove python. (There are ways to force removal, but that<span data-line="8;portage.md::103"></span>&#39;<span data-line="8;portage.md::103"></span>s generally
-a bad idea<span data-line="8;portage.md::104"></span>&#8212;<span data-line="8;portage.md::104"></span>it can lead to a broken system.)
+<p class="indent" data-line="8;portage.md:102"><span data-line="8;portage.md:102"></span>You<span data-line="8;portage.md:102"></span>&#39;<span data-line="8;portage.md:102"></span>ll notice from the output that other packages depend on <span data-line="8;portage.md:102"></span><em>python</em><span data-line="8;portage.md:102"></span>, so emerge
+refuses to remove python. (There are ways to force removal, but that<span data-line="8;portage.md:103"></span>&#39;<span data-line="8;portage.md:103"></span>s generally
+a bad idea<span data-line="8;portage.md:104"></span>&#8212;<span data-line="8;portage.md:104"></span>it can lead to a broken system.)
 </p>
-<p class="indent para-continue" data-line="8;portage.md:106"><span data-line="8;portage.md::106"></span>NOTE: A command<span data-line="8;portage.md::106"></span>&#39;<span data-line="8;portage.md::106"></span>s options usually have shortened versions to make things easier
+<p class="indent para-continue" data-line="8;portage.md:106"><span data-line="8;portage.md:106"></span>NOTE: A command<span data-line="8;portage.md:106"></span>&#39;<span data-line="8;portage.md:106"></span>s options usually have shortened versions to make things easier
 on the user. The shortened version is often (though not always) the first letter
-of the option. So, <span data-line="8;portage.md::108"></span><code class="code">--pretend</code><span data-line="8;portage.md::108"></span> can be shortened to <span data-line="8;portage.md::108"></span><code class="code">-p</code><span data-line="8;portage.md::108"></span>,  <span data-line="8;portage.md::108"></span><code class="code">--ask</code><span data-line="8;portage.md::108"></span> can be
-shortened to <span data-line="8;portage.md::109"></span><code class="code">-a</code><span data-line="8;portage.md::109"></span>, and <span data-line="8;portage.md::109"></span><code class="code">depclean</code><span data-line="8;portage.md::109"></span> can be shortened with <span data-line="8;portage.md::109"></span><code class="code">-c</code><span data-line="8;portage.md::109"></span>. Options can also
+of the option. So, <span data-line="8;portage.md:108"></span><code class="code code1">--pretend</code><span data-line="8;portage.md:108"></span> can be shortened to <span data-line="8;portage.md:108"></span><code class="code code1">-p</code><span data-line="8;portage.md:108"></span>,  <span data-line="8;portage.md:108"></span><code class="code code1">--ask</code><span data-line="8;portage.md:108"></span> can be
+shortened to <span data-line="8;portage.md:109"></span><code class="code code1">-a</code><span data-line="8;portage.md:109"></span>, and <span data-line="8;portage.md:109"></span><code class="code code1">depclean</code><span data-line="8;portage.md:109"></span> can be shortened with <span data-line="8;portage.md:109"></span><code class="code code1">-c</code><span data-line="8;portage.md:109"></span>. Options can also
 be combined without spaces using their shortened form. So, if we wanted, 
-<span data-line="8;portage.md::111"></span><code class="code">--depclean</code><span data-line="8;portage.md::111"></span>, <span data-line="8;portage.md::111"></span><code class="code">--ask</code><span data-line="8;portage.md::111"></span>, and <span data-line="8;portage.md::111"></span><code class="code">--verbose</code><span data-line="8;portage.md::111"></span>, then we can use <span data-line="8;portage.md::111"></span><code class="code">-cav</code><span data-line="8;portage.md::111"></span>. 
+<span data-line="8;portage.md:111"></span><code class="code code1">--depclean</code><span data-line="8;portage.md:111"></span>, <span data-line="8;portage.md:111"></span><code class="code code1">--ask</code><span data-line="8;portage.md:111"></span>, and <span data-line="8;portage.md:111"></span><code class="code code1">--verbose</code><span data-line="8;portage.md:111"></span>, then we can use <span data-line="8;portage.md:111"></span><code class="code code1">-cav</code><span data-line="8;portage.md:111"></span>. 
 </p>
 <ol class="loose" data-line="8;portage.md:113">
 <li data-line="8;portage.md:113">
-<p data-line="8;portage.md:113"><span data-line="8;portage.md::113"></span>Remove <span data-line="8;portage.md::113"></span><em>cowsay</em><span data-line="8;portage.md::113"></span>, using the ask option so that you can review emerge<span data-line="8;portage.md::113"></span>&#39;<span data-line="8;portage.md::113"></span>s
+<p data-line="8;portage.md:113"><span data-line="8;portage.md:113"></span>Remove <span data-line="8;portage.md:113"></span><em>cowsay</em><span data-line="8;portage.md:113"></span>, using the ask option so that you can review emerge<span data-line="8;portage.md:113"></span>&#39;<span data-line="8;portage.md:113"></span>s
 plans and consent to them.
 </p></li>
 <li data-line="8;portage.md:116">
-<p data-line="8;portage.md:116"><span data-line="8;portage.md::116"></span>Verify that <span data-line="8;portage.md::116"></span><em>cowsay</em><span data-line="8;portage.md::116"></span> is gone by trying to run the command.
+<p data-line="8;portage.md:116"><span data-line="8;portage.md:116"></span>Verify that <span data-line="8;portage.md:116"></span><em>cowsay</em><span data-line="8;portage.md:116"></span> is gone by trying to run the command.
 </p></li>
 <li data-line="8;portage.md:118">
-<p data-line="8;portage.md:118"><span data-line="8;portage.md::118"></span>Reinstall <span data-line="8;portage.md::118"></span><em>cowsay</em><span data-line="8;portage.md::118"></span>.
+<p data-line="8;portage.md:118"><span data-line="8;portage.md:118"></span>Reinstall <span data-line="8;portage.md:118"></span><em>cowsay</em><span data-line="8;portage.md:118"></span>.
 </p></li>
 <li data-line="8;portage.md:120">
-<p data-line="8;portage.md:120"><span data-line="8;portage.md::120"></span>Verify that <span data-line="8;portage.md::120"></span><em>cowsay</em><span data-line="8;portage.md::120"></span> is back by trying to run the command.
+<p data-line="8;portage.md:120"><span data-line="8;portage.md:120"></span>Verify that <span data-line="8;portage.md:120"></span><em>cowsay</em><span data-line="8;portage.md:120"></span> is back by trying to run the command.
 </p></li></ol>
-<h2 id="more-on-dependencies"  data-line="8;portage.md:122" ><span data-line="8;portage.md::122"></span>More on dependencies</h2>
-<p data-line="8;portage.md:124"><span data-line="8;portage.md::124"></span>A dependency is a file that the package you are trying to install
-requires. When a package is emerged, it usually <span data-line="8;portage.md::125"></span>&#8220;pulls in&#8221;<span data-line="8;portage.md::125"></span> the
+<h2 id="sec-more-on-dependencies"  data-line="8;portage.md:122"  style="bookmark:More on dependencies"><span data-line="8;portage.md:122"></span>More on dependencies</h2>
+<p data-line="8;portage.md:124"><span data-line="8;portage.md:124"></span>A dependency is a file that the package you are trying to install
+requires. When a package is emerged, it usually <span data-line="8;portage.md:125"></span>&#8220;pulls in&#8221;<span data-line="8;portage.md:125"></span> the
 dependencies needed in the installation. It draws on dependency trees
 (lists/records of each package and what it depends on or what depends on
 it) synced from Gentoo, and can encounter problems with conflicting
 configurations or dependencies (more on this later).
-</p><h3 id="display-dependencies"  data-line="8;portage.md:131" ><span data-line="8;portage.md::131"></span>Display Dependencies</h3>
-<p data-line="8;portage.md:133"><span data-line="8;portage.md::133"></span>Portage has dependency trees for its packages to keep track of what is
+</p><h3 id="sec-display-dependencies"  data-line="8;portage.md:131"  style="bookmark:Display Dependencies"><span data-line="8;portage.md:131"></span>Display Dependencies</h3>
+<p data-line="8;portage.md:133"><span data-line="8;portage.md:133"></span>Portage has dependency trees for its packages to keep track of what is
 required by the package or what it requires. 
 </p>
-<p class="indent" data-line="8;portage.md:136"><span data-line="8;portage.md::136"></span>Let<span data-line="8;portage.md::136"></span>&#39;<span data-line="8;portage.md::136"></span>s explore the dependencies for the <span data-line="8;portage.md::136"></span><em>fortune</em><span data-line="8;portage.md::136"></span> package. The <span data-line="8;portage.md::136"></span><em>fortune</em><span data-line="8;portage.md::136"></span> package
-provides a command that prints a pithy quote to the terminal. The <span data-line="8;portage.md::137"></span><code class="code">fortune</code><span data-line="8;portage.md::137"></span>
-command can pull its quotes from multiple <span data-line="8;portage.md::138"></span><em>fortune files</em><span data-line="8;portage.md::138"></span>, and there are lots of
-fortune files available. Let<span data-line="8;portage.md::139"></span>&#39;<span data-line="8;portage.md::139"></span>s see:
+<p class="indent" data-line="8;portage.md:136"><span data-line="8;portage.md:136"></span>Let<span data-line="8;portage.md:136"></span>&#39;<span data-line="8;portage.md:136"></span>s explore the dependencies for the <span data-line="8;portage.md:136"></span><em>fortune</em><span data-line="8;portage.md:136"></span> package. The <span data-line="8;portage.md:136"></span><em>fortune</em><span data-line="8;portage.md:136"></span> package
+provides a command that prints a pithy quote to the terminal. The <span data-line="8;portage.md:137"></span><code class="code code1">fortune</code><span data-line="8;portage.md:137"></span>
+command can pull its quotes from multiple <span data-line="8;portage.md:138"></span><em>fortune files</em><span data-line="8;portage.md:138"></span>, and there are lots of
+fortune files available. Let<span data-line="8;portage.md:139"></span>&#39;<span data-line="8;portage.md:139"></span>s see:
 </p>
-<pre class="para-block fenced para-block" data-line="8;portage.md:140" data-line-code="8;portage.md:141"><code data-line="8;portage.md:141">equery depgraph fortune-mod-all | less</code></pre>
-<p class="para-continue" data-line="8;portage.md:144"><span data-line="8;portage.md::144"></span>Check out all those dependencies! Each one is a fortune file.
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;portage.md:140" data-line-code="8;portage.md:141"><code data-line="8;portage.md:141">equery depgraph fortune-mod-all | less</code></pre>
+<p class="para-continue" data-line="8;portage.md:144"><span data-line="8;portage.md:144"></span>Check out all those dependencies! Each one is a fortune file.
 </p>
-<ul class="compact" data-line="8;portage.md:146">
-<li data-line="8;portage.md:146"><span data-line="8;portage.md::146"></span>How would you find the list of packages that depend on <span data-line="8;portage.md::146"></span><em>perl</em><span data-line="8;portage.md::146"></span>? 
+<ul class="list-dash compact" data-line="8;portage.md:146">
+<li data-line="8;portage.md:146"><span data-line="8;portage.md:146"></span>How would you find the list of packages that depend on <span data-line="8;portage.md:146"></span><em>perl</em><span data-line="8;portage.md:146"></span>? 
 (Hint: man pages are your friends!)
 </li>
-<li data-line="8;portage.md:148"><span data-line="8;portage.md::148"></span>Install the <span data-line="8;portage.md::148"></span><em>fortune-mod-all</em><span data-line="8;portage.md::148"></span> package.
+<li data-line="8;portage.md:148"><span data-line="8;portage.md:148"></span>Install the <span data-line="8;portage.md:148"></span><code class="code code1">fortune-mod-all</code><span data-line="8;portage.md:148"></span> package.
 </li></ul>
 
-<p data-line="8;portage.md:150"><span data-line="8;portage.md::150"></span>Because <span data-line="8;portage.md::150"></span><em>fortune-mod-all</em><span data-line="8;portage.md::150"></span> has so many dependencies, you might want to do a
-little reading while it<span data-line="8;portage.md::151"></span>&#39;<span data-line="8;portage.md::151"></span>s installing<span data-line="8;portage.md::151"></span>&#8230;<span data-line="8;portage.md::151"></span> All the subsequent sections are bonus:
+<p data-line="8;portage.md:150"><span data-line="8;portage.md:150"></span>Because <span data-line="8;portage.md:150"></span><code class="code code1">fortune-mod-all</code><span data-line="8;portage.md:150"></span> has so many dependencies, you might want to do a
+little reading while it<span data-line="8;portage.md:151"></span>&#39;<span data-line="8;portage.md:151"></span>s installing<span data-line="8;portage.md:151"></span>&#8230;<span data-line="8;portage.md:151"></span> All the subsequent sections are bonus:
 more information that may help you when administering your system. Feel free to
 read through them or read up more on portage online.
+</p><h2 id="sec-updating-the-portage-tree-and-your-system"  data-line="8;portage.md:155"  style="bookmark:Updating the Portage Tree and Your System"><span data-line="8;portage.md:155"></span>Updating the Portage Tree and Your System</h2>
+<p data-line="8;portage.md:157"><span data-line="8;portage.md:157"></span><strong>WARNING: DO NOT RUN ANY OF THE COMMANDS UNLESS YOU HAVE <em>LOTS</em> OF TIME (and
+even then, run them with caution)</strong><span data-line="8;portage.md:158"></span>
 </p>
-<p class="indent para-continue" data-line="8;portage.md:155"><span data-line="8;portage.md::155"></span>When <span data-line="8;portage.md::155"></span><em>fortune-mod-all</em><span data-line="8;portage.md::155"></span> is done installing, let<span data-line="8;portage.md::155"></span>&#39;<span data-line="8;portage.md::155"></span>s have some fun:
-</p>
-<ul class="compact" data-line="8;portage.md:157">
-<li data-line="8;portage.md:157"><span data-line="8;portage.md::157"></span>Run <span data-line="8;portage.md::157"></span><code class="code">fortune</code><span data-line="8;portage.md::157"></span> to get a pithy message
-</li>
-<li data-line="8;portage.md:158"><span data-line="8;portage.md::158"></span>Run <span data-line="8;portage.md::158"></span><code class="code">fortune hitchhiker</code><span data-line="8;portage.md::158"></span> to get another pithy message
-</li>
-<li data-line="8;portage.md:159"><span data-line="8;portage.md::159"></span>Make a cow say a fortune
-</li>
-<li data-line="8;portage.md:160"><span data-line="8;portage.md::160"></span>When you start a new bash shell (including when you log in), bash treats 
-the file <span data-line="8;portage.md::161"></span><code class="code">~/.bashrc</code><span data-line="8;portage.md::161"></span> as a script and runs it. Modify <span data-line="8;portage.md::161"></span><code class="code">~/.bashrc</code><span data-line="8;portage.md::161"></span> so that a
-cow says a pithy quote every time you log in (or start a new shell).
-</li>
-<li data-line="8;portage.md:163"><span data-line="8;portage.md::163"></span>You can also make it so that a cow says a pithy quote when <span data-line="8;portage.md::163"></span><em>any</em><span data-line="8;portage.md::163"></span> user logs
-on to your system. To do so, add the appropriate command to the bottom of the
-file <span data-line="8;portage.md::165"></span><code class="code">/etc/profile</code><span data-line="8;portage.md::165"></span>. Ask a friend who has an account on your system to log in
-and verify that they<span data-line="8;portage.md::166"></span>&#39;<span data-line="8;portage.md::166"></span>re greeted by a cow.
-</li></ul>
-<h2 id="updating-the-portage-tree-and-your-system"  data-line="8;portage.md:168" ><span data-line="8;portage.md::168"></span>Updating the Portage Tree and Your System</h2>
-<p data-line="8;portage.md:170"><span data-line="8;portage.md::170"></span><strong>WARNING: DO NOT RUN ANY OF THE COMMANDS UNLESS YOU HAVE <em>LOTS</em> OF TIME (and
-even then, run them with caution)</strong><span data-line="8;portage.md::171"></span>
-</p>
-<p class="indent para-continue" data-line="8;portage.md:173"><span data-line="8;portage.md::173"></span>The Portage tree is a collection of ebuilds, which are files that
+<p class="indent para-continue" data-line="8;portage.md:160"><span data-line="8;portage.md:160"></span>The Portage tree is a collection of ebuilds, which are files that
 contain all information Portage needs to maintain software (install,
-search, query, <span data-line="8;portage.md::175"></span>&#8230;<span data-line="8;portage.md::175"></span>). These ebuilds reside in <span data-line="8;portage.md::175"></span><code class="code">/usr/portage</code><span data-line="8;portage.md::175"></span> by default
+search, query, <span data-line="8;portage.md:162"></span>&#8230;<span data-line="8;portage.md:162"></span>). These ebuilds reside in <span data-line="8;portage.md:162"></span><code class="code code1">/usr/portage</code><span data-line="8;portage.md:162"></span> by default
 and are the ones that Portage uses when asked to perform some action
 regarding software titles.
 </p>
-<ol class="loose" data-line="8;portage.md:179">
-<li data-line="8;portage.md:179">
-<p data-line="8;portage.md:179"><span data-line="8;portage.md::179"></span>To make sure that the Portage Tree on your system is up-to-date, you
+<ol class="loose" data-line="8;portage.md:166">
+<li data-line="8;portage.md:166">
+<p data-line="8;portage.md:166"><span data-line="8;portage.md:166"></span>To make sure that the Portage Tree on your system is up-to-date, you
 would connect to the Gentoo database using:
 </p>
-<pre class="para-block para-block" data-line="8;portage.md:182"><code>emerge --sync</code></pre>
-<p data-line="8;portage.md:184"><span data-line="8;portage.md::184"></span>This will make sure that your Portage Tree matches the one Gentoo
+<pre class="para-block pre-indented" data-line="8;portage.md:169"><code>emerge --sync</code></pre>
+<p data-line="8;portage.md:171"><span data-line="8;portage.md:171"></span>This will make sure that your Portage Tree matches the one Gentoo
 has on file.
 </p></li>
-<li data-line="8;portage.md:187">
-<p data-line="8;portage.md:187"><span data-line="8;portage.md::187"></span>The previous step only updates the tree. No other changes are made
+<li data-line="8;portage.md:174">
+<p data-line="8;portage.md:174"><span data-line="8;portage.md:174"></span>The previous step only updates the tree. No other changes are made
 to the system. To update all the packages on the system, we would use the
-following command. The most important options are <span data-line="8;portage.md::189"></span><code class="code">--update</code><span data-line="8;portage.md::189"></span> and
-<span data-line="8;portage.md::190"></span><code class="code">@world</code><span data-line="8;portage.md::190"></span>:
+following command. The most important options are <span data-line="8;portage.md:176"></span><code class="code code1">--update</code><span data-line="8;portage.md:176"></span> and
+<span data-line="8;portage.md:177"></span><code class="code code1">@world</code><span data-line="8;portage.md:177"></span>:
 </p>
-<pre class="para-block para-block" data-line="8;portage.md:192"><code>emerge --ask --update --deep --with-bdeps=y --newuse @world</code></pre>
-<ul class="loose" data-line="8;portage.md:194">
-<li data-line="8;portage.md:194">
-<p data-line="8;portage.md:194"><span data-line="8;portage.md::194"></span><code class="code">--ask</code><span data-line="8;portage.md::194"></span> This option means that, after gathering all the data it
-needs and displaying what it will do, <span data-line="8;portage.md::195"></span><code class="code">emerge</code><span data-line="8;portage.md::195"></span> will ask for user
+<pre class="para-block pre-indented" data-line="8;portage.md:179"><code>emerge --ask --update --deep --with-bdeps=y --newuse @world</code></pre>
+<ul class="list-dash loose" data-line="8;portage.md:181">
+<li data-line="8;portage.md:181">
+<p data-line="8;portage.md:181"><span data-line="8;portage.md:181"></span><code class="code code1">--ask</code><span data-line="8;portage.md:181"></span> This option means that, after gathering all the data it
+needs and displaying what it will do, <span data-line="8;portage.md:182"></span><code class="code code1">emerge</code><span data-line="8;portage.md:182"></span> will ask for user
 confirmation before continuing the process.
 </p></li>
-<li data-line="8;portage.md:198">
-<p data-line="8;portage.md:198"><span data-line="8;portage.md::198"></span><code class="code">--update</code><span data-line="8;portage.md::198"></span> This is the option that tells <span data-line="8;portage.md::198"></span><code class="code">emerge</code><span data-line="8;portage.md::198"></span> to go through
+<li data-line="8;portage.md:185">
+<p data-line="8;portage.md:185"><span data-line="8;portage.md:185"></span><code class="code code1">--update</code><span data-line="8;portage.md:185"></span> This is the option that tells <span data-line="8;portage.md:185"></span><code class="code code1">emerge</code><span data-line="8;portage.md:185"></span> to go through
 the update process. It updates packages to the best version
 available, not necessarily the highest version due to packages
 possibly in the testing stage.
 </p></li>
-<li data-line="8;portage.md:203">
-<p data-line="8;portage.md:203"><span data-line="8;portage.md::203"></span><code class="code">--deep</code><span data-line="8;portage.md::203"></span> This forces Portage to consider the entire dependency
+<li data-line="8;portage.md:190">
+<p data-line="8;portage.md:190"><span data-line="8;portage.md:190"></span><code class="code code1">--deep</code><span data-line="8;portage.md:190"></span> This forces Portage to consider the entire dependency
 tree of packages (more information on this topic later in the
 lab) rather than focusing on their more immediate dependencies.
 </p></li>
-<li data-line="8;portage.md:207">
-<p data-line="8;portage.md:207"><span data-line="8;portage.md::207"></span><code class="code">--with-bdeps=y</code><span data-line="8;portage.md::207"></span> When calculating dependencies, this option
-tells <span data-line="8;portage.md::208"></span><code class="code">emerge</code><span data-line="8;portage.md::208"></span> to include build time dependencies, which are
+<li data-line="8;portage.md:194">
+<p data-line="8;portage.md:194"><span data-line="8;portage.md:194"></span><code class="code code1">--with-bdeps=y</code><span data-line="8;portage.md:194"></span> When calculating dependencies, this option
+tells <span data-line="8;portage.md:195"></span><code class="code code1">emerge</code><span data-line="8;portage.md:195"></span> to include build time dependencies, which are
 dependencies that some packages on your system need during their
 compile and build process. But once that package is installed,
 these dependencies are no longer required
 </p></li>
-<li data-line="8;portage.md:213">
-<p data-line="8;portage.md:213"><span data-line="8;portage.md::213"></span><code class="code">--newuse</code><span data-line="8;portage.md::213"></span> tells <span data-line="8;portage.md::213"></span><code class="code">emerge</code><span data-line="8;portage.md::213"></span> to consider installed packages when
+<li data-line="8;portage.md:200">
+<p data-line="8;portage.md:200"><span data-line="8;portage.md:200"></span><code class="code code1">--newuse</code><span data-line="8;portage.md:200"></span> tells <span data-line="8;portage.md:200"></span><code class="code code1">emerge</code><span data-line="8;portage.md:200"></span> to consider installed packages when
 USE flags have changed. This helps update already installed
 packages to change accordingly to those changes in USE flags (more on
 USE flags, below).
 </p></li>
-<li data-line="8;portage.md:218">
-<p data-line="8;portage.md:218"><span data-line="8;portage.md::218"></span><code class="code">@world</code><span data-line="8;portage.md::218"></span> tells the command to work at the world level, which
+<li data-line="8;portage.md:205">
+<p data-line="8;portage.md:205"><span data-line="8;portage.md:205"></span><code class="code code1">@world</code><span data-line="8;portage.md:205"></span> tells the command to work at the world level, which
 encompasses the system set and the selected set. The system set
 contains the software packages that are required for a standard
 Gentoo Linux installation to run properly. The selected set
@@ -263,119 +762,119 @@ contains the packages the user has explicitly asked to be
 installed.
 </p></li></ul>
 </li>
-<li data-line="8;portage.md:225">
-<p data-line="8;portage.md:225"><span data-line="8;portage.md::225"></span>To remove (recently) orphaned dependencies (packages that no are no
+<li data-line="8;portage.md:212">
+<p data-line="8;portage.md:212"><span data-line="8;portage.md:212"></span>To remove (recently) orphaned dependencies (packages that no are no
 longer depended on by another package), you can use the option
-<span data-line="8;portage.md::227"></span><code class="code">--depclean</code><span data-line="8;portage.md::227"></span> with <span data-line="8;portage.md::227"></span><code class="code">emerge</code><span data-line="8;portage.md::227"></span>, which cleans the system by removing
+<span data-line="8;portage.md:214"></span><code class="code code1">--depclean</code><span data-line="8;portage.md:214"></span> with <span data-line="8;portage.md:214"></span><code class="code code1">emerge</code><span data-line="8;portage.md:214"></span>, which cleans the system by removing
 packages that are not associated with explicitly merged packages.
 </p></li>
-<li data-line="8;portage.md:230">
-<p data-line="8;portage.md:230"><span data-line="8;portage.md::230"></span>To properly finish off updates/removal of orphan dependencies and to
+<li data-line="8;portage.md:217">
+<p data-line="8;portage.md:217"><span data-line="8;portage.md:217"></span>To properly finish off updates/removal of orphan dependencies and to
 make sure all merged packages can properly deal with the change in
 dependencies, you can use the following command. However, it is part
-of a package called <span data-line="8;portage.md::233"></span><code class="code">gentoolkit</code><span data-line="8;portage.md::233"></span>, so you would need to
-<span data-line="8;portage.md::234"></span><code class="code">emerge gentoolkit</code><span data-line="8;portage.md::234"></span> before you can use it.
+of a package called <span data-line="8;portage.md:220"></span><code class="code code1">gentoolkit</code><span data-line="8;portage.md:220"></span>, so you would need to
+<span data-line="8;portage.md:221"></span><code class="code code1">emerge gentoolkit</code><span data-line="8;portage.md:221"></span> before you can use it.
 </p>
-<pre class="para-block para-block" data-line="8;portage.md:236"><code>revdep-rebuild</code></pre></li>
-<li data-line="8;portage.md:238">
-<p data-line="8;portage.md:238"><span data-line="8;portage.md::238"></span>If you ever get a message to update your config files, there are three
+<pre class="para-block pre-indented" data-line="8;portage.md:223"><code>revdep-rebuild</code></pre></li>
+<li data-line="8;portage.md:225">
+<p data-line="8;portage.md:225"><span data-line="8;portage.md:225"></span>If you ever get a message to update your config files, there are three
 possible commands to use:
 </p>
-<p data-line="8;portage.md:241"><span data-line="8;portage.md::241"></span><code class="code">etc-update</code><span data-line="8;portage.md::241"></span>
+<p data-line="8;portage.md:228"><span data-line="8;portage.md:228"></span><code class="code code1">etc-update</code><span data-line="8;portage.md:228"></span>
 :   is a tool to help merge changes made in config files during
  updates, it gives users the option to keep the old config file,
  use the new one, make changes interactively, or to ignore the
  update. Once in the interactive interface, it gives you a list
  of commands and what each command does.
 </p>
-<p data-line="8;portage.md:248"><span data-line="8;portage.md::248"></span><code class="code">dispatch-conf</code><span data-line="8;portage.md::248"></span>
+<p data-line="8;portage.md:235"><span data-line="8;portage.md:235"></span><code class="code code1">dispatch-conf</code><span data-line="8;portage.md:235"></span>
 :   allows the user to utilize an interactive process similar to
-that of <span data-line="8;portage.md::250"></span><strong>etc-update</strong><span data-line="8;portage.md::250"></span> along with automatic backups.
+that of <span data-line="8;portage.md:237"></span><strong>etc-update</strong><span data-line="8;portage.md:237"></span> along with automatic backups.
 </p>
-<p data-line="8;portage.md:252"><span data-line="8;portage.md::252"></span><code class="code">cfg-update</code><span data-line="8;portage.md::252"></span>
+<p data-line="8;portage.md:239"><span data-line="8;portage.md:239"></span><code class="code code1">cfg-update</code><span data-line="8;portage.md:239"></span>
 :   is an easy-to-use script with a smart auto-update function (but
 without the risk of breaking your system) and automatic backups.
 It also has the potential to use GUI diff/merge tools for
 updating all configuration files that contain your customized
 settings.
 </p></li></ol>
-<h3 id="possible-problems"  data-line="8;portage.md:259" ><span data-line="8;portage.md::259"></span>Possible Problems</h3>
-<p class="para-continue" data-line="8;portage.md:261"><span data-line="8;portage.md::261"></span>As mentioned before, some problems can come up due to conflicts between
-dependencies or a dependency and configurations. When problems do arise, you<span data-line="8;portage.md::262"></span>&#39;<span data-line="8;portage.md::262"></span>ll
-need more information than is in this document, but here<span data-line="8;portage.md::263"></span>&#39;<span data-line="8;portage.md::263"></span>s a good start.
+<h3 id="sec-possible-problems"  data-line="8;portage.md:246"  style="bookmark:Possible Problems"><span data-line="8;portage.md:246"></span>Possible Problems</h3>
+<p class="para-continue" data-line="8;portage.md:248"><span data-line="8;portage.md:248"></span>As mentioned before, some problems can come up due to conflicts between
+dependencies or a dependency and configurations. When problems do arise, you<span data-line="8;portage.md:249"></span>&#39;<span data-line="8;portage.md:249"></span>ll
+need more information than is in this document, but here<span data-line="8;portage.md:250"></span>&#39;<span data-line="8;portage.md:250"></span>s a good start.
 </p>
-<ul class="loose" data-line="8;portage.md:265">
-<li data-line="8;portage.md:265">
-<p data-line="8;portage.md:265"><span data-line="8;portage.md::265"></span><strong>Slots</strong><span data-line="8;portage.md::265"></span>
+<ul class="list-dash loose" data-line="8;portage.md:252">
+<li data-line="8;portage.md:252">
+<p data-line="8;portage.md:252"><span data-line="8;portage.md:252"></span><strong>Slots</strong><span data-line="8;portage.md:252"></span>
 Portage allows for different versions of a single package to coexist
 on a system. While other distributions tend to name their package
-those versions (like <span data-line="8;portage.md::268"></span><code class="code">python2.6</code><span data-line="8;portage.md::268"></span> and <span data-line="8;portage.md::268"></span><code class="code">python2.7</code><span data-line="8;portage.md::268"></span>), Portage uses a
-technology called <span data-line="8;portage.md::269"></span><code class="code">SLOTs</code><span data-line="8;portage.md::269"></span>. An ebuild declares a certain <span data-line="8;portage.md::269"></span><code class="code">SLOT</code><span data-line="8;portage.md::269"></span> for
-its version. Ebuilds with different <span data-line="8;portage.md::270"></span><code class="code">SLOTs</code><span data-line="8;portage.md::270"></span> can coexist on the same
+those versions (like <span data-line="8;portage.md:255"></span><code class="code code1">python2.6</code><span data-line="8;portage.md:255"></span> and <span data-line="8;portage.md:255"></span><code class="code code1">python2.7</code><span data-line="8;portage.md:255"></span>), Portage uses a
+technology called <span data-line="8;portage.md:256"></span><code class="code code1">SLOTs</code><span data-line="8;portage.md:256"></span>. An ebuild declares a certain <span data-line="8;portage.md:256"></span><code class="code code1">SLOT</code><span data-line="8;portage.md:256"></span> for
+its version. Ebuilds with different <span data-line="8;portage.md:257"></span><code class="code code1">SLOTs</code><span data-line="8;portage.md:257"></span> can coexist on the same
 system. For instance, the freetype package has ebuilds with
-<span data-line="8;portage.md::272"></span><code class="code">SLOT=&quot;1&quot;</code><span data-line="8;portage.md::272"></span> and <span data-line="8;portage.md::272"></span><code class="code">SLOT=&quot;2&quot;</code><span data-line="8;portage.md::272"></span>. To list all versions of python currently
+<span data-line="8;portage.md:259"></span><code class="code code1">SLOT=&quot;1&quot;</code><span data-line="8;portage.md:259"></span> and <span data-line="8;portage.md:259"></span><code class="code code1">SLOT=&quot;2&quot;</code><span data-line="8;portage.md:259"></span>. To list all versions of python currently
 installed on your machine, you can use the command:
 </p>
-<pre class="para-block para-block" data-line="8;portage.md:275"><code>eselect python list</code></pre>
-<p data-line="8;portage.md:277"><span data-line="8;portage.md::277"></span>Not all packages have different <span data-line="8;portage.md::277"></span><code class="code">SLOTs</code><span data-line="8;portage.md::277"></span> for their versions though,
+<pre class="para-block pre-indented" data-line="8;portage.md:262"><code>eselect python list</code></pre>
+<p data-line="8;portage.md:264"><span data-line="8;portage.md:264"></span>Not all packages have different <span data-line="8;portage.md:264"></span><code class="code code1">SLOTs</code><span data-line="8;portage.md:264"></span> for their versions though,
 so if a package tries to install another version, the new version
 would compete with the pre-existing one and result in what is called
-a <span data-line="8;portage.md::280"></span><code class="code">slot conflict</code><span data-line="8;portage.md::280"></span>. This can be solved by <span data-line="8;portage.md::280"></span><code class="code">unmerging</code><span data-line="8;portage.md::280"></span> the previous
+a <span data-line="8;portage.md:267"></span><code class="code code1">slot conflict</code><span data-line="8;portage.md:267"></span>. This can be solved by <span data-line="8;portage.md:267"></span><code class="code code1">unmerging</code><span data-line="8;portage.md:267"></span> the previous
 version (but ONLY if no other installed package depends on it) or
-mask the new version to prevent <span data-line="8;portage.md::282"></span><code class="code">emerge</code><span data-line="8;portage.md::282"></span> from pulling it in (see
-<span data-line="8;portage.md::283"></span>&#8220;Masked Packages&#8221;<span data-line="8;portage.md::283"></span> for more info).
+mask the new version to prevent <span data-line="8;portage.md:269"></span><code class="code code1">emerge</code><span data-line="8;portage.md:269"></span> from pulling it in (see
+<span data-line="8;portage.md:270"></span>&#8220;Masked Packages&#8221;<span data-line="8;portage.md:270"></span> for more info).
 </p></li>
-<li data-line="8;portage.md:285">
-<p data-line="8;portage.md:285"><span data-line="8;portage.md::285"></span><strong>Blocked Packages</strong><span data-line="8;portage.md::285"></span>
+<li data-line="8;portage.md:272">
+<p data-line="8;portage.md:272"><span data-line="8;portage.md:272"></span><strong>Blocked Packages</strong><span data-line="8;portage.md:272"></span>
 Ebuilds contain specific fields that inform Portage about its
-dependencies, two of which are <span data-line="8;portage.md::287"></span><code class="code">DEPEND</code><span data-line="8;portage.md::287"></span> and <span data-line="8;portage.md::287"></span><code class="code">RDEPEND</code><span data-line="8;portage.md::287"></span>. The two
+dependencies, two of which are <span data-line="8;portage.md:274"></span><code class="code code1">DEPEND</code><span data-line="8;portage.md:274"></span> and <span data-line="8;portage.md:274"></span><code class="code code1">RDEPEND</code><span data-line="8;portage.md:274"></span>. The two
 possible dependencies, build dependencies and run-time dependencies,
 are declared in these two fields respectively. When one of these
-dependencies explicitly marks a package as <span data-line="8;portage.md::290"></span>&#8220;not compatible,&#8221;<span data-line="8;portage.md::290"></span> it
+dependencies explicitly marks a package as <span data-line="8;portage.md:277"></span>&#8220;not compatible,&#8221;<span data-line="8;portage.md:277"></span> it
 triggers a blockage. While recent versions of Portage are smart
 enough to work around minor blockages without user intervention,
 occasionally you will need to fix it yourself.
 </p>
-<p data-line="8;portage.md:295"><span data-line="8;portage.md::295"></span>As an example, pretend that, while trying to emerge the mail
-system Postfix, your <span data-line="8;portage.md::296"></span><code class="code">emerge --pretend</code><span data-line="8;portage.md::296"></span> gives you the output:
+<p data-line="8;portage.md:282"><span data-line="8;portage.md:282"></span>As an example, pretend that, while trying to emerge the mail
+system Postfix, your <span data-line="8;portage.md:283"></span><code class="code code1">emerge --pretend</code><span data-line="8;portage.md:283"></span> gives you the output:
 </p>
-<pre class="para-block para-block" data-line="8;portage.md:298"><code>mail-mta/ssmtp 
+<pre class="para-block pre-indented" data-line="8;portage.md:285"><code>mail-mta/ssmtp 
 (is blocking mail-mta/postfix-2.2.2-r1)</code></pre>
-<p data-line="8;portage.md:301"><span data-line="8;portage.md::301"></span>and without the option <span data-line="8;portage.md::301"></span><code class="code">--pretend</code><span data-line="8;portage.md::301"></span>, you got:
+<p data-line="8;portage.md:288"><span data-line="8;portage.md:288"></span>and without the option <span data-line="8;portage.md:288"></span><code class="code code1">--pretend</code><span data-line="8;portage.md:288"></span>, you got:
 </p>
-<pre class="para-block para-block" data-line="8;portage.md:303"><code>!!! Error: the mail-mta/postfix package conflicts with 
+<pre class="para-block pre-indented" data-line="8;portage.md:290"><code>!!! Error: the mail-mta/postfix package conflicts with 
 !!! another package.
 !!!        both can&#39;t be installed on the same system together.
 !!!        Please use &#39;emerge --pretend&#39; to determine blockers. </code></pre>
-<p data-line="8;portage.md:308"><span data-line="8;portage.md::308"></span>To fix a blockage, you can choose not to install the package or
+<p data-line="8;portage.md:295"><span data-line="8;portage.md:295"></span>To fix a blockage, you can choose not to install the package or
 unmerge the conflicting package first. In the given example, you can
-opt not to install <span data-line="8;portage.md::310"></span><em>postfix</em><span data-line="8;portage.md::310"></span> or to remove <span data-line="8;portage.md::310"></span><em>ssmtp</em><span data-line="8;portage.md::310"></span> first.<span data-line="8;portage.md::310"></span><br>
-<span data-line="8;portage.md::311"></span>NOTE: You may also see blocking packages with specific atoms, such
-as<span data-line="8;portage.md::312"></span><br>
-<span data-line="8;portage.md::313"></span><code class="code">&lt;media-video/mplayer-1.0_rc1-r2</code><span data-line="8;portage.md::313"></span> (see <span data-line="8;portage.md::313"></span><code class="code">man emerge</code><span data-line="8;portage.md::313"></span> for more
+opt not to install <span data-line="8;portage.md:297"></span><em>postfix</em><span data-line="8;portage.md:297"></span> or to remove <span data-line="8;portage.md:297"></span><em>ssmtp</em><span data-line="8;portage.md:297"></span> first.<span data-line="8;portage.md:297"></span><br>
+<span data-line="8;portage.md:298"></span>NOTE: You may also see blocking packages with specific atoms, such
+as<span data-line="8;portage.md:299"></span><br>
+<span data-line="8;portage.md:300"></span><code class="code code1">&lt;media-video/mplayer-1.0_rc1-r2</code><span data-line="8;portage.md:300"></span> (see <span data-line="8;portage.md:300"></span><code class="code code1">man emerge</code><span data-line="8;portage.md:300"></span> for more
 information on atoms). The less-than symbol in the beginning of the
 atom name indicates the group of versions of this partucular
-software that the blockage refers to. So, the <span data-line="8;portage.md::316"></span>&#8220;<&#8221;<span data-line="8;portage.md::316"></span> shows that any
-version less than <span data-line="8;portage.md::317"></span><code class="code">1.0_rc1_r2</code><span data-line="8;portage.md::317"></span> is blocked. So, for this example,
+software that the blockage refers to. So, the <span data-line="8;portage.md:303"></span>&#8220;<&#8221;<span data-line="8;portage.md:303"></span> shows that any
+version less than <span data-line="8;portage.md:304"></span><code class="code code1">1.0_rc1_r2</code><span data-line="8;portage.md:304"></span> is blocked. So, for this example,
 updating to a more recent version of the blocking package would
 circumnavigate and remove the block.
 </p>
-<p data-line="8;portage.md:321"><span data-line="8;portage.md::321"></span>It is also possible that two packages that are yet to be installed
+<p data-line="8;portage.md:308"><span data-line="8;portage.md:308"></span>It is also possible that two packages that are yet to be installed
 are blocking each other. In this rare case, you should find out why
 you need to install both. In most cases you can do with one of the
 packages alone. If not, you should file a bug to Gentoo.
 </p></li>
-<li data-line="8;portage.md:326">
-<p data-line="8;portage.md:326"><span data-line="8;portage.md::326"></span><strong>Masked Packages</strong><span data-line="8;portage.md::326"></span>
+<li data-line="8;portage.md:313">
+<p data-line="8;portage.md:313"><span data-line="8;portage.md:313"></span><strong>Masked Packages</strong><span data-line="8;portage.md:313"></span>
 </p>
-<p data-line="8;portage.md:328"><span data-line="8;portage.md::328"></span>When you want to install a package that hasn<span data-line="8;portage.md::328"></span>&#39;<span data-line="8;portage.md::328"></span>t been marked available
+<p data-line="8;portage.md:315"><span data-line="8;portage.md:315"></span>When you want to install a package that hasn<span data-line="8;portage.md:315"></span>&#39;<span data-line="8;portage.md:315"></span>t been marked available
 or compatible for your system, you will receive a masking error
 similar to that of the following:
 </p>
-<pre class="para-block para-block" data-line="8;portage.md:332"><code>!!! all ebuilds that could satisfy &quot;bootsplash&quot; have been masked. </code></pre>
-<p data-line="8;portage.md:334"><span data-line="8;portage.md::334"></span>with the reason(s) being:
+<pre class="para-block pre-indented" data-line="8;portage.md:319"><code>!!! all ebuilds that could satisfy &quot;bootsplash&quot; have been masked. </code></pre>
+<p data-line="8;portage.md:321"><span data-line="8;portage.md:321"></span>with the reason(s) being:
 </p>
-<pre class="para-block para-block" data-line="8;portage.md:336"><code>!!! possible candidates are:
+<pre class="para-block pre-indented" data-line="8;portage.md:323"><code>!!! possible candidates are:
 
 - gnome-base/gnome-2.8.0_pre1 (masked by: ~x86 keyword)
 - lm-sensors/lm-sensors-2.8.7 (masked by: -sparc keyword)
@@ -384,125 +883,125 @@ similar to that of the following:
 - games-fps/unreal-tournament-451 (masked by: package.mask)
 - sys-libs/glibc-2.3.2-r11 (masked by: profile)
 - net-im/skype-2.1.0.81 (masked by: skype-eula license(s)) </code></pre>
-<p data-line="8;portage.md:346"><span data-line="8;portage.md::346"></span>You can install a different yet similar application that is
+<p data-line="8;portage.md:333"><span data-line="8;portage.md:333"></span>You can install a different yet similar application that is
 available for your particular system or wait until the wanted
 package becomes available. Reasons for a package being masked
 include:
 </p>
-<ul class="loose" data-line="8;portage.md:351">
-<li data-line="8;portage.md:351">
-<p data-line="8;portage.md:351"><span data-line="8;portage.md::351"></span><code class="code">~arch keyword</code><span data-line="8;portage.md::351"></span> means that the application is not tested
+<ul class="list-dash loose" data-line="8;portage.md:338">
+<li data-line="8;portage.md:338">
+<p data-line="8;portage.md:338"><span data-line="8;portage.md:338"></span><code class="code code1">~arch keyword</code><span data-line="8;portage.md:338"></span> means that the application is not tested
 sufficiently to be put in the stable branch. Wait a few days or
 weeks and try again.
 </p></li>
-<li data-line="8;portage.md:355">
-<p data-line="8;portage.md:355"><span data-line="8;portage.md::355"></span><code class="code">-arch keyword</code><span data-line="8;portage.md::355"></span> or <span data-line="8;portage.md::355"></span><code class="code">-* keyword</code><span data-line="8;portage.md::355"></span> means that the application does
+<li data-line="8;portage.md:342">
+<p data-line="8;portage.md:342"><span data-line="8;portage.md:342"></span><code class="code code1">-arch keyword</code><span data-line="8;portage.md:342"></span> or <span data-line="8;portage.md:342"></span><code class="code code1">-* keyword</code><span data-line="8;portage.md:342"></span> means that the application does
 not work on your architecture. An architecture is a family of
 CPUs (processors) who support the same instructions. The two
 most prominent architectures in the desktop world are the x86
-architecture and the x86<span data-line="8;portage.md::359"></span>_<span data-line="8;portage.md::359"></span>64 architecture (for which Gentoo uses
+architecture and the x86<span data-line="8;portage.md:346"></span>_<span data-line="8;portage.md:346"></span>64 architecture (for which Gentoo uses
 the amd64 notation). If you believe the package does work file a
 </p>
-<p data-line="8;portage.md:362"><span data-line="8;portage.md::362"></span>bug at Gentoo<span data-line="8;portage.md::362"></span>&#39;<span data-line="8;portage.md::362"></span>s bugzilla website.
+<p data-line="8;portage.md:349"><span data-line="8;portage.md:349"></span>bug at Gentoo<span data-line="8;portage.md:349"></span>&#39;<span data-line="8;portage.md:349"></span>s bugzilla website.
 </p></li>
-<li data-line="8;portage.md:364">
-<p data-line="8;portage.md:364"><span data-line="8;portage.md::364"></span><code class="code">missing keyword</code><span data-line="8;portage.md::364"></span> means that the application has not been tested
+<li data-line="8;portage.md:351">
+<p data-line="8;portage.md:351"><span data-line="8;portage.md:351"></span><code class="code code1">missing keyword</code><span data-line="8;portage.md:351"></span> means that the application has not been tested
 on your architecture yet. Ask the Gentoo architecture porting
 team to test the package or test it for them and report your
 findings on the bugzilla website.
 </p></li>
-<li data-line="8;portage.md:369">
-<p data-line="8;portage.md:369"><span data-line="8;portage.md::369"></span><code class="code">package.mask</code><span data-line="8;portage.md::369"></span> means that the package has been found corrupt,
+<li data-line="8;portage.md:356">
+<p data-line="8;portage.md:356"><span data-line="8;portage.md:356"></span><code class="code code1">package.mask</code><span data-line="8;portage.md:356"></span> means that the package has been found corrupt,
 unstable, or worse and has been deliberately marked as
 do-not-use.
 </p></li>
-<li data-line="8;portage.md:373">
-<p data-line="8;portage.md:373"><span data-line="8;portage.md::373"></span><code class="code">profile</code><span data-line="8;portage.md::373"></span> means that the package has been found not suitable for
+<li data-line="8;portage.md:360">
+<p data-line="8;portage.md:360"><span data-line="8;portage.md:360"></span><code class="code code1">profile</code><span data-line="8;portage.md:360"></span> means that the package has been found not suitable for
 your profile. The application might break your system if you
 installed it or is just not compatible with the profile you
-use.<span data-line="8;portage.md::376"></span><br>
-<span data-line="8;portage.md::377"></span>A Portage profile specifies default values for global and
+use.<span data-line="8;portage.md:363"></span><br>
+<span data-line="8;portage.md:364"></span>A Portage profile specifies default values for global and
 per-package USE flags, specifies default values for most
 variables found in /etc/portage/make.conf, and defines a set of
 system packages, basically acting as the default configurations
 of the system. They are maintained by Gentoo developers as a
 part of the Portage Tree.
 </p></li>
-<li data-line="8;portage.md:384">
-<p data-line="8;portage.md:384"><span data-line="8;portage.md::384"></span><code class="code">license</code><span data-line="8;portage.md::384"></span> means that the package<span data-line="8;portage.md::384"></span>&#39;<span data-line="8;portage.md::384"></span>s license is not compatible
-with your ACCEPT<span data-line="8;portage.md::385"></span>_<span data-line="8;portage.md::385"></span>LICENSE setting. You must explicitly permit
+<li data-line="8;portage.md:371">
+<p data-line="8;portage.md:371"><span data-line="8;portage.md:371"></span><code class="code code1">license</code><span data-line="8;portage.md:371"></span> means that the package<span data-line="8;portage.md:371"></span>&#39;<span data-line="8;portage.md:371"></span>s license is not compatible
+with your ACCEPT<span data-line="8;portage.md:372"></span>_<span data-line="8;portage.md:372"></span>LICENSE setting. You must explicitly permit
 its license or license group by setting it in
-<span data-line="8;portage.md::387"></span><code class="code">/etc/portage/make.conf</code><span data-line="8;portage.md::387"></span> or in<span data-line="8;portage.md::387"></span><br>
-<span data-line="8;portage.md::388"></span><code class="code">/etc/portage/package.license</code><span data-line="8;portage.md::388"></span>. Refer to <span data-line="8;portage.md::388"></span><strong>Licenses</strong><span data-line="8;portage.md::388"></span> in the
+<span data-line="8;portage.md:374"></span><code class="code code1">/etc/portage/make.conf</code><span data-line="8;portage.md:374"></span> or in<span data-line="8;portage.md:374"></span><br>
+<span data-line="8;portage.md:375"></span><code class="code code1">/etc/portage/package.license</code><span data-line="8;portage.md:375"></span>. Refer to <span data-line="8;portage.md:375"></span><strong>Licenses</strong><span data-line="8;portage.md:375"></span> in the
 Gentoo Handbook to learn how licenses work.
 </p></li></ul>
 </li>
-<li data-line="8;portage.md:391">
-<p data-line="8;portage.md:391"><span data-line="8;portage.md::391"></span><strong>USE Flag Changes</strong><span data-line="8;portage.md::391"></span>
+<li data-line="8;portage.md:378">
+<p data-line="8;portage.md:378"><span data-line="8;portage.md:378"></span><strong>USE Flag Changes</strong><span data-line="8;portage.md:378"></span>
 When you want to install a package which not only depends on another
 package, but also requires that that package is built with a
 </p>
-<p data-line="8;portage.md:395"><span data-line="8;portage.md::395"></span>particular USE flag (or set of USE flags) that don<span data-line="8;portage.md::395"></span>&#39;<span data-line="8;portage.md::395"></span>t match your
+<p data-line="8;portage.md:382"><span data-line="8;portage.md:382"></span>particular USE flag (or set of USE flags) that don<span data-line="8;portage.md:382"></span>&#39;<span data-line="8;portage.md:382"></span>t match your
 settings, Portage will warn you:
 </p>
-<pre class="para-block para-block" data-line="8;portage.md:398"><code>The following USE changes are necessary to proceed:
+<pre class="para-block pre-indented" data-line="8;portage.md:385"><code>The following USE changes are necessary to proceed:
 #required by app-text/happypackage-2.0, required by happypackage 
 (argument) &gt;=app-text/feelings-1.0.0 test</code></pre>
-<p data-line="8;portage.md:402"><span data-line="8;portage.md::402"></span>If <span data-line="8;portage.md::402"></span><code class="code">--autounmask</code><span data-line="8;portage.md::402"></span> isn<span data-line="8;portage.md::402"></span>&#39;<span data-line="8;portage.md::402"></span>t set, then the following may also be shown:
+<p data-line="8;portage.md:389"><span data-line="8;portage.md:389"></span>If <span data-line="8;portage.md:389"></span><code class="code code1">--autounmask</code><span data-line="8;portage.md:389"></span> isn<span data-line="8;portage.md:389"></span>&#39;<span data-line="8;portage.md:389"></span>t set, then the following may also be shown:
 </p>
-<pre class="para-block para-block" data-line="8;portage.md:404"><code>emerge: there are no ebuilds built with USE flags to satisfy 
+<pre class="para-block pre-indented" data-line="8;portage.md:391"><code>emerge: there are no ebuilds built with USE flags to satisfy 
 &quot;app-text/feelings[test]&quot;.
 !!! One of the following packages is required to complete your 
     request:
 - app-text/feelings-1.0.0 (Change USE: +test)
 (dependency required by &quot;app-text/happypackage-2.0&quot; [ebuild])
 (dependency required by &quot;happypackage&quot; [argument])</code></pre>
-<p data-line="8;portage.md:412"><span data-line="8;portage.md::412"></span>In the given example, the package <span data-line="8;portage.md::412"></span><code class="code">app-text/feelings</code><span data-line="8;portage.md::412"></span> needs to be
-built with <span data-line="8;portage.md::413"></span><code class="code">USE=&quot;test&quot;</code><span data-line="8;portage.md::413"></span>, but this USE flag is not set on the system.
+<p data-line="8;portage.md:399"><span data-line="8;portage.md:399"></span>In the given example, the package <span data-line="8;portage.md:399"></span><code class="code code1">app-text/feelings</code><span data-line="8;portage.md:399"></span> needs to be
+built with <span data-line="8;portage.md:400"></span><code class="code code1">USE=&quot;test&quot;</code><span data-line="8;portage.md:400"></span>, but this USE flag is not set on the system.
 To resolve this, either add the requested USE flag to your global
 USE flags or set it for that particular package in the local USE
 flags (more information in Sidenote: USE flags).
 </p></li>
-<li data-line="8;portage.md:418">
-<p data-line="8;portage.md:418"><span data-line="8;portage.md::418"></span><strong>Missing Dependencies</strong><span data-line="8;portage.md::418"></span>
+<li data-line="8;portage.md:405">
+<p data-line="8;portage.md:405"><span data-line="8;portage.md:405"></span><strong>Missing Dependencies</strong><span data-line="8;portage.md:405"></span>
 </p>
-<pre class="para-block para-block" data-line="8;portage.md:420"><code>emerge: there are no ebuilds to satisfy &quot;&gt;=sys-devel/gcc-3.4.2-r4&quot;.
+<pre class="para-block pre-indented" data-line="8;portage.md:407"><code>emerge: there are no ebuilds to satisfy &quot;&gt;=sys-devel/gcc-3.4.2-r4&quot;.
 
 !!! Problem with ebuild sys-devel/gcc-3.4.2-r2
 !!! Possibly a DEPEND/*DEPEND problem. 
        </code></pre>
-<p data-line="8;portage.md:426"><span data-line="8;portage.md::426"></span>Though rarely, the application you are trying to install may depend
+<p data-line="8;portage.md:413"><span data-line="8;portage.md:413"></span>Though rarely, the application you are trying to install may depend
 on another package that is not yet available for your system. Unless
 you are mixing branches (categories of the Portage Tree), this
 should not occur and, as such, is a bug that you should report if it
 </p>
-<p data-line="8;portage.md:431"><span data-line="8;portage.md::431"></span>hasn<span data-line="8;portage.md::431"></span>&#39;<span data-line="8;portage.md::431"></span>t been already. There<span data-line="8;portage.md::431"></span>&#39;<span data-line="8;portage.md::431"></span>s not much else you can do.
+<p data-line="8;portage.md:418"><span data-line="8;portage.md:418"></span>hasn<span data-line="8;portage.md:418"></span>&#39;<span data-line="8;portage.md:418"></span>t been already. There<span data-line="8;portage.md:418"></span>&#39;<span data-line="8;portage.md:418"></span>s not much else you can do.
 </p></li>
-<li data-line="8;portage.md:433">
-<p data-line="8;portage.md:433"><span data-line="8;portage.md::433"></span><strong>Circular Dependencies</strong><span data-line="8;portage.md::433"></span>
+<li data-line="8;portage.md:420">
+<p data-line="8;portage.md:420"><span data-line="8;portage.md:420"></span><strong>Circular Dependencies</strong><span data-line="8;portage.md:420"></span>
 </p>
-<pre class="para-block para-block" data-line="8;portage.md:435"><code>!!! Error: circular dependencies: 
+<pre class="para-block pre-indented" data-line="8;portage.md:422"><code>!!! Error: circular dependencies: 
 
 ebuild / net-print/cups-1.1.15-r2 depends on ebuild / 
 app-text/ghostscript-7.05.3-r1
 ebuild / app-text/ghostscript-7.05.3-r1 depends on ebuild / 
 net-print/cups-1.1.15-r2 </code></pre>
-<p data-line="8;portage.md:442"><span data-line="8;portage.md::442"></span>Circular dependencies occur when two or more packages you want to
+<p data-line="8;portage.md:429"><span data-line="8;portage.md:429"></span>Circular dependencies occur when two or more packages you want to
 install depend on each other and can therefore not be installed.
 This is most likely a bug in the Portage tree and, as such, you
 should resync after a while and try again. Circular dependencies can
 often be avoided by temporarily disabling USE flags that trigger
 optional dependencies.
 </p>
-<p data-line="8;portage.md:449"><span data-line="8;portage.md::449"></span>You can also check and see if a bug has been filed and, if
+<p data-line="8;portage.md:436"><span data-line="8;portage.md:436"></span>You can also check and see if a bug has been filed and, if
 not, report the problem.
 </p></li></ul>
 
-<p data-line="8;portage.md:452"><span data-line="8;portage.md::452"></span><em>For more error categories and examples, visit:</em><span data-line="8;portage.md::452"></span>
+<p data-line="8;portage.md:439"><span data-line="8;portage.md:439"></span><em>For more error categories and examples, visit:</em><span data-line="8;portage.md:439"></span>
 </p>
-<p class="indent" data-line="8;portage.md:454"><span data-line="8;portage.md::454"></span>http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2<span data-line="8;portage.md::454"></span>&amp;<span data-line="8;portage.md::454"></span>chap=1<span data-line="8;portage.md::454"></span>#<span data-line="8;portage.md::454"></span>doc<span data-line="8;portage.md::454"></span>_<span data-line="8;portage.md::454"></span>chap5
-</p><h3 id="sidenote--use-flags"  data-line="8;portage.md:456" ><span data-line="8;portage.md::456"></span>Sidenote: USE flags</h3>
-<pre class="para-block para-block" data-line="8;portage.md:458"><code>USE flags are keywords that define the support and dependency info.
+<p class="indent" data-line="8;portage.md:441"><span data-line="8;portage.md:441"></span>http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2<span data-line="8;portage.md:441"></span>&amp;<span data-line="8;portage.md:441"></span>chap=1<span data-line="8;portage.md:441"></span>#<span data-line="8;portage.md:441"></span>doc<span data-line="8;portage.md:441"></span>_<span data-line="8;portage.md:441"></span>chap5
+</p><h3 id="sec-sidenote--use-flags"  data-line="8;portage.md:443"  style="bookmark:Sidenote: USE flags"><span data-line="8;portage.md:443"></span>Sidenote: USE flags</h3>
+<pre class="para-block pre-indented" data-line="8;portage.md:445"><code>USE flags are keywords that define the support and dependency info.
 By defining a USE flag, you let portage know to install using
 support for USE flag.
 
@@ -529,12 +1028,58 @@ The order of priorities for USE flags from lowest to highest is:
 
 3.  user defined USE flags in package.use
 
-4.  environmental variables (temporary USE flags)</code></pre><h2 id="resources"  data-line="8;portage.md:488" ><span data-line="8;portage.md::488"></span>Resources</h2>
-<p data-line="8;portage.md:490"><span data-line="8;portage.md::490"></span>&#8220;Gentoo Cheat Sheet&#8221;<span data-line="8;portage.md::490"></span> http://wiki.gentoo.org/wiki/Gentoo<span data-line="8;portage.md::490"></span>_<span data-line="8;portage.md::490"></span>Cheat<span data-line="8;portage.md::490"></span>_<span data-line="8;portage.md::490"></span>Sheet
+4.  environmental variables (temporary USE flags)</code></pre><h2 id="sec-bonus-tasks"  data-line="8;portage.md:475"  style="bookmark:Bonus tasks"><span data-line="8;portage.md:475"></span>Bonus tasks</h2>
+<p data-line="8;portage.md:477"><span data-line="8;portage.md:477"></span>The <span data-line="8;portage.md:477"></span><code class="code code1">cowsay</code><span data-line="8;portage.md:477"></span> program has lots of options. Learn about them by running what is
+perhaps the best UNIX command:
 </p>
-<p class="indent" data-line="8;portage.md:492"><span data-line="8;portage.md::492"></span>&#8220;A Portage Introduction.&#8221;<span data-line="8;portage.md::492"></span> Vermeulen, Sven et.al.<span data-line="8;portage.md::492"></span><em>Gentoo Linux
-Documentation.</em><span data-line="8;portage.md::493"></span> gentoo linux. 1 June 2014. Web. Tues 1 July 2014.
-http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2<span data-line="8;portage.md::494"></span>&amp;<span data-line="8;portage.md::494"></span>chap=1<span data-line="8;portage.md::494"></span>#<span data-line="8;portage.md::494"></span>doc<span data-line="8;portage.md::494"></span>_<span data-line="8;portage.md::494"></span>chap5
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;portage.md:479" data-line-code="8;portage.md:480"><code data-line="8;portage.md:480">man cowsay</code></pre>
+<p class="para-continue" data-line="8;portage.md:483"><span data-line="8;portage.md:483"></span>When <span data-line="8;portage.md:483"></span><code class="code code1">fortune-mod-all</code><span data-line="8;portage.md:483"></span> is done installing, let<span data-line="8;portage.md:483"></span>&#39;<span data-line="8;portage.md:483"></span>s have some fun:
 </p>
+<ul class="list-dash compact" data-line="8;portage.md:485">
+<li data-line="8;portage.md:485"><span data-line="8;portage.md:485"></span>Run <span data-line="8;portage.md:485"></span><code class="code code1">fortune</code><span data-line="8;portage.md:485"></span> to get a pithy message
+</li>
+<li data-line="8;portage.md:486"><span data-line="8;portage.md:486"></span>Run <span data-line="8;portage.md:486"></span><code class="code code1">fortune hitchhiker</code><span data-line="8;portage.md:486"></span> to get another pithy message
+</li>
+<li data-line="8;portage.md:487"><span data-line="8;portage.md:487"></span>Make a cow say a fortune
+</li></ul>
+
+<p data-line="8;portage.md:489"><span data-line="8;portage.md:489"></span>Are there some other programs you<span data-line="8;portage.md:489"></span>&#39;<span data-line="8;portage.md:489"></span>d like to install on your system? Go for it!
+Some possibilities include:
+   <span data-line="8;portage.md:491"></span><em> <code class="code code1">eix</code>, a package that lets you search for other packages
+   </em><span data-line="8;portage.md:492"></span>&nbsp;<a href="http://wiki.gentoo.org/wiki/Screen"><code class="code code1">app-misc/screen</code></a><span data-line="8;portage.md:492"></span>: a program that
+   lets you run multiple shells in the same terminal. This program can be
+   helpful for running <span data-line="8;portage.md:494"></span><em>other</em><span data-line="8;portage.md:494"></span> programs that take a long time (e.g., <span data-line="8;portage.md:494"></span><code class="code code1">emerge</code><span data-line="8;portage.md:494"></span>),
+   even if you need to log out of your computer. Check out this 
+<span data-line="8;portage.md:496"></span>&nbsp;<a href="http://www.rackaid.com/blog/linux-screen-tutorial-and-how-to/">helpful tutorial</a><span data-line="8;portage.md:496"></span>
+   (although, the installation commands are not correct; gentoo uses <span data-line="8;portage.md:497"></span><code class="code code1">portage</code><span data-line="8;portage.md:497"></span>,
+   not <span data-line="8;portage.md:498"></span><code class="code code1">yum</code><span data-line="8;portage.md:498"></span>)
+   <span data-line="8;portage.md:499"></span><em> <code class="code code1">emacs</code>, you know, if you&#39;re not a vim person
+</em><span data-line="8;portage.md:500"></span>Note:<span data-line="8;portage.md:500"></span>*<span data-line="8;portage.md:500"></span> some of these packages may take time to install. It<span data-line="8;portage.md:500"></span>&#39;<span data-line="8;portage.md:500"></span>s best to install
+them when you<span data-line="8;portage.md:501"></span>&#39;<span data-line="8;portage.md:501"></span>re sure you can leave a terminal session open for awhile (or,
+better yet, use <span data-line="8;portage.md:502"></span><code class="code code1">screen</code><span data-line="8;portage.md:502"></span>!)
+</p><h2 id="sec-resources"  data-line="8;portage.md:504"  style="bookmark:Resources"><span data-line="8;portage.md:504"></span>Resources</h2>
+<p data-line="8;portage.md:506"><span data-line="8;portage.md:506"></span>&#8220;Gentoo Cheat Sheet&#8221;<span data-line="8;portage.md:506"></span>&nbsp;<a href="http://wiki.gentoo.org/wiki/Gentoo_Cheat_Sheet">http://wiki.gentoo.org/wiki/Gentoo_Cheat_Sheet</a><span data-line="8;portage.md:506"></span>
+</p>
+<p class="indent" data-line="8;portage.md:508"><span data-line="8;portage.md:508"></span>&#8220;A Portage Introduction.&#8221;<span data-line="8;portage.md:508"></span> Vermeulen, Sven et.al.<span data-line="8;portage.md:508"></span><em>Gentoo Linux
+Documentation.</em><span data-line="8;portage.md:509"></span> gentoo linux. 1 June 2014. Web. Tues 1 July 2014.
+<span data-line="8;portage.md:510"></span><a href="http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&amp;chap=1#doc_chap5">http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&amp;chap=1#doc_chap5
+</a><span data-line="8;portage.md:511"></span>
+</p><!--
+   - When you start a new bash shell (including when you log in), bash treats 
+   the file `~/.bashrc` as a script and runs it. Modify `~/.bashrc` so that a
+   cow says a pithy quote every time you log in (or start a new shell).
+   - You can also make it so that a cow says a pithy quote when *any* user logs
+   on to your system. To do so, add the appropriate command to the bottom of the
+   file `/etc/profile`. Ask a friend who has an account on your system to log in
+   and verify that they're greeted by a cow.
+-->
+
+
+
+
+
+
+<div class="madokologo block" data-line="11" style="text-align:right;font-size:xx-small;margin-top:4em"><span data-line="12"></span>Created with&nbsp;<a href="https://www.madoko.net">Madoko.net</a>.</div>
 </body>
+
 </html>

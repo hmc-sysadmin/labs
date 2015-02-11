@@ -145,25 +145,12 @@ Check out all those dependencies! Each one is a fortune file.
 
   - How would you find the list of packages that depend on *perl*? 
   (Hint: man pages are your friends!)
-  - Install the *fortune-mod-all* package.
+  - Install the `fortune-mod-all` package.
 
-Because *fortune-mod-all* has so many dependencies, you might want to do a
+Because `fortune-mod-all` has so many dependencies, you might want to do a
 little reading while it's installing... All the subsequent sections are bonus:
 more information that may help you when administering your system. Feel free to
 read through them or read up more on portage online.
-
-When *fortune-mod-all* is done installing, let's have some fun:
-
-   - Run `fortune` to get a pithy message
-   - Run `fortune hitchhiker` to get another pithy message
-   - Make a cow say a fortune
-   - When you start a new bash shell (including when you log in), bash treats 
-   the file `~/.bashrc` as a script and runs it. Modify `~/.bashrc` so that a
-   cow says a pithy quote every time you log in (or start a new shell).
-   - You can also make it so that a cow says a pithy quote when *any* user logs
-   on to your system. To do so, add the appropriate command to the bottom of the
-   file `/etc/profile`. Ask a friend who has an account on your system to log in
-   and verify that they're greeted by a cow.
 
 ## Updating the Portage Tree and Your System
 
@@ -485,13 +472,52 @@ http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&chap=1#doc_chap5
     4.  environmental variables (temporary USE flags)
 
 
+## Bonus tasks
+
+The `cowsay` program has lots of options. Learn about them by running what is
+perhaps the best UNIX command:
+```
+man cowsay
+```
+
+When `fortune-mod-all` is done installing, let's have some fun:
+
+   - Run `fortune` to get a pithy message
+   - Run `fortune hitchhiker` to get another pithy message
+   - Make a cow say a fortune
+
+Are there some other programs you'd like to install on your system? Go for it!
+Some possibilities include:
+   * `eix`, a package that lets you search for other packages
+   * [`app-misc/screen`](http://wiki.gentoo.org/wiki/Screen): a program that
+   lets you run multiple shells in the same terminal. This program can be
+   helpful for running *other* programs that take a long time (e.g., `emerge`),
+   even if you need to log out of your computer. Check out this 
+   [helpful tutorial](http://www.rackaid.com/blog/linux-screen-tutorial-and-how-to/)
+   (although, the installation commands are not correct; gentoo uses `portage`,
+   not `yum`)
+   * `emacs`, you know, if you're not a vim person
+*Note:* some of these packages may take time to install. It's best to install
+them when you're sure you can leave a terminal session open for awhile (or,
+better yet, use `screen`!)
+
 ## Resources
 
-"Gentoo Cheat Sheet" http://wiki.gentoo.org/wiki/Gentoo_Cheat_Sheet
+"Gentoo Cheat Sheet" [http://wiki.gentoo.org/wiki/Gentoo_Cheat_Sheet](http://wiki.gentoo.org/wiki/Gentoo_Cheat_Sheet)
 
 "A Portage Introduction." Vermeulen, Sven et.al.*Gentoo Linux
 Documentation.* gentoo linux. 1 June 2014. Web. Tues 1 July 2014.
-http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&chap=1#doc_chap5
+[http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&chap=1#doc_chap5
+](http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&chap=1#doc_chap5)
 
+<!--
+   - When you start a new bash shell (including when you log in), bash treats 
+   the file `~/.bashrc` as a script and runs it. Modify `~/.bashrc` so that a
+   cow says a pithy quote every time you log in (or start a new shell).
+   - You can also make it so that a cow says a pithy quote when *any* user logs
+   on to your system. To do so, add the appropriate command to the bottom of the
+   file `/etc/profile`. Ask a friend who has an account on your system to log in
+   and verify that they're greeted by a cow.
+-->
 
 
