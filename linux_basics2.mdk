@@ -355,12 +355,12 @@ can keep a copy of the original for reference. Call the copy `treasure.0`
 
 15. Another useful regular expression will append two lines together:
 
-        sed 'N;s/\n/ /' file.txt > treasure.
+        sed 'N;s/\n/ /' input.txt > output.txt
 
     This command is essentially replacing every newline character with a
     space. The N at the beginning of the regular expression will append
     the current line and the next line into the space of the pattern.
-    Run the above command once on the treasureisland.txt file.
+    Run the above command once on your current treasure file.
 
 16. Some whitespace snuck into the file. Replace all instances of the
     string `local/ ` with the string `local/` using the global

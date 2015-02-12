@@ -888,11 +888,11 @@ step14check.txt.
 <li data-line="356">
 <p data-line="356"><span data-line="356"></span>Another useful regular expression will append two lines together:
 </p>
-<pre class="para-block pre-indented" data-line="358"><code>sed &#39;N;s/\n/ /&#39; file.txt &gt; treasure.</code></pre>
+<pre class="para-block pre-indented" data-line="358"><code>sed &#39;N;s/\n/ /&#39; input.txt &gt; output.txt</code></pre>
 <p data-line="360"><span data-line="360"></span>This command is essentially replacing every newline character with a
 space. The N at the beginning of the regular expression will append
 the current line and the next line into the space of the pattern.
-Run the above command once on the treasureisland.txt file.
+Run the above command once on your current treasure file.
 </p></li>
 <li data-line="365">
 <p data-line="365"><span data-line="365"></span>Some whitespace snuck into the file. Replace all instances of the
