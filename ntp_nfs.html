@@ -2,13 +2,531 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <meta name="generator" content="Madoko, version 0.6.3-beta" />
+  <meta name="generator" content="Madoko, version 0.8.2-beta" />
   <meta name="viewport" content="initial-scale=1.0" />
   <meta name="author" content="Annie Christy" />
   <title>Network Time Protocol (NTP) and Network File System (NFS)</title>
-  <link rel="stylesheet" type="text/css" href="madoko.css">
-  <link rel="stylesheet" type="text/css" href="./writeup.css">
-  <script type="text/x-mathjax-config">
+  <style  class="link">
+/* ---------------------------------------------------
+   Various settings to display madoko elements correctly.
+   For example, lines in tables or a table of contents.
+
+   All rules use specific madoko classes and never just
+   a generic element. This means one can safely include
+   this CSS into any web page without affecting non-madoko
+   content.
+----------------------------------------------------*/
+
+/* The table of contents */
+.madoko .toc>.tocblock .tocblock .tocblock {
+  margin-left: 2.5em;
+}
+
+.madoko .toc>.tocblock .tocblock {
+  margin-left: 1.7em;
+}
+
+.madoko .toc>.tocblock>.tocitem {
+  font-weight: bold;
+}
+
+.madoko .toc {
+  margin-top: 1em;
+}
+
+/* Paragraphs */
+.madoko p.para-continue {
+  margin-bottom: 0pt;
+}
+
+.madoko .para-block+p {
+  margin-top: 0pt;
+}
+
+.madoko ul.para-block, .madoko ol.para-block {
+  margin-top: 0pt;
+  margin-bottom: 0pt;
+}
+
+.madoko ul.para-end, .madoko ol.para-end {
+  margin-bottom: 1em;
+}
+
+.madoko dl {
+  margin-left: 0em;
+}
+
+/* Local page links do not get an underline unless hovering */
+.madoko a.localref {
+  text-decoration: none;
+}
+.madoko a.localref:hover {
+  text-decoration: underline;
+}
+
+/* Footnotes */
+.madoko .footnotes {
+  font-size: smaller;
+  margin-top: 2em;
+}
+
+.madoko .footnotes hr {
+  width: 50%;
+  text-align: left;
+}
+
+.madoko .footnote { 
+  margin-left: 1em;
+}
+.madoko .footnote-before {
+  margin-left: -1em;
+  width: 1em;
+  display: inline-block;
+}
+
+/* Abstract */
+.madoko .abstract>p:first-child:before {
+  content: "Abstract. ";
+  font-weight: bold;
+}
+
+.madoko .abstract {
+  margin-left: 2.7em;
+  margin-right: 2.7em;
+  font-size: small;
+}
+
+
+/* Alignment */
+.madoko .align-center, .madoko .align-center>p {
+  text-align: center !important;
+}
+
+.madoko .align-center pre {
+  text-align: left;
+}
+
+.madoko .align-center>* {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.madoko .align-left, .madoko .align-left>p {
+  text-align: left !important;
+}
+
+.madoko .align-left>* {
+  margin-left: 0pt !important;
+  margin-right: auto !important;
+}
+
+.madoko .align-right, .madoko .align-right>p {
+  text-align: right !important;
+}
+
+.madoko .align-right>* {
+  margin-left: auto !important;
+  margin-right: 0pt !important;
+}
+
+.madoko .align-center>table,
+.madoko .align-left>table,
+.madoko .align-right>table {
+  text-align: left !important;
+}
+
+
+/* Equations, Figure's etc. */
+.madoko .equation-before {
+  float: right;
+}
+
+
+/* Bibliography */
+.madoko .bibitem {
+  font-size: smaller;
+}
+
+.madoko .bib-numeric .bibitem {
+  margin-left: 3em;
+  text-indent: -3em;
+}
+
+.madoko .bibitem-before {
+  display: none;
+}
+
+.madoko .bib-numeric .bibitem-before {
+  display: inline-block;
+  width: 3em;
+  text-align: right;
+}
+
+.madoko .bibliography {
+}
+
+.madoko .bibsearch {
+  font-size: x-small;
+  text-decoration:none;
+  color: black;
+  font-family: "Segoe UI Symbol", Symbola;
+}
+
+/* General */
+.madoko .block, .madoko .figure, .madoko .bibitem, .madoko .equation {
+  margin-top: 1ex;
+  margin-bottom: 1ex;
+}
+
+.madoko .figure {
+  padding: 0.5em;
+  margin-left: 0pt;
+  margin-right: 0pt;
+}
+
+.madoko .hidden {
+  display: none;
+}
+
+.madoko .invisible {
+  visibility: hidden;
+}
+
+.madoko.preview .invisible {
+  visibility: visible;
+  opacity: 0.5;
+}
+.madoko.preview[data-view=full] .invisible {
+  visibility: hidden;
+}
+
+.madoko code.code, .madoko span.code {
+  white-space: pre-wrap;
+}
+
+.madoko hr, hr.madoko {
+  border: none;
+  border-bottom: black solid 1px;
+  margin-bottom: 0.5ex;
+}
+
+.madoko .framed>*:first-child {
+  margin-top: 0pt;
+}
+.madoko .framed>*:last-child {
+  margin-bottom: 0pt;
+}
+
+
+/* Title, authors */
+.madoko .title {
+  font-size: xx-large;
+  font-weight: bold;
+  margin-bottom: 1ex;
+}
+
+.madoko .subtitle {
+  font-size: x-large;
+  margin-bottom: 1ex;
+  margin-top: -1ex;
+}
+
+.madoko .titleblock>* {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.madoko .titleblock table {
+  width: 80%;
+}
+
+.madoko .authorblock .author {
+  font-size: large;
+}
+
+.madoko .titlenote {
+  margin-top: -0.5ex;
+  margin-bottom: 1.5ex;
+}
+
+/* Lists */
+
+.madoko ul.list-star {
+  list-style-type: disc;
+}
+
+.madoko ul.list-dash {
+    list-style-type: none !important;
+}
+
+.madoko ul.list-dash > li:before {
+    content: "\2013"; 
+    position: absolute;
+    margin-left: -1em; 
+}
+
+.madoko ul.list-plus {
+  list-style-type: square;
+}
+
+/* Tables */
+.madoko table.madoko {
+  border-collapse: collapse;
+}
+.madoko td, .madoko th {
+  padding: 0ex 0.5ex;
+  margin: 0pt;
+  vertical-align: top;
+}
+
+.madoko .cell-border-left {
+  border-left: 1px solid black;
+}
+.madoko .cell-border-right {
+  border-right: 1px solid black;
+}
+
+
+.madoko thead>tr:first-child>.cell-line,
+.madoko tbody:first-child>tr:first-child>.cell-line {
+  border-top: 1px solid black;
+  border-bottom: none;
+}
+
+.madoko .cell-line, .madoko .cell-double-line {
+  border-bottom: 1px solid black;
+  border-top: none;
+}
+
+.madoko .cell-double-line {
+  border-top: 1px solid black;
+  padding-top: 1.5px !important;
+}
+
+
+/* Math Pre */
+.madoko .input-mathpre .MathJax_Display, .madoko .input-mathpre .math-display {
+  text-align: left !important;
+}
+
+.madoko div.input-mathpre {
+  margin-top: 1.5ex;
+  margin-bottom: 1ex;
+}
+
+.madoko .math-rendering {
+  color: gray;
+}
+
+
+/*---------------------------------------------------------------------------
+  Default style for syntax highlighting
+---------------------------------------------------------------------------*/
+
+.highlighted                        { color: black; }
+.highlighted .token.identifier      { }
+.highlighted .token.operators       { }
+.highlighted .token.keyword         { color: blue }
+.highlighted .token.string          { color: maroon } 
+.highlighted .token.string.escape   { color: gray }
+.highlighted .token.comment         { color: darkgreen }
+.highlighted .token.comment.doc     { font-style: normal }
+.highlighted .token.constant        { color: purple; }
+.highlighted .token.entity          {  }
+.highlighted .token.tag             { color: blue }
+.highlighted .token.info-token      { color: black }
+.highlighted .token.warn-token      { color: black }
+.highlighted .token.error-token     { color: darkred }
+.highlighted .token.debug-token     { color: gray }
+.highlighted .token.regexp          { color: maroon }
+.highlighted .token.attribute.name  { color: navy }
+.highlighted .token.attribute.value { color: maroon }
+.highlighted .token.constructor     { color: purple }
+.highlighted .token.namespace       { color: navy }
+.highlighted .token.header          { color: navy }
+.highlighted .token.type            { color: teal } 
+.highlighted .token.type.delimiter  { color: teal; } 
+.highlighted .token.predefined      { color: navy }
+.highlighted .token.invalid         { border-bottom: red dotted 1px }
+.highlighted .token.code            { color: maroon }
+.highlighted .token.code.keyword    { color: navy }
+.highlighted .token.typevar         { font-style: italic; }
+
+.highlighted .token.delimiter   {  } /* .[curly,square,parenthesis,angle,array,bracket] */
+.highlighted .token.number      {  }    /* .[hex,octal,binary,float] */
+.highlighted .token.variable    {  }  /* .[name,value]  */
+.highlighted .token.meta        { color: navy }      /* .[content] */
+
+.highlighted .token.bold            { font-weight: bold; }
+.highlighted .token.italic          { font-style: italic; }
+
+
+/* Pretty formatting of code */
+.madoko pre.pretty, .madoko code.pretty { 
+  font-family: Cambria,Times,Georgia,serif;
+  font-size: 100%;
+}
+
+.madoko .pretty table {
+  border-collapse: collapse;
+}
+.madoko .pretty td {
+  padding: 0em;
+}
+.madoko .pretty td.empty {
+  min-width: 1.5ex;
+}
+.madoko .pretty td.expander {
+  width: 100em;
+}
+.madoko .pretty .token.identifier         { font-style: italic }
+.madoko .pretty .token.constructor        { font-style: italic }
+
+
+/* ---------------------------------------------------
+   Styling for full documents
+----------------------------------------------------*/
+body.madoko, .madoko-body {
+  font-family: Cambria,"Times New Roman","Liberation Serif","Times",serif;
+  -webkit-text-size-adjust: 100%; /* so math displays well on mobile devices */
+}
+
+body.madoko, .madoko-body, body.madoko.preview[data-view=full] {
+  padding: 1em 16% 1em 12%;
+}
+
+body.madoko.preview {
+  padding: 0em 2em 0em 2em;
+}
+
+.madoko p,
+.madoko li {
+  text-align: justify;
+}
+
+/* style headings nicer, especially h5 and h6 */
+.madoko h1, .madoko h2, .madoko h3, .madoko h4 { 
+  margin-top: 1.22em; 
+  margin-bottom: 1ex;
+}
+.madoko h1+p, .madoko h2+p, .madoko h3+p, .madoko h4+p, .madoko h5+p  { 
+  margin-top: 1ex;    
+}
+.madoko h5, .madoko h6 { 
+  margin-top: 1ex;
+  font-size: 1em;
+}
+.madoko h5 { 
+  margin-bottom: 0.5ex;
+}
+.madoko h5 + p {
+  margin-top: 0.5ex;
+}
+.madoko h6 { 
+  margin-bottom: 0pt;
+}
+.madoko h6 + p {
+  margin-top: 0pt;
+}
+
+
+/* Fix monospace display (see http://code.stephenmorley.org/html-and-css/fixing-browsers-broken-monospace-font-handling/) */
+.madoko pre, .madoko code, .madoko kbd, .madoko samp, .madoko tt, .madoko .monospace, .madoko .token.indent, .madoko .reveal pre, .madoko .reveal code, .madoko .email {
+  font-family: Consolas,"Andale Mono WT","Andale Mono",Lucida Console,Monaco,monospace,monospace;
+  font-size: 0.85em;
+}
+.madoko pre code, .madoko .token.indent {
+  font-size: 0.95em;
+}
+
+.madoko pre code {
+  font-family: inherit !important;
+}
+
+/* Code prettify */
+.madoko ol.linenums li {
+  background-color: white;
+  list-style-type: decimal;
+}
+
+/* Merging */
+.madoko .remote {
+  background-color: #F0FFF0;
+}
+
+/* ---------------------------------------------------
+   Print settings
+----------------------------------------------------*/
+
+@media print {
+  body.madoko, .madoko-body {
+    font-size: 10pt;
+  }
+  @page {
+    margin: 1in 1.5in;
+  }
+}
+
+/* ---------------------------------------------------
+   Mobile device settings
+----------------------------------------------------*/
+
+@media only screen and (max-device-width:1024px) {
+  body.madoko, .madoko-body {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+}
+
+  </style>
+  <style  class="link">
+@media print {
+  @page {
+     margin: 0.5in;
+  }
+
+  h1, h2, h3 { page-break-after: avoid }
+  li {page-break-inside: avoid;}
+
+  a.footnote-backref {
+    display: none;
+  }
+
+  pre {
+    background-color: #cccccc;
+    border: 1px solid #cccccc;
+    padding: 10px;
+    font-size: small;
+  }
+
+}
+
+pre {
+  background-color: #eeeeff;
+  border: 1px solid #cccccc;
+  padding: 10px;
+}
+
+pre code {
+  border: none;
+  padding: none;
+  background-color: transparent;
+}
+
+code {
+  border: 1px solid #dddddd;
+  background-color: #f8f8f8;
+  padding: 1px;
+}
+
+div .figure {
+  width: 40%; 
+  margin: auto
+}
+
+  </style>
+<script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       tex2jax: {inlineMath: [['$','$']]},
        TeX: { 
@@ -22,97 +540,114 @@
       MathJax.InputJax.TeX.Definitions.environment['mdMathprearray'] = ['AMSarray',null,null,null,'l','0em','0em'];
     });
   </script>
-  <script type="text/javascript"
+  <script type="text/javascript" class="preview"
     src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
   </script>
 
 </head>
 <body class="madoko">
 
-<h1 id="network-time-protocol-ntp-and-network-file-system-nfs"  data-line="8;ntp_nfs.md:1" ><span data-line="8;ntp_nfs.md::1"></span>Network Time Protocol (NTP) and Network File System (NFS)</h1>
-<p data-line="8;ntp_nfs.md:3"><span data-line="8;ntp_nfs.md::3"></span><em>Originally created by Annie Christy</em><span data-line="8;ntp_nfs.md::3"></span>
+<h1 id="sec-network-time-protocol-ntp-and-network-file-system-nfs"  data-line="8;ntp_nfs.md:1"  style="bookmark:Network Time Protocol (NTP) and Network File System (NFS)"><span data-line="8;ntp_nfs.md:1"></span>Network Time Protocol (NTP) and Network File System (NFS)</h1>
+<p data-line="8;ntp_nfs.md:3"><span data-line="8;ntp_nfs.md:3"></span><em>Originally created by Annie Christy</em><span data-line="8;ntp_nfs.md:3"></span>
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:5"><span data-line="8;ntp_nfs.md::5"></span>Note: Most of the commands in this lab need to be run as the superuser,
+<p class="indent" data-line="8;ntp_nfs.md:5"><span data-line="8;ntp_nfs.md:5"></span>Note: Most of the commands in this lab need to be run as the superuser,
 so consider running them as root.
-</p><h2 id="network-time-protocol-ntp"  data-line="8;ntp_nfs.md:8" ><span data-line="8;ntp_nfs.md::8"></span>Network Time Protocol (NTP)</h2><h3 id="what-is-ntp"  data-line="8;ntp_nfs.md:10" ><span data-line="8;ntp_nfs.md::10"></span>What is NTP?</h3>
-<p data-line="8;ntp_nfs.md:13"><span data-line="8;ntp_nfs.md::13"></span>NTP is an internet protocol that uses packet-switched, variable-latency
+</p><h2 id="sec-network-time-protocol-ntp"  data-line="8;ntp_nfs.md:8"  style="bookmark:Network Time Protocol (NTP)"><span data-line="8;ntp_nfs.md:8"></span>Network Time Protocol (NTP)</h2><h3 id="sec-what-is-ntp"  data-line="8;ntp_nfs.md:10"  style="bookmark:What is NTP?"><span data-line="8;ntp_nfs.md:10"></span>What is NTP?</h3>
+<p data-line="8;ntp_nfs.md:13"><span data-line="8;ntp_nfs.md:13"></span>NTP is an internet protocol that uses packet-switched, variable-latency
 data networks to synchronize system clocks. The purpose of NTP is to
 synchronize the clocks of all connected computers within a few
 milliseconds of Coordinated Universal Time, which is also known as UTC.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:18"><span data-line="8;ntp_nfs.md::18"></span>NTP clocks are organized into strata, where stratum 0 is made up of
+<p class="indent" data-line="8;ntp_nfs.md:18"><span data-line="8;ntp_nfs.md:18"></span>NTP clocks are organized into strata, where stratum 0 is made up of
 extremely precise atomic clocks, GPS clocks, or radio clocks. Stratum 1
 is made up of computers that are coordinated with the atomic devices.
 The lower strata (2 through 15) form a tree of synchronized servers that
 communicate with one another to achieve synchronization.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:24"><span data-line="8;ntp_nfs.md::24"></span>We are interested in this protocol because some of the services we want
+<p class="indent" data-line="8;ntp_nfs.md:24"><span data-line="8;ntp_nfs.md:24"></span>We are interested in this protocol because some of the services we want
 to run depend on servers and clients that have exactly synchronized
-time. Specifically, NFS will complain if the client and server clocks
-are not synchronized.
+time. Specifically, we<span data-line="8;ntp_nfs.md:26"></span>&#39;<span data-line="8;ntp_nfs.md:26"></span>re going to set up a networked file system (NFS) that
+requires the client and server clocks to be synchronized.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:29"><span data-line="8;ntp_nfs.md::29"></span>For more information, visit
-<span data-line="8;ntp_nfs.md::30"></span><a href="http://en.wikipedia.org/wiki/Network_Time_Protocol">http://en.wikipedia.org/wiki/Network_Time_Protocol</a><span data-line="8;ntp_nfs.md::30"></span>
-</p><h3 id="enabling-ntp"  data-line="8;ntp_nfs.md:32" ><span data-line="8;ntp_nfs.md::32"></span>Enabling NTP</h3>
-<p data-line="8;ntp_nfs.md:35"><span data-line="8;ntp_nfs.md::35"></span>The class server is already running NTP. Your goal is to use NTP to sync
-your system clock to the server’s clock.
+<p class="indent" data-line="8;ntp_nfs.md:29"><span data-line="8;ntp_nfs.md:29"></span>For more information, visit
+<span data-line="8;ntp_nfs.md:30"></span><a href="http://en.wikipedia.org/wiki/Network_Time_Protocol">http://en.wikipedia.org/wiki/Network_Time_Protocol</a><span data-line="8;ntp_nfs.md:30"></span>
+</p><h3 id="sec-enabling-ntp"  data-line="8;ntp_nfs.md:32"  style="bookmark:Enabling NTP"><span data-line="8;ntp_nfs.md:32"></span>Enabling NTP</h3>
+<p data-line="8;ntp_nfs.md:35"><span data-line="8;ntp_nfs.md:35"></span>The class server (<span data-line="8;ntp_nfs.md:35"></span><code class="code code1">crispy.sys.cs.hmc.edu</code><span data-line="8;ntp_nfs.md:35"></span>) is already running NTP. Your goal is 
+to use NTP to sync <span data-line="8;ntp_nfs.md:36"></span><em>your</em><span data-line="8;ntp_nfs.md:36"></span> system<span data-line="8;ntp_nfs.md:36"></span>&#39;<span data-line="8;ntp_nfs.md:36"></span>s clock to the server’s clock.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:38"><span data-line="8;ntp_nfs.md::38"></span>You want to tell your computer to query NFS server for NTP
+<p class="indent" data-line="8;ntp_nfs.md:38"><span data-line="8;ntp_nfs.md:38"></span>You want to tell your computer to query NFS server for NTP
 synchronization. To do this, open the /etc/ntp.conf file and add a line
 directing the NTP implementation to the class server.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:42"><code>sudo vim /etc/ntp.conf</code></pre>
-<p data-line="8;ntp_nfs.md:44"><span data-line="8;ntp_nfs.md::44"></span>Add the following lines to the section whose comments tell you to
-<span data-line="8;ntp_nfs.md::45"></span>&#8220;Name of the servers ntpd should sync with.&#8221;<span data-line="8;ntp_nfs.md::45"></span>
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:42"><code>sudo vim /etc/ntp.conf</code></pre>
+<p data-line="8;ntp_nfs.md:44"><span data-line="8;ntp_nfs.md:44"></span>Add the following lines to the section whose comments tell you to
+<span data-line="8;ntp_nfs.md:45"></span>&#8220;Name of the servers ntpd should sync with.&#8221;<span data-line="8;ntp_nfs.md:45"></span>
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:47"><code>server          crispy.sys.cs.hmc.edu
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:47"><code>server          crispy.sys.cs.hmc.edu
 server          127.127.1.0
 fudge           127.127.1.0          stratum 10</code></pre>
-<p data-line="8;ntp_nfs.md:51"><span data-line="8;ntp_nfs.md::51"></span>The first line instructs ntpd to sync with the class NFS server. The
+<p data-line="8;ntp_nfs.md:51"><span data-line="8;ntp_nfs.md:51"></span>The first line instructs ntpd to sync with the class NFS server. The
 following two lines tell ntpd to synchronize with itself if it loses its
 connection with the class server.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:55"><span data-line="8;ntp_nfs.md::55"></span><em>Aside</em><span data-line="8;ntp_nfs.md::55"></span>: Note the presence of a <span data-line="8;ntp_nfs.md::55"></span><code class="code">driftfile</code><span data-line="8;ntp_nfs.md::55"></span> in <span data-line="8;ntp_nfs.md::55"></span><code class="code">/etc/ntp.conf</code><span data-line="8;ntp_nfs.md::55"></span>. This file is where
+<p class="indent" data-line="8;ntp_nfs.md:55"><span data-line="8;ntp_nfs.md:55"></span><em>Aside</em><span data-line="8;ntp_nfs.md:55"></span>: Note the presence of a <span data-line="8;ntp_nfs.md:55"></span><code class="code code1">driftfile</code><span data-line="8;ntp_nfs.md:55"></span> setting in <span data-line="8;ntp_nfs.md:55"></span><code class="code code1">/etc/ntp.conf</code><span data-line="8;ntp_nfs.md:55"></span>. This file is where
 the machine can store information about the natural time drifts that
 your computer has, so that it can automatically adjust for them.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:59"><span data-line="8;ntp_nfs.md::59"></span>You need to uncomment the bottom line in the file to ensure that other
+<p class="indent" data-line="8;ntp_nfs.md:59"><span data-line="8;ntp_nfs.md:59"></span>You need to uncomment the bottom line in the file to ensure that other
 machines on your network can synchronize with your server, but that they
 cannot configure the server.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:63"><code>restrict 192.168.0.0 mask 255.255.255.0 nomodify nopeer notrap</code></pre>
-<p data-line="8;ntp_nfs.md:65"><span data-line="8;ntp_nfs.md::65"></span>the NTP service has a function called monlist, that is used to query the
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:63"><code>restrict &lt;subnet&gt; mask 255.255.255.0 nomodify nopeer notrap</code></pre>
+<p data-line="8;ntp_nfs.md:65"><span data-line="8;ntp_nfs.md:65"></span>(<span data-line="8;ntp_nfs.md:65"></span><em>Note:</em><span data-line="8;ntp_nfs.md:65"></span> The <span data-line="8;ntp_nfs.md:65"></span><code class="code code1">&lt;subnet&gt;</code><span data-line="8;ntp_nfs.md:65"></span> field is the network for our machines; it will be provided in class.)
+</p>
+<p class="indent" data-line="8;ntp_nfs.md:67"><span data-line="8;ntp_nfs.md:67"></span>The NTP service has a function called monlist, that is used to query the
 server about the hosts that have connected to it. This can be useful if
 you want to learn about your network stats, but we don’t really need it
 and it leaves your machine susceptible to denial-of-service attacks. To
 disable this functionality, add the following line to the bottom of the
 /etc/ntp.conf file:
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:72"><code>disable monitor</code></pre>
-<p data-line="8;ntp_nfs.md:74"><span data-line="8;ntp_nfs.md::74"></span>You can now save and close the file.
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:74"><code>disable monitor</code></pre>
+<p data-line="8;ntp_nfs.md:76"><span data-line="8;ntp_nfs.md:76"></span>You can now save and close the file.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:76"><span data-line="8;ntp_nfs.md::76"></span>To start the NTP service and check that it is running, run the following
+<p class="indent" data-line="8;ntp_nfs.md:78"><span data-line="8;ntp_nfs.md:78"></span>NTP runs as a service. You can see which services are running on your system
+with the command:
+</p>
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:81"><code>rc-status</code></pre>
+<p data-line="8;ntp_nfs.md:83"><span data-line="8;ntp_nfs.md:83"></span>To start the NTP service and check that it is running, run the following
 rc-service commands as root.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:79"><code>rc-service ntp-client start
-
-rc-service ntp-client status</code></pre>
-<p data-line="8;ntp_nfs.md:83"><span data-line="8;ntp_nfs.md::83"></span>Add the service to your default run level so that NTP will start at
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:86"><code>sudo rc-service ntp-client start</code></pre>
+<p data-line="8;ntp_nfs.md:88"><span data-line="8;ntp_nfs.md:88"></span>Verify that the ntp-client service has started.
+</p>
+<p class="indent" data-line="8;ntp_nfs.md:90"><span data-line="8;ntp_nfs.md:90"></span>Add the service to your <span data-line="8;ntp_nfs.md:90"></span>&#8220;default run level&#8221;<span data-line="8;ntp_nfs.md:90"></span> so that NTP will start at
 boot.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:86"><code>rc-update add ntp-client default</code></pre>
-<p data-line="8;ntp_nfs.md:88"><span data-line="8;ntp_nfs.md::88"></span>To start ntpd, run the following line.
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:93"><code>sudo rc-update add ntp-client default</code></pre>
+<p data-line="8;ntp_nfs.md:95"><span data-line="8;ntp_nfs.md:95"></span>To verify that the ntp client runs every time the machine restarts, restart your
+machine!
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:90"><code>/etc/init.d/ntpd start</code></pre>
-<p data-line="8;ntp_nfs.md:92"><span data-line="8;ntp_nfs.md::92"></span>Then, add ntpd to your default run level.
-</p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:94"><code>rc-update add ntpd default</code></pre>
-<p data-line="8;ntp_nfs.md:96"><span data-line="8;ntp_nfs.md::96"></span>If you would like to monitor the status of your server.
-</p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:98"><code>rc-status</code></pre>
-<p data-line="8;ntp_nfs.md:100"><span data-line="8;ntp_nfs.md::100"></span>For more information, visit <span data-line="8;ntp_nfs.md::100"></span><a href="http://wiki.gentoo.org/wiki/Ntp">http://wiki.gentoo.org/wiki/Ntp</a><span data-line="8;ntp_nfs.md::100"></span>
-</p><h2 id="network-file-system-nfs"  data-line="8;ntp_nfs.md:102" ><span data-line="8;ntp_nfs.md::102"></span>Network File System (NFS)</h2><h3 id="what-is-nfs"  data-line="8;ntp_nfs.md:104" ><span data-line="8;ntp_nfs.md::104"></span>What is NFS?</h3>
-<p data-line="8;ntp_nfs.md:107"><span data-line="8;ntp_nfs.md::107"></span>In 1984, Sun Microsystems developed a distributed file system protocol
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:98"><code>sudo reboot</code></pre>
+<p data-line="8;ntp_nfs.md:100"><span data-line="8;ntp_nfs.md:100"></span>Once the machine is back up, check that the ntp client is running.
+</p><!--
+To start ntpd, run the following line.
+
+    /etc/init.d/ntpd start
+
+Then, add ntpd to your default run level.
+
+    rc-update add ntpd default
+
+If you would like to monitor the status of your server.
+
+    rc-status
+-->
+
+
+<p data-line="8;ntp_nfs.md:116"><span data-line="8;ntp_nfs.md:116"></span>For more information, visit <span data-line="8;ntp_nfs.md:116"></span><a href="http://wiki.gentoo.org/wiki/Ntp">http://wiki.gentoo.org/wiki/Ntp</a><span data-line="8;ntp_nfs.md:116"></span>
+</p><h2 id="sec-network-file-system-nfs"  data-line="8;ntp_nfs.md:118"  style="bookmark:Network File System (NFS)"><span data-line="8;ntp_nfs.md:118"></span>Network File System (NFS)</h2><h3 id="sec-what-is-nfs"  data-line="8;ntp_nfs.md:120"  style="bookmark:What is NFS?"><span data-line="8;ntp_nfs.md:120"></span>What is NFS?</h3>
+<p data-line="8;ntp_nfs.md:123"><span data-line="8;ntp_nfs.md:123"></span>In 1984, Sun Microsystems developed a distributed file system protocol
 called a Network File System (NFS). NFS makes it possible for clients to
 access files on a remote server as though they were a part of the local
 file tree. The class server is already running the NFS service. It is
@@ -120,56 +655,59 @@ running the NFS daemon, nfsd, and it will reference the file
 /etc/exports to determine what filesystems it is allowed to export to
 clients. We have already added your computers to this file and given them
 read-write access to the /local directory. Your first goal will be to
-mount the server<span data-line="8;ntp_nfs.md::115"></span>&#39;<span data-line="8;ntp_nfs.md::115"></span>s /local directory on your machine.
+mount the server<span data-line="8;ntp_nfs.md:131"></span>&#39;<span data-line="8;ntp_nfs.md:131"></span>s /local directory on your machine.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:117"><span data-line="8;ntp_nfs.md::117"></span>To access the NFS shares on the server, we will use tools from the
+<p class="indent" data-line="8;ntp_nfs.md:133"><span data-line="8;ntp_nfs.md:133"></span>To access the NFS shares on the server, we will use tools from the
 nfs-utils package, which has already been installed.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:120"><span data-line="8;ntp_nfs.md::120"></span>Start the rpc.statd daemon.
+<p class="indent" data-line="8;ntp_nfs.md:136"><span data-line="8;ntp_nfs.md:136"></span>Start the rpc.statd daemon.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:122"><code>/etc/init.d/rpc.statd start</code></pre>
-<p data-line="8;ntp_nfs.md:124"><span data-line="8;ntp_nfs.md::124"></span>For more information, visit
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:138"><code>sudo rc-service rpc.statd start</code></pre>
+<p data-line="8;ntp_nfs.md:140"><span data-line="8;ntp_nfs.md:140"></span>For more information, visit
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:126"><span data-line="8;ntp_nfs.md::126"></span><a href="http://en.wikipedia.org/wiki/Network_File_System">http://en.wikipedia.org/wiki/Network_File_System</a><span data-line="8;ntp_nfs.md::126"></span>
-</p><h3 id="manually-mounting-nfs-shares"  data-line="8;ntp_nfs.md:128" ><span data-line="8;ntp_nfs.md::128"></span>Manually Mounting NFS Shares</h3>
-<p data-line="8;ntp_nfs.md:131"><span data-line="8;ntp_nfs.md::131"></span>We will begin by learning how to manually mount the desired filesystems
+<p class="indent" data-line="8;ntp_nfs.md:142"><span data-line="8;ntp_nfs.md:142"></span><a href="http://en.wikipedia.org/wiki/Network_File_System">http://en.wikipedia.org/wiki/Network_File_System</a><span data-line="8;ntp_nfs.md:142"></span>
+</p><h3 id="sec-manually-mounting-nfs-shares"  data-line="8;ntp_nfs.md:144"  style="bookmark:Manually Mounting NFS Shares"><span data-line="8;ntp_nfs.md:144"></span>Manually Mounting NFS Shares</h3>
+<p data-line="8;ntp_nfs.md:147"><span data-line="8;ntp_nfs.md:147"></span>We will begin by learning how to manually mount the desired filesystems
 onto your machine.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:134"><span data-line="8;ntp_nfs.md::134"></span>You need to create the directory that you want the NFS share to mount
+<p class="indent" data-line="8;ntp_nfs.md:150"><span data-line="8;ntp_nfs.md:150"></span>You need to create the directory that you want the NFS share to mount
 to. It doesn’t really matter what you call this directory, but it makes
 sense to call it by the same name that it has on the server. So, create
 a file called /local.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:139"><code>cd /
-mkdir /local</code></pre>
-<p data-line="8;ntp_nfs.md:142"><span data-line="8;ntp_nfs.md::142"></span>Just to convince you that the filesystem is not mounted yet, please go
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:155"><code>cd /
+sudo mkdir /local</code></pre>
+<p data-line="8;ntp_nfs.md:158"><span data-line="8;ntp_nfs.md:158"></span>Just to convince you that the filesystem is not mounted yet, please go
 into /local. It should be empty.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:145"><code>cd /local
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:161"><code>cd /local
 cd -</code></pre>
-<p data-line="8;ntp_nfs.md:148"><span data-line="8;ntp_nfs.md::148"></span>Now, mount the filesystem from the server.This command takes the form of
+<p data-line="8;ntp_nfs.md:164"><span data-line="8;ntp_nfs.md:164"></span>Now, mount the filesystem from the server. This command takes the form of
 mount server.address:/server/path /client/path.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:151"><code>mount crispy.sys.cs.hmc.edu:/vol/local /local</code></pre>
-<p data-line="8;ntp_nfs.md:153"><span data-line="8;ntp_nfs.md::153"></span>Now, if you go into the /local file, you should see several folders.
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:167"><code>sudo mount crispy.sys.cs.hmc.edu:/export/sysadmin /local</code></pre>
+<p data-line="8;ntp_nfs.md:169"><span data-line="8;ntp_nfs.md:169"></span>Now, if you go into the /local file, you should see several folders.
 Open the file called README and follow the instructions there.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:156"><span data-line="8;ntp_nfs.md::156"></span>It is good to know how to manually mount filesystems, but it is not a
+<p class="indent" data-line="8;ntp_nfs.md:172"><span data-line="8;ntp_nfs.md:172"></span>It is good to know how to manually mount filesystems, but it is not a
 particularly efficient way to work if you want to use the NFS shares a
 lot because the share becomes unmounted when the computer is rebooted.
 To prove this to yourself, you should reboot your computer now (but
 first make sure that you don’t have any important processes running).
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:162"><code>sudo reboot</code></pre>
-<p data-line="8;ntp_nfs.md:164"><span data-line="8;ntp_nfs.md::164"></span>You will lose your connection. Wait for a bit, then
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:178"><code>sudo reboot</code></pre>
+<p data-line="8;ntp_nfs.md:180"><span data-line="8;ntp_nfs.md:180"></span>You will lose your connection. Wait for a bit, then
 try to ssh back in.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:167"><span data-line="8;ntp_nfs.md::167"></span>Now, go back to the /local directory. It should be empty because your
+<p class="indent" data-line="8;ntp_nfs.md:183"><span data-line="8;ntp_nfs.md:183"></span>Now, go back to the /local directory. It should be empty because your
 machine isn’t getting the files off the NFS server anymore. You don’t
 need this directory anymore, so you can delete it.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:171"><code>rmdir /local</code></pre><h3 id="mount-nfs-shares-at-boot-with-autofs"  data-line="8;ntp_nfs.md:173" ><span data-line="8;ntp_nfs.md::173"></span>Mount NFS Shares at Boot with autofs</h3>
-<p data-line="8;ntp_nfs.md:176"><span data-line="8;ntp_nfs.md::176"></span>You may have noticed that if you change something in your home directory
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:187"><code>rmdir /local</code></pre><!--
+### Mount NFS Shares at Boot with autofs
+
+
+You may have noticed that if you change something in your home directory
 on knuth, that change will appear when you log into your home directory
 on any of the other machines on the CS Department cluster. This works
 because the home directories are exported to the machines using NFS.
@@ -179,53 +717,96 @@ because you would need to do it every time you wanted to access your
 files! Instead, it is possible to mount the NFS shares automatically
 when the computer boots. That way, the NFS files that you use a lot
 will be waiting for you when you log on.
-</p>
-<p class="indent" data-line="8;ntp_nfs.md:187"><span data-line="8;ntp_nfs.md::187"></span>We use a program called autofs to automount files. There are two files
+
+We use a program called autofs to automount files. There are two files
 that we need to configure on the client machine. First, read through the
 file /etc/autofs/auto.master.
-</p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:191"><code>sudo vim /etc/autofs/auto.master</code></pre>
-<p data-line="8;ntp_nfs.md:193"><span data-line="8;ntp_nfs.md::193"></span>This file tells autofs where to mount files and also provides a path to
+
+    sudo vim /etc/autofs/auto.master
+
+This file tells autofs where to mount files and also provides a path to
 a file that provides details about what to mount. Add the following line
 to the file beneath the comment that says ’For details of the format
 look at autofs(5)’ but make sure the line you add is uncommented.
-</p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:198"><code>/mnt        /etc/autofs/auto_mnt</code></pre>
-<p data-line="8;ntp_nfs.md:200"><span data-line="8;ntp_nfs.md::200"></span>The line you just added to the file tells the computer to mount the NFS
+
+    /mnt        /etc/autofs/auto_mnt
+
+The line you just added to the file tells the computer to mount the NFS
 shares in the /mnt directory. It also gives the computer the path to the
 automnt file which will contain a list of the NFS shares that should be
 mounted automatically. Open that file now.
-</p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:205"><code>sudo vim /etc/autofs/auto_mnt</code></pre>
-<p data-line="8;ntp_nfs.md:207"><span data-line="8;ntp_nfs.md::207"></span>This file should be empty when you first open it. Each line you add will
+
+    sudo vim /etc/autofs/auto_mnt
+
+This file should be empty when you first open it. Each line you add will
 represent a directory that you want to mount to your system. The first
 part of a line is the name of the share as you want it to show up in
 your /mnt directory. the second part of a line provides the location of
 the share on the NFS server. Tell the machine to automount /vol/local by
 adding the following line.
-</p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:214"><code>local crispy.sys.cs.hmc.edu:/vol/local</code></pre>
-<p data-line="8;ntp_nfs.md:216"><span data-line="8;ntp_nfs.md::216"></span>If you want autofs to mount the NFS share at boot, then you need to make
+
+    local crispy.sys.cs.hmc.edu:/exports/sysadmin
+
+If you want autofs to mount the NFS share at boot, then you need to make
 sure that autofs itself is running at boot. Make sure that ntpd, nfs,
 and autofs are all added to the default run level.
-</p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:220"><code>rc-update add nfs default
 
-rc-update add autofs default</code></pre>
-<p data-line="8;ntp_nfs.md:224"><span data-line="8;ntp_nfs.md::224"></span>The ntpd service should already be on the default run level, but you can
+    rc-update add nfs default
+
+    rc-update add autofs default
+
+The ntpd service should already be on the default run level, but you can
 use the rc-status command to check. It will print a list of all the
 services that start at boot.
-</p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:228"><code>rc-status</code></pre>
-<p data-line="8;ntp_nfs.md:230"><span data-line="8;ntp_nfs.md::230"></span>Now, reboot your machine. You will lose your connection. Wait for a bit, then
+
+    rc-status
+
+Now, reboot your machine. You will lose your connection. Wait for a bit, then
 try to ssh back in.
+
+    sudo reboot
+
+The files should be mounted automatically **on-demand** (i.e., when you first
+navigate to the file / directory). Check to make sure.
+
+    cd /mnt/local
+
+In the file you created earlier, leave your fellow sysadmins some easter eggs:
+something fun for people to find.
+-->
+
+<h2 id="sec-choose-your-own-adventure"  data-line="8;ntp_nfs.md:261"  style="bookmark:Choose your own adventure"><span data-line="8;ntp_nfs.md:261"></span>Choose your own adventure</h2>
+<p class="para-continue" data-line="8;ntp_nfs.md:262"><span data-line="8;ntp_nfs.md:262"></span>Here are some projects to work on. They<span data-line="8;ntp_nfs.md:262"></span>&#39;<span data-line="8;ntp_nfs.md:262"></span>re pretty ambitious, and you probably
+won<span data-line="8;ntp_nfs.md:263"></span>&#39;<span data-line="8;ntp_nfs.md:263"></span>t finish them before the end of class. Get as far as you can on one or more
+of them, then write about your experience when you fill out today<span data-line="8;ntp_nfs.md:264"></span>&#39;<span data-line="8;ntp_nfs.md:264"></span>s survey.
 </p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:233"><code>sudo reboot</code></pre>
-<p data-line="8;ntp_nfs.md:235"><span data-line="8;ntp_nfs.md::235"></span>The files should be mounted automatically. Check to make sure.
-</p>
-<pre class="para-block para-block" data-line="8;ntp_nfs.md:237"><code>cd /mnt/local</code></pre>
-<p data-line="8;ntp_nfs.md:239"><span data-line="8;ntp_nfs.md::239"></span>In the file you created earlier, leave your fellow sysadmins some easter eggs:
-somehthing fun for people to find.
-</p>
+<ol class="loose" data-line="8;ntp_nfs.md:266">
+<li data-line="8;ntp_nfs.md:266">
+<p data-line="8;ntp_nfs.md:266"><span data-line="8;ntp_nfs.md:266"></span>See if you can get NFS to mount the remote file system automatically, when
+you start the computer. You<span data-line="8;ntp_nfs.md:267"></span>&#39;<span data-line="8;ntp_nfs.md:267"></span>ll want to use<span data-line="8;ntp_nfs.md:267"></span>&nbsp;<a href="http://wiki.gentoo.org/wiki/AutoFS">autofs</a><span data-line="8;ntp_nfs.md:267"></span>
+</p></li>
+<li data-line="8;ntp_nfs.md:269">
+<p data-line="8;ntp_nfs.md:269"><span data-line="8;ntp_nfs.md:269"></span>Find a partner and see if you can use each other<span data-line="8;ntp_nfs.md:269"></span>&#39;<span data-line="8;ntp_nfs.md:269"></span>s machines as NFS 
+<span data-line="8;ntp_nfs.md:270"></span><em>servers</em><span data-line="8;ntp_nfs.md:270"></span>. Your partner should be able to mount files hosted on your machine,
+and vice-versa. 
+</p></li>
+<li data-line="8;ntp_nfs.md:273">
+<p data-line="8;ntp_nfs.md:273"><span data-line="8;ntp_nfs.md:273"></span>If you<span data-line="8;ntp_nfs.md:273"></span>&#39;<span data-line="8;ntp_nfs.md:273"></span>re able to turn your machine into an NFS server, can you get a 
+<span data-line="8;ntp_nfs.md:274"></span><em>non</em><span data-line="8;ntp_nfs.md:274"></span>-sysadmin machine (e.g., your laptop) to mount the remote file system?
+</p></li>
+<li data-line="8;ntp_nfs.md:276">
+<p data-line="8;ntp_nfs.md:276"><span data-line="8;ntp_nfs.md:276"></span>See if you can mount your knuth home directory on your sysadmin machine. 
+(I have no idea if this is possible; I suspect it isn<span data-line="8;ntp_nfs.md:277"></span>&#39;<span data-line="8;ntp_nfs.md:277"></span>t, but can we find out
+why?)
+</p></li>
+<li data-line="8;ntp_nfs.md:280">
+<p data-line="8;ntp_nfs.md:280"><span data-line="8;ntp_nfs.md:280"></span>NTP has some<span data-line="8;ntp_nfs.md:280"></span>&nbsp;<a href="https://en.wikipedia.org/wiki/NTP_server_misuse_and_abuse">historically notable weaknesses</a><span data-line="8;ntp_nfs.md:280"></span>.
+Is our NTP server vulnerable to abuse? If not, why not? If so, can you prove
+it :)? (Warning: be very very careful about this. Do not create a lot of
+network traffic, i.e., do <span data-line="8;ntp_nfs.md:283"></span><em>not</em><span data-line="8;ntp_nfs.md:283"></span> initiate a denial-of-service attack.)
+</p></li></ol>
+
+<div class="madokologo block" data-line="11" style="text-align:right;font-size:xx-small;margin-top:4em"><span data-line="12"></span>Created with&nbsp;<a href="https://www.madoko.net">Madoko.net</a>.</div>
 </body>
+
 </html>

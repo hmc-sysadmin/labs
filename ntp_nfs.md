@@ -23,8 +23,8 @@ communicate with one another to achieve synchronization.
 
 We are interested in this protocol because some of the services we want
 to run depend on servers and clients that have exactly synchronized
-time. Specifically, NFS will complain if the client and server clocks
-are not synchronized.
+time. Specifically, we're going to set up a networked file system (NFS) that
+requires the client and server clocks to be synchronized.
 
 For more information, visit
 <http://en.wikipedia.org/wiki/Network_Time_Protocol>
@@ -32,8 +32,8 @@ For more information, visit
 ### Enabling NTP
 
 
-The class server is already running NTP. Your goal is to use NTP to sync
-your system clock to the server’s clock.
+The class server (`crispy.sys.cs.hmc.edu`) is already running NTP. Your goal is 
+to use NTP to sync *your* system's clock to the server’s clock.
 
 You want to tell your computer to query NFS server for NTP
 synchronization. To do this, open the /etc/ntp.conf file and add a line
@@ -52,7 +52,7 @@ The first line instructs ntpd to sync with the class NFS server. The
 following two lines tell ntpd to synchronize with itself if it loses its
 connection with the class server.
 
-_Aside_: Note the presence of a `driftfile` in `/etc/ntp.conf`. This file is where
+_Aside_: Note the presence of a `driftfile` setting in `/etc/ntp.conf`. This file is where
 the machine can store information about the natural time drifts that
 your computer has, so that it can automatically adjust for them.
 
@@ -60,9 +60,11 @@ You need to uncomment the bottom line in the file to ensure that other
 machines on your network can synchronize with your server, but that they
 cannot configure the server.
 
-    restrict 192.168.0.0 mask 255.255.255.0 nomodify nopeer notrap
+    restrict <subnet> mask 255.255.255.0 nomodify nopeer notrap
 
-the NTP service has a function called monlist, that is used to query the
+(*Note:* The `<subnet>` field is the network for our machines; it will be provided in class.)
+
+The NTP service has a function called monlist, that is used to query the
 server about the hosts that have connected to it. This can be useful if
 you want to learn about your network stats, but we don’t really need it
 and it leaves your machine susceptible to denial-of-service attacks. To
@@ -73,18 +75,31 @@ disable this functionality, add the following line to the bottom of the
 
 You can now save and close the file.
 
+NTP runs as a service. You can see which services are running on your system
+with the command:
+
+    rc-status
+
 To start the NTP service and check that it is running, run the following
 rc-service commands as root.
 
-    rc-service ntp-client start
+    sudo rc-service ntp-client start
 
-    rc-service ntp-client status
+Verify that the ntp-client service has started.
 
-Add the service to your default run level so that NTP will start at
+Add the service to your "default run level" so that NTP will start at
 boot.
 
-    rc-update add ntp-client default
+    sudo rc-update add ntp-client default
 
+To verify that the ntp client runs every time the machine restarts, restart your
+machine!
+
+    sudo reboot
+
+Once the machine is back up, check that the ntp client is running.
+
+<!--
 To start ntpd, run the following line.
 
     /etc/init.d/ntpd start
@@ -96,6 +111,7 @@ Then, add ntpd to your default run level.
 If you would like to monitor the status of your server.
 
     rc-status
+-->
 
 For more information, visit <http://wiki.gentoo.org/wiki/Ntp>
 
@@ -119,7 +135,7 @@ nfs-utils package, which has already been installed.
 
 Start the rpc.statd daemon.
 
-    /etc/init.d/rpc.statd start
+    sudo rc-service rpc.statd start
 
 For more information, visit
 
@@ -137,7 +153,7 @@ sense to call it by the same name that it has on the server. So, create
 a file called /local.
 
     cd /
-    mkdir /local
+    sudo mkdir /local
 
 Just to convince you that the filesystem is not mounted yet, please go
 into /local. It should be empty.
@@ -145,10 +161,10 @@ into /local. It should be empty.
     cd /local
     cd -
 
-Now, mount the filesystem from the server.This command takes the form of
+Now, mount the filesystem from the server. This command takes the form of
 mount server.address:/server/path /client/path.
 
-    mount crispy.sys.cs.hmc.edu:/vol/local /local
+    sudo mount crispy.sys.cs.hmc.edu:/export/sysadmin /local
 
 Now, if you go into the /local file, you should see several folders.
 Open the file called README and follow the instructions there.
@@ -170,6 +186,7 @@ need this directory anymore, so you can delete it.
 
     rmdir /local
 
+<!--
 ### Mount NFS Shares at Boot with autofs
 
 
@@ -211,7 +228,7 @@ your /mnt directory. the second part of a line provides the location of
 the share on the NFS server. Tell the machine to automount /vol/local by
 adding the following line.
 
-    local crispy.sys.cs.hmc.edu:/vol/local
+    local crispy.sys.cs.hmc.edu:/exports/sysadmin
 
 If you want autofs to mount the NFS share at boot, then you need to make
 sure that autofs itself is running at boot. Make sure that ntpd, nfs,
@@ -232,9 +249,36 @@ try to ssh back in.
 
     sudo reboot
 
-The files should be mounted automatically. Check to make sure.
+The files should be mounted automatically **on-demand** (i.e., when you first
+navigate to the file / directory). Check to make sure.
 
     cd /mnt/local
 
 In the file you created earlier, leave your fellow sysadmins some easter eggs:
-somehthing fun for people to find.
+something fun for people to find.
+-->
+
+## Choose your own adventure
+Here are some projects to work on. They're pretty ambitious, and you probably
+won't finish them before the end of class. Get as far as you can on one or more
+of them, then write about your experience when you fill out today's survey.
+
+   1. See if you can get NFS to mount the remote file system automatically, when
+   you start the computer. You'll want to use [autofs](http://wiki.gentoo.org/wiki/AutoFS)
+
+   1. Find a partner and see if you can use each other's machines as NFS 
+   *servers*. Your partner should be able to mount files hosted on your machine,
+   and vice-versa. 
+
+   1. If you're able to turn your machine into an NFS server, can you get a 
+   *non*-sysadmin machine (e.g., your laptop) to mount the remote file system?
+
+   1. See if you can mount your knuth home directory on your sysadmin machine. 
+   (I have no idea if this is possible; I suspect it isn't, but can we find out
+   why?)
+
+   1. NTP has some [historically notable weaknesses](https://en.wikipedia.org/wiki/NTP_server_misuse_and_abuse).
+   Is our NTP server vulnerable to abuse? If not, why not? If so, can you prove
+   it :)? (Warning: be very very careful about this. Do not create a lot of
+   network traffic, i.e., do *not* initiate a denial-of-service attack.)
+
