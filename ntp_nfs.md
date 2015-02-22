@@ -227,7 +227,7 @@ your /mnt directory. the second part of a line provides the location of
 the share on the NFS server. Tell the machine to automount the folder from our
 server by adding the following line.
 
-    sysadmin    -rw,soft,intr,async    crispy.sys.cs.hmc.edu:/export/sysadmin
+    sysadmin    -rw,soft,intr,async    134.173.40.190:/export/sysadmin
 
 #### Test autofs
 

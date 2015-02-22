@@ -705,96 +705,93 @@ because you would need to do it every time you wanted to access your
 files! Instead, it is possible to mount the NFS shares automatically
 when the computer boots. That way, the NFS files that you use a lot
 will be waiting for you when you log on.
-</p>
-<p class="indent" data-line="8;ntp_nfs.md:194"><span data-line="8;ntp_nfs.md:194"></span>We use a program called autofs to automount files. There are two files
+</p><h4 id="sec-configure-autofs" data-line="8;ntp_nfs.md:194" ><span data-line="8;ntp_nfs.md:194"></span>Configure autofs</h4>
+<p data-line="8;ntp_nfs.md:196"><span data-line="8;ntp_nfs.md:196"></span>We use a program called autofs to automount files. There are two files
 that we need to configure on the client machine. First, read through the
 file /etc/autofs/auto.master.
 </p>
-<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:198"><code>sudo vim /etc/autofs/auto.master</code></pre>
-<p data-line="8;ntp_nfs.md:200"><span data-line="8;ntp_nfs.md:200"></span>This file tells autofs where to mount files and also provides a path to
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:200"><code>sudo vim /etc/autofs/auto.master</code></pre>
+<p data-line="8;ntp_nfs.md:202"><span data-line="8;ntp_nfs.md:202"></span>This file tells autofs where to mount files and also provides a path to
 a file that provides details about what to mount. At the bottom of the file,
-uncomment (i.e., remove the <span data-line="8;ntp_nfs.md:202"></span><code class="code code1">#</code><span data-line="8;ntp_nfs.md:202"></span> from the begging of) the line that says 
+uncomment (i.e., remove the <span data-line="8;ntp_nfs.md:204"></span><code class="code code1">#</code><span data-line="8;ntp_nfs.md:204"></span> from the begging of) the line that says 
 </p>
-<pre class="para-block pre-fenced pre-fenced3" data-line="8;ntp_nfs.md:204" data-line-code="8;ntp_nfs.md:205"><code data-line="8;ntp_nfs.md:205">  +auto.master</code></pre>
-<p data-line="8;ntp_nfs.md:208"><span data-line="8;ntp_nfs.md:208"></span>Add the following line to the file beneath the comment that says ’For details of
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;ntp_nfs.md:206" data-line-code="8;ntp_nfs.md:207"><code data-line="8;ntp_nfs.md:207">  +auto.master</code></pre>
+<p data-line="8;ntp_nfs.md:210"><span data-line="8;ntp_nfs.md:210"></span>Add the following line to the file beneath the comment that says ’For details of
 the format look at autofs(5)’ but make sure the line you add is uncommented.
 </p>
-<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:211"><code>/mnt    /etc/autofs/auto_mnt  --ghost</code></pre>
-<p data-line="8;ntp_nfs.md:213"><span data-line="8;ntp_nfs.md:213"></span>The line you just added to the file tells the computer to mount the NFS shares
-in the /mnt directory. The <span data-line="8;ntp_nfs.md:214"></span><code class="code code1">--ghost</code><span data-line="8;ntp_nfs.md:214"></span> option causes the system to create empty
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:213"><code>/mnt    /etc/autofs/auto_mnt  --ghost</code></pre>
+<p data-line="8;ntp_nfs.md:215"><span data-line="8;ntp_nfs.md:215"></span>The line you just added to the file tells the computer to mount the NFS shares
+in the /mnt directory. The <span data-line="8;ntp_nfs.md:216"></span><code class="code code1">--ghost</code><span data-line="8;ntp_nfs.md:216"></span> option causes the system to create empty
 folders for the mountpoints. The line you added also gives the the path to the
 automnt file which will contain a list of the NFS shares that should be mounted
 automatically. Open that file now.
 </p>
-<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:219"><code>sudo vim /etc/autofs/auto_mnt</code></pre>
-<p data-line="8;ntp_nfs.md:221"><span data-line="8;ntp_nfs.md:221"></span>This file should be empty when you first open it. Any line you add will
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:221"><code>sudo vim /etc/autofs/auto_mnt</code></pre>
+<p data-line="8;ntp_nfs.md:223"><span data-line="8;ntp_nfs.md:223"></span>This file should be empty when you first open it. Any line you add will
 represent a directory that you want to mount to your system. The first
 part of a line is the name of the share as you want it to show up in
 your /mnt directory. the second part of a line provides the location of
 the share on the NFS server. Tell the machine to automount the folder from our
 server by adding the following line.
 </p>
-<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:228"><code>sysadmin    -rw,soft,intr,async    crispy.sys.cs.hmc.edu:/export/sysadmin</code></pre>
-<p data-line="8;ntp_nfs.md:230"><span data-line="8;ntp_nfs.md:230"></span>Now start the autofs service, which will auto-mount directories on-demand
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:230"><code>sysadmin    -rw,soft,intr,async    134.173.40.190:/export/sysadmin</code></pre><h4 id="sec-test-autofs" data-line="8;ntp_nfs.md:232" ><span data-line="8;ntp_nfs.md:232"></span>Test autofs</h4>
+<p data-line="8;ntp_nfs.md:234"><span data-line="8;ntp_nfs.md:234"></span>Now start the autofs service, which will auto-mount directories on-demand
 </p>
-<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:232"><code>rc-service autofs start</code></pre>
-<p data-line="8;ntp_nfs.md:234"><span data-line="8;ntp_nfs.md:234"></span>Check that the /mnt/sysadmin directory is not available
-</p>
-<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:236"><code>ls /mnt/sysadmin</code></pre>
-<p data-line="8;ntp_nfs.md:238"><span data-line="8;ntp_nfs.md:238"></span>Now, navigate to that directory
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:236"><code>rc-service autofs start</code></pre>
+<p data-line="8;ntp_nfs.md:238"><span data-line="8;ntp_nfs.md:238"></span>Now, navigate to the following directory
 </p>
 <pre class="para-block pre-indented" data-line="8;ntp_nfs.md:240"><code>cd /mnt/sysadmin</code></pre>
 <p data-line="8;ntp_nfs.md:242"><span data-line="8;ntp_nfs.md:242"></span>If everything is configured correctly, you should now be in the shared, NFS-
 mounted directory!
+</p><h4 id="sec-start-autofs-on-boot" data-line="8;ntp_nfs.md:245" ><span data-line="8;ntp_nfs.md:245"></span>Start autofs on boot</h4>
+<p data-line="8;ntp_nfs.md:247"><span data-line="8;ntp_nfs.md:247"></span>If you want autofs to mount the NFS share at boot, then you need to make sure
+that autofs itself is running at boot. Make sure that nfs and autofs are all
+added to the default run level.
 </p>
-<p class="indent" data-line="8;ntp_nfs.md:245"><span data-line="8;ntp_nfs.md:245"></span>If you want autofs to mount the NFS share at boot, then you need to make
-sure that autofs itself is running at boot. Make sure that ntpd, nfs,
-and autofs are all added to the default run level.
-</p>
-<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:249"><code>rc-update add autofs default
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:251"><code>sudo rc-update add nfs default
 
-rc-update add autofs default</code></pre>
-<p data-line="8;ntp_nfs.md:253"><span data-line="8;ntp_nfs.md:253"></span>The ntpd service should already be on the default run level, but you can
+sudo rc-update add autofs default</code></pre>
+<p data-line="8;ntp_nfs.md:255"><span data-line="8;ntp_nfs.md:255"></span>The ntpd service should already be on the default run level, but you can
 use the rc-status command to check. It will print a list of all the
 services that start at boot.
 </p>
-<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:257"><code>rc-status</code></pre>
-<p data-line="8;ntp_nfs.md:259"><span data-line="8;ntp_nfs.md:259"></span>Now, reboot your machine. You will lose your connection. Wait for a bit, then
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:259"><code>rc-status</code></pre>
+<p data-line="8;ntp_nfs.md:261"><span data-line="8;ntp_nfs.md:261"></span>Now, reboot your machine. You will lose your connection. Wait for a bit, then
 try to ssh back in.
 </p>
-<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:262"><code>sudo reboot</code></pre>
-<p data-line="8;ntp_nfs.md:264"><span data-line="8;ntp_nfs.md:264"></span>The files should be mounted automatically <span data-line="8;ntp_nfs.md:264"></span><strong>on-demand</strong><span data-line="8;ntp_nfs.md:264"></span> (i.e., when you first
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:264"><code>sudo reboot</code></pre>
+<p data-line="8;ntp_nfs.md:266"><span data-line="8;ntp_nfs.md:266"></span>The files should be mounted automatically <span data-line="8;ntp_nfs.md:266"></span><strong>on-demand</strong><span data-line="8;ntp_nfs.md:266"></span> (i.e., when you first
 navigate to the file / directory). Check to make sure.
 </p>
-<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:267"><code>cd /mnt/sysadmin</code></pre><h2 id="sec-choose-your-own-adventure"  data-line="8;ntp_nfs.md:269"  style="bookmark:Choose your own adventure"><span data-line="8;ntp_nfs.md:269"></span>Choose your own adventure</h2>
-<p class="para-continue" data-line="8;ntp_nfs.md:270"><span data-line="8;ntp_nfs.md:270"></span>Here are some projects to work on. They<span data-line="8;ntp_nfs.md:270"></span>&#39;<span data-line="8;ntp_nfs.md:270"></span>re pretty ambitious, and you probably
-won<span data-line="8;ntp_nfs.md:271"></span>&#39;<span data-line="8;ntp_nfs.md:271"></span>t finish them before the end of class. Get as far as you can on one or more
-of them, then write about your experience when you fill out today<span data-line="8;ntp_nfs.md:272"></span>&#39;<span data-line="8;ntp_nfs.md:272"></span>s survey.
+<pre class="para-block pre-indented" data-line="8;ntp_nfs.md:269"><code>cd /mnt/sysadmin</code></pre><h2 id="sec-choose-your-own-adventure"  data-line="8;ntp_nfs.md:271"  style="bookmark:Choose your own adventure"><span data-line="8;ntp_nfs.md:271"></span>Choose your own adventure</h2>
+<p class="para-continue" data-line="8;ntp_nfs.md:272"><span data-line="8;ntp_nfs.md:272"></span>Here are some projects to work on. They<span data-line="8;ntp_nfs.md:272"></span>&#39;<span data-line="8;ntp_nfs.md:272"></span>re pretty ambitious, and you probably
+won<span data-line="8;ntp_nfs.md:273"></span>&#39;<span data-line="8;ntp_nfs.md:273"></span>t finish them before the end of class. Get as far as you can on one or more
+of them, then write about your experience when you fill out today<span data-line="8;ntp_nfs.md:274"></span>&#39;<span data-line="8;ntp_nfs.md:274"></span>s survey.
 </p>
-<ol class="loose" data-line="8;ntp_nfs.md:274">
-<li data-line="8;ntp_nfs.md:274">
-<p data-line="8;ntp_nfs.md:274"><span data-line="8;ntp_nfs.md:274"></span>See if you can get NFS to mount the remote file system automatically, when
-you start the computer. You<span data-line="8;ntp_nfs.md:275"></span>&#39;<span data-line="8;ntp_nfs.md:275"></span>ll want to use<span data-line="8;ntp_nfs.md:275"></span>&nbsp;<a href="http://wiki.gentoo.org/wiki/AutoFS">autofs</a><span data-line="8;ntp_nfs.md:275"></span>
+<ol class="loose" data-line="8;ntp_nfs.md:276">
+<li data-line="8;ntp_nfs.md:276">
+<p data-line="8;ntp_nfs.md:276"><span data-line="8;ntp_nfs.md:276"></span>See if you can get NFS to mount the remote file system automatically, when
+you start the computer. You<span data-line="8;ntp_nfs.md:277"></span>&#39;<span data-line="8;ntp_nfs.md:277"></span>ll want to use<span data-line="8;ntp_nfs.md:277"></span>&nbsp;<a href="http://wiki.gentoo.org/wiki/AutoFS">autofs</a><span data-line="8;ntp_nfs.md:277"></span>
 </p></li>
-<li data-line="8;ntp_nfs.md:277">
-<p data-line="8;ntp_nfs.md:277"><span data-line="8;ntp_nfs.md:277"></span>Find a partner and see if you can use each other<span data-line="8;ntp_nfs.md:277"></span>&#39;<span data-line="8;ntp_nfs.md:277"></span>s machines as NFS 
-<span data-line="8;ntp_nfs.md:278"></span><em>servers</em><span data-line="8;ntp_nfs.md:278"></span>. Your partner should be able to mount files hosted on your machine,
+<li data-line="8;ntp_nfs.md:279">
+<p data-line="8;ntp_nfs.md:279"><span data-line="8;ntp_nfs.md:279"></span>Find a partner and see if you can use each other<span data-line="8;ntp_nfs.md:279"></span>&#39;<span data-line="8;ntp_nfs.md:279"></span>s machines as NFS 
+<span data-line="8;ntp_nfs.md:280"></span><em>servers</em><span data-line="8;ntp_nfs.md:280"></span>. Your partner should be able to mount files hosted on your machine,
 and vice-versa. 
 </p></li>
-<li data-line="8;ntp_nfs.md:281">
-<p data-line="8;ntp_nfs.md:281"><span data-line="8;ntp_nfs.md:281"></span>If you<span data-line="8;ntp_nfs.md:281"></span>&#39;<span data-line="8;ntp_nfs.md:281"></span>re able to turn your machine into an NFS server, can you get a 
-<span data-line="8;ntp_nfs.md:282"></span><em>non</em><span data-line="8;ntp_nfs.md:282"></span>-sysadmin machine (e.g., your laptop) to mount the remote file system?
+<li data-line="8;ntp_nfs.md:283">
+<p data-line="8;ntp_nfs.md:283"><span data-line="8;ntp_nfs.md:283"></span>If you<span data-line="8;ntp_nfs.md:283"></span>&#39;<span data-line="8;ntp_nfs.md:283"></span>re able to turn your machine into an NFS server, can you get a 
+<span data-line="8;ntp_nfs.md:284"></span><em>non</em><span data-line="8;ntp_nfs.md:284"></span>-sysadmin machine (e.g., your laptop) to mount the remote file system?
 </p></li>
-<li data-line="8;ntp_nfs.md:284">
-<p data-line="8;ntp_nfs.md:284"><span data-line="8;ntp_nfs.md:284"></span>See if you can mount your knuth home directory on your sysadmin machine. 
-(I have no idea if this is possible; I suspect it isn<span data-line="8;ntp_nfs.md:285"></span>&#39;<span data-line="8;ntp_nfs.md:285"></span>t, but can we find out
+<li data-line="8;ntp_nfs.md:286">
+<p data-line="8;ntp_nfs.md:286"><span data-line="8;ntp_nfs.md:286"></span>See if you can mount your knuth home directory on your sysadmin machine. 
+(I have no idea if this is possible; I suspect it isn<span data-line="8;ntp_nfs.md:287"></span>&#39;<span data-line="8;ntp_nfs.md:287"></span>t, but can we find out
 why?)
 </p></li>
-<li data-line="8;ntp_nfs.md:288">
-<p data-line="8;ntp_nfs.md:288"><span data-line="8;ntp_nfs.md:288"></span>NTP has some<span data-line="8;ntp_nfs.md:288"></span>&nbsp;<a href="https://en.wikipedia.org/wiki/NTP_server_misuse_and_abuse">historically notable weaknesses</a><span data-line="8;ntp_nfs.md:288"></span>.
+<li data-line="8;ntp_nfs.md:290">
+<p data-line="8;ntp_nfs.md:290"><span data-line="8;ntp_nfs.md:290"></span>NTP has some<span data-line="8;ntp_nfs.md:290"></span>&nbsp;<a href="https://en.wikipedia.org/wiki/NTP_server_misuse_and_abuse">historically notable weaknesses</a><span data-line="8;ntp_nfs.md:290"></span>.
 Is our NTP server vulnerable to abuse? If not, why not? If so, can you prove
 it :)? (Warning: be very very careful about this. Do not create a lot of
-network traffic, i.e., do <span data-line="8;ntp_nfs.md:291"></span><em>not</em><span data-line="8;ntp_nfs.md:291"></span> initiate a denial-of-service attack.)
+network traffic, i.e., do <span data-line="8;ntp_nfs.md:293"></span><em>not</em><span data-line="8;ntp_nfs.md:293"></span> initiate a denial-of-service attack.)
 </p></li></ol>
 
 <div class="madokologo block" data-line="11" style="text-align:right;font-size:xx-small;margin-top:4em"><span data-line="12"></span>Created with&nbsp;<a href="https://www.madoko.net">Madoko.net</a>.</div>
