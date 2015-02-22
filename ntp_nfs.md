@@ -99,20 +99,6 @@ machine!
 
 Once the machine is back up, check that the ntp client is running.
 
-<!--
-To start ntpd, run the following line.
-
-    /etc/init.d/ntpd start
-
-Then, add ntpd to your default run level.
-
-    rc-update add ntpd default
-
-If you would like to monitor the status of your server.
-
-    rc-status
--->
-
 For more information, visit <http://wiki.gentoo.org/wiki/Ntp>
 
 ## Network File System (NFS)
@@ -133,12 +119,17 @@ mount the server's /local directory on your machine.
 To access the NFS shares on the server, we will use tools from the
 nfs-utils package, which has already been installed.
 
+<!--
 Start the rpc.statd daemon.
 
     sudo rc-service rpc.statd start
+-->
+
+Start the nfs service.
+
+    sudo rc-service nfs start
 
 For more information, visit
-
 <http://en.wikipedia.org/wiki/Network_File_System>
 
 ### Manually Mounting NFS Shares
@@ -186,7 +177,6 @@ need this directory anymore, so you can delete it.
 
     rmdir /local
 
-<!--
 ### Mount NFS Shares at Boot with autofs
 
 
@@ -201,6 +191,8 @@ files! Instead, it is possible to mount the NFS shares automatically
 when the computer boots. That way, the NFS files that you use a lot
 will be waiting for you when you log on.
 
+#### Configure autofs
+
 We use a program called autofs to automount files. There are two files
 that we need to configure on the client machine. First, read through the
 file /etc/autofs/auto.master.
@@ -208,35 +200,57 @@ file /etc/autofs/auto.master.
     sudo vim /etc/autofs/auto.master
 
 This file tells autofs where to mount files and also provides a path to
-a file that provides details about what to mount. Add the following line
-to the file beneath the comment that says ’For details of the format
-look at autofs(5)’ but make sure the line you add is uncommented.
+a file that provides details about what to mount. At the bottom of the file,
+uncomment (i.e., remove the `#` from the begging of) the line that says 
 
-    /mnt        /etc/autofs/auto_mnt
+  ```
+  +auto.master
+  ```
 
-The line you just added to the file tells the computer to mount the NFS
-shares in the /mnt directory. It also gives the computer the path to the
-automnt file which will contain a list of the NFS shares that should be
-mounted automatically. Open that file now.
+Add the following line to the file beneath the comment that says ’For details of
+the format look at autofs(5)’ but make sure the line you add is uncommented.
+
+    /mnt    /etc/autofs/auto_mnt  --ghost
+
+The line you just added to the file tells the computer to mount the NFS shares
+in the /mnt directory. The `--ghost` option causes the system to create empty
+folders for the mountpoints. The line you added also gives the the path to the
+automnt file which will contain a list of the NFS shares that should be mounted
+automatically. Open that file now.
 
     sudo vim /etc/autofs/auto_mnt
 
-This file should be empty when you first open it. Each line you add will
+This file should be empty when you first open it. Any line you add will
 represent a directory that you want to mount to your system. The first
 part of a line is the name of the share as you want it to show up in
 your /mnt directory. the second part of a line provides the location of
-the share on the NFS server. Tell the machine to automount /vol/local by
-adding the following line.
+the share on the NFS server. Tell the machine to automount the folder from our
+server by adding the following line.
 
-    local crispy.sys.cs.hmc.edu:/exports/sysadmin
+    sysadmin    -rw,soft,intr,async    crispy.sys.cs.hmc.edu:/export/sysadmin
 
-If you want autofs to mount the NFS share at boot, then you need to make
-sure that autofs itself is running at boot. Make sure that ntpd, nfs,
-and autofs are all added to the default run level.
+#### Test autofs
 
-    rc-update add nfs default
+Now start the autofs service, which will auto-mount directories on-demand
 
-    rc-update add autofs default
+    rc-service autofs start
+
+Now, navigate to the following directory
+
+    cd /mnt/sysadmin
+
+If everything is configured correctly, you should now be in the shared, NFS-
+mounted directory!
+
+#### Start autofs on boot
+
+If you want autofs to mount the NFS share at boot, then you need to make sure
+that autofs itself is running at boot. Make sure that nfs and autofs are all
+added to the default run level.
+
+    sudo rc-update add nfs default
+
+    sudo rc-update add autofs default
 
 The ntpd service should already be on the default run level, but you can
 use the rc-status command to check. It will print a list of all the
@@ -252,11 +266,7 @@ try to ssh back in.
 The files should be mounted automatically **on-demand** (i.e., when you first
 navigate to the file / directory). Check to make sure.
 
-    cd /mnt/local
-
-In the file you created earlier, leave your fellow sysadmins some easter eggs:
-something fun for people to find.
--->
+    cd /mnt/sysadmin
 
 ## Choose your own adventure
 Here are some projects to work on. They're pretty ambitious, and you probably
