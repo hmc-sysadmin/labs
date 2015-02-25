@@ -4,11 +4,11 @@
 In this lab, we'll explore ways of storing and investigating the past behavior
 of our systems.
 
-## Logging 
+## Background: Logging 
 
-Many logging servers use syslog, and since almost all machines use it,
-it is easy to to sync the logging of multiple devices. Once a syslog
-server is set up, devices can send their log messages over the network
+Many logging servers use a service called syslog. Because almost all machines use it,
+it is easy to sync the logs of multiple machines. Once a syslog
+server is set up, machines can send their log messages over the network
 to the server rather than recording them in a local file or displaying
 them. Doing this creates a central logging server that becomes a
 repository for log messages.
@@ -58,10 +58,20 @@ being used.
 
 ### Using sysklogd 
 
-Your system will be running `sysklogd`. The file used to configure syslog
-is `/etc/syslog.conf`. In addition to sysklogd, your system is running
-`logrotate`. This program determines how long a system saves old logs and how
-old and new logs are managed.
+Your system should be running `sysklogd`. You can verifiy this by running
+
+```
+  rc-status
+```
+
+and checking that syslklogd is in the list of started services. The files used to configure syslog
+are `/etc/conf.d/sysklogd` and `/etc/syslog.conf`. You can read them now, if you
+want; we'll be editing them later.
+
+In addition to sysklogd, your system is running `logrotate`. This program
+determines how long a system saves old logs and how old and new logs are
+managed. (`logrotate` runs as a "cron job", which we'll learn about at the end of
+the lab.)
 
 If you’re interested in the different kinds of loggers that you can use
 on a Gentoo system, you can read more about them on the Gentoo website:
@@ -129,6 +139,8 @@ su
     **Scroll through your emerge.log file and look for some of the
     packages you’ve installed recently.**
 
+<!--
+
 3.  `mail.log` contains a record of the emails you have sent and
     received.
 
@@ -152,7 +164,9 @@ su
     what appears in the log when you send an email and when you receive
     one.**
 
-4.  `user.log` contains a record of when your computer has been shut
+ -->   
+
+3.  `user.log` contains a record of when your computer has been shut
     down or rebooted.
 
 ### Compressed Files 
@@ -187,7 +201,7 @@ may be up to one-tenth the size of the regular, uncompressed log files.
 Usually compression techniques work by eliminating redundant data or
 expressing it in a more succinct way.
 
-Each of the red, zipped files in /var/log is an old log that is
+Each of the zipped files in /var/log is an old log that is
 compressed to save space. The logger syslogd automatically compresses
 them because it makes sense to compress older log files that you most
 likely won’t need. However, it is good to keep these files rather than
@@ -216,7 +230,7 @@ alterations were made to the log files and what the changes were.
 Complete the following steps to enable somone else to store their logs on your
 machine:
 
-1. The syslogd program needs the -r flag enabled, to tell it to listen for log
+1. For remote logging, syslogd needs to run with the -r flag enabled, which tells the program to listen for log
    events on the network. You can set this flag on the command
    line when you start sysklogd (like this: `syslogd -r`) but this is
    not permanent and requires you to kill syslogd and then start it
@@ -237,7 +251,7 @@ machine:
 
 1. Restart system logging by running the following command:
         
-        sudo /etc/init.d/sysklogd restart
+        sudo rc-service sysklogd restart
 
 Here are the steps to export your logs to another system:
 
@@ -245,10 +259,10 @@ Here are the steps to export your logs to another system:
    your logs. The hostname should have the form `vm#.sys.cs.hmc.edu`.
 
 1.  Open the file `/etc/syslog.conf`. This file contains lists of the
-    various logs kept by the system. Add your friend's hostname of a friend’s
-    computer near the top of the file with this syntax:
+    various logs kept by the system. Near the top of the file, add the
+    name of your frien'ds VM (e.g., vm10.sys.cs.hmc.edu).
 
-        *.* @hostname.domainname
+        *.* @vm-name
 
     The \*.\* causes all messages to be logged on the remote host. (If
     you only wanted one type of message to be logged on the remote host,
@@ -269,11 +283,13 @@ edit not only the log file on your machine, but also determine that the
 logs were being saved remotely and delete logs off of the other machine.
 Possible, but more unlikely.
 
+<!--
 ## Important! 
 
 Before moving on, run the following command:
 
     sudo /root/MysteriousScript1
+-->
 
 ## Backups 
 
@@ -301,10 +317,12 @@ system that is completely open source.
 
     Now you will need to switch to the amanda user. Before you can do
     this, though, you need to change the password for the amanda user.
-    **We will provide a password for everyone to use, in lab. Ask for the
-    password when you get this point.**
+
+    **Make a [strong password](http://preshing.com/20110811/xkcd-password-generator)!**
 
         sudo passwd amanda
+
+    **Make a [strong password](http://preshing.com/20110811/xkcd-password-generator)!**
 
     Now you can `su amanda` and create more directories. (Note that the
     -p flag will create the parent directories if they don’t already
@@ -319,10 +337,9 @@ system that is completely open source.
 2.  Run the following commands to retrieve a configuration file for your backups
 
         cd /etc/amanda/MyConfig/        
-        wget http://www.cs.hmc.edu/courses/current/sysadmin/amanda.conf
+        wget http://www.cs.hmc.edu/courses/current/sysadmin/labs/amanda.conf
 
-3.  Open this config file and change the mailto configuration. Also,
-    browse through the file. Notice that the files created in
+3.  Open this config file browse through it. Notice that the files created in
     the previous step are mentioned throughout the config file. Each
     backup will have its own folder and config file. If you want to, you
     can look at the example amanda.conf file that comes with the amanda
@@ -363,8 +380,7 @@ system that is completely open source.
         Amanda Tape Server Host Check
         -----------------------------
         NOTE: tapelist will be created on the next run.
-        Holding disk /amanda/holding: 868352 kB disk space available, using 51200 
-        kB as requested
+        Holding disk /amanda/holding: 3846144 kB disk space available, using 51200 kB as requested
         slot 1: contains an empty volume
         Will write label 'MyData01' to new volume in slot 1.
         NOTE: skipping tape-writable test
@@ -372,11 +388,11 @@ system that is completely open source.
         NOTE: it will be created on the next run.
         NOTE: index dir /amanda/state/index/localhost does not exist
         NOTE: it will be created on the next run.
-        Server check took 0.276 seconds
+        Server check took 0.770 seconds
 
         Amanda Backup Client Hosts Check
         --------------------------------
-        Client check: 1 host checked in 7.089 seconds.  0 problems found.
+        Client check: 1 host checked in 1.105 seconds.  0 problems found.
 
         (brought to you by Amanda 3.3.3)
 
@@ -408,8 +424,7 @@ how to restore the files that have been backed up.
 
 
 1.  There are a few changes you need to make to the amanda client
-    configuration file,
-        `/etc/amanda/amanda-client.conf`. Change the lines in this file to
+    configuration file, `/etc/amanda/amanda-client.conf`. Change the lines in this file to
     match the ones below:
 
         conf "MyConfig"
@@ -431,7 +446,7 @@ how to restore the files that have been backed up.
 3.  Now you’re ready to restore the files. Since you need permission to
     access files on the system, `amrecover` needs to be run with sudo.
 
-        amrecover MyConfig
+        sudo amrecover MyConfig
 
     You should see something similar to the following. Now amrecover
     will prompt you to enter information.
@@ -495,8 +510,11 @@ how to restore the files that have been backed up.
     If you run `ls` in your current directory, `/tmp/test-recovery`, you
     should see a copy of your home directory.
 
-### Backups: Activity
+### Backups: Activity 1
 
+Delete a file from your home directory, then recover it.
+
+### Backups: Activity 2
 
 Now that you’ve successfully backed up your home directory, let’s back
 up more files using the same process. Add a new configuration called
@@ -508,17 +526,19 @@ and change the disk to back up in `/etc/amanda/MyLogs/disklist`. Then
 run `amcheck MyLogs` to check the new configuration and `amdump MyLogs`
 to actually perform the backup.
 
-### Resources 
+### More Resources 
 
 <http://wiki.zmanda.com/index.php/GSWA/Build_a_Basic_Configuration>
 
 <http://wiki.zmanda.com/index.php/GSWA/Recovering_Files>
 
+<!--
 ## Important! 
 
 Before continuing, run the following command:
 
     sudo /root/MysteriousScript2
+-->
 
 ## Cron Jobs 
 
@@ -548,11 +568,27 @@ every Sunday, Wednesday, and Saturday.
 
 ### Cron Jobs: Activity
 
-Add two lines to the crontab file to check the configuration of MyConfig
-at 9pm and run a backup every day at 9:30pm. Set up amcheck so that
+Edit the crontab so that, every day at a given time, it backs up your home
+directory and writes a report to a file in `/amanda`. The report filename should
+include the time at which the report was run.
+
+Some helpful tips:
+
+   - The shell command `prog1 ; prog 2` means "run prog1, then prog2"
+   - The shell command `prog1 && prog2` means "run prog1 and, if it finishes
+   successfully, run prog 2"
+   - The `date` command (and its manpage) can be helpful
+   - Logging for cronjobs may be currently turned off. To turn it on, you can 
+   edit the config file for logging.
+
+<!--
+Set up amcheck so that
 instead of printing to standard output like it usually does, it mails
 the output to root. (Reminder: the amanda commands have man pages just
 like any other command!)
+-->
 
+<!--
 ## SysAdmin: Activity
 Check the root's mail.
+-->
