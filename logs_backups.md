@@ -102,6 +102,9 @@ su
     **Open your auth.log file and see if you can find some of the commands
     you have recently performed using sudo.**
 
+    **Run `tail -f /var/log/auth.log`. In another screen, log in to your VM. Did
+    you see the event show up in your log?
+
 2.  `emerge.log` contains a record of every package emerged on the
     system, whether the emerge finished successfully or not.
 
