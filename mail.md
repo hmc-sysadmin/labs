@@ -145,7 +145,7 @@ commands.
 
 1.  Now you're ready to start postfix. Simply run the command below.
 
-        sudo /etc/init.d/postfix start
+        sudo rc-service postfix start
 
 1.  You should also configure your system so that postfix will start when your
     computer boots up.
@@ -159,10 +159,9 @@ email, you might need to look for it in your spam folder.
 
 The command to send a message is:
 ```
-sendmail EMAIL_ADDRESS
+/usr/sbin/sendmail EMAIL_ADDRESS
 ```
-You may have to use sudo to run sendmail. Now you can type in the message you'd
-like to send. Messages take the form:
+Now you can type in the message you'd like to send. Messages take the form:
 ```
 (FROM: _____)
 (TO: _____)
@@ -176,7 +175,8 @@ cc, and subject) are optional. If you use these fields, type them in without the
 parentheses. Avoid blank lines because they confuse postfix.
 
 ### Change the settings for hostname and domain name
-Did you get your email? The sending address should have the form:
+Did you get your email? If not, you may need to configure a few more things.
+The sending address should have the form:
     from@hostname
 The email address has two parts:
 
@@ -193,7 +193,7 @@ your address looks like @VMNAME.sys.cs.hmc.edu.
 In order for changes to the main.cf file to take effect, run the
 command below. You will need to do this anytime you make changes to main.cf.
 
-    postfix reload
+    sudo rc-service postfix reload
 
 ### Aside: How does sending mail work? 
 
@@ -279,8 +279,17 @@ with postfix using the sendmail command in the command line and sending an email
 through mutt. In particular, what does the `from` field look like in the email
 you sent from mutt? **Note: you may have to look at the raw source of the
 message to see the "true" `from` field.** 
-If it doesn't match the one from sendmail, you may need to
-configure mutt to have the correct `from` field. To do so, create a file in your
+
+If it doesn't match the one from sendmail, you can either configure your machine
+to have the right hostname **or** configure mutt to use the right sender.
+
+To configure your machine the right hostname (preferred option), run
+
+```
+sudo hostname vm<#>
+```
+
+To configure mutt to have the correct `from` field, create a file in your
 home directory called `.muttrc` and add the following line to the file:
 ```
 set from="<user>@<machine-name>.sys.cs.hmc.edu"
@@ -320,8 +329,8 @@ forget to reference them with `hash` since they are database files.
 ## Scavenger Hunt! 
 
 Your final task is to go on a quest! The first step is to send an email
-to bacon@crispy.sys.cs.hmc.edu and follow the instructions from there
-:)
+to bacon@crispy.sys.cs.hmc.edu, with the word "start" in the title. You should
+get a reply; follow the instructions from there :)
 
 ## Bonus: Personalization 
 
