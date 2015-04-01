@@ -295,6 +295,8 @@ Your computer doesn't know how to reach the authoritative name servers unless th
 This kind of additional record is called a glue record.
 In the example above, you can see an additional record containing the IPv6 address for crispy.
 
+\section{/etc/hosts}
+
 You can set an alias for your computer's domain name in the file /etc/hosts, assuming you have the correct permissions. 
 /etc/hosts contains alias-to-IP address mappings for local hosts.
 If you navigate to your /etc/hosts file, you should see several aliases for your machine at 127.0.0.1.
@@ -303,7 +305,14 @@ Whether or not these aliases are used for DNS lookup depends on the settings in 
 Lookups will be resolved according to the order specified by the ``order" keyword in /etc/host.conf. 
 If ``hosts'' is not the first thing listed after ``order,'' DNS lookup will occur according to other methods before referring to the /etc/hosts file.
 
-Now try running
+The following article has some good information about name resolution and /etc/hosts:
+\url{http://bencane.com/2013/10/29/managing-dns-locally-with-etchosts/}
+
+\section{Activities}
+
+\begin{itemize}
+
+\item Try running
 \begin{lstlisting}[basicstyle=\ttfamily, backgroundcolor = \color{lightgray}, language = bash, xleftmargin = 0cm, framexleftmargin = 1em]
 dig knuth.cs.hmc.edu | less
 \end{lstlisting}
@@ -315,6 +324,11 @@ and answer the following questions.
 \item What is the IPv6 address of kay?
 \item What command would you run to do a reverse lookup for knuth? (Hint: see man page for \verb|dig|)
 \end{enumerate}
+
+\item Make it so that the command \texttt{ssh <username>@knuth.cs.hmc.edu} actually tries to ssh to a friend's vm (e.g., vm40.sys.cs.hmc.edu).
+\end{itemize}
+
+\section{More information}
 
 If you'd like more detailed information about the DNS, you can check out the
 resources at the end of this document, and you can read chapter 16 of \textit{
