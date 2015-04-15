@@ -320,7 +320,7 @@ deathbed, he asked that you retrieve some important data from the file
 `lastwords` on his account. Copy his home directory to yours, so that you can
 analyze it:
 
-`sudo cp -r /mnt/sysadmin/passwordLab/michael ~/`
+`cp -r /mnt/sysadmin/passwordsLab/michael ~/`
 
 **Be sure to copy the directory**, so you don't spoil everyone else's fun if you
 modify the files
