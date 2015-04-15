@@ -1,10 +1,7 @@
+[BadPasswords]: https://splashdata.com/press/worst-passwords-of-2014.htm
+
 # Passwords and Encryption
 **Originally created by Lisa Goeller**
-
-*\`\`Passwords are like underwear. You shouldn't leave them out where
-people can see them. You should change them regularly. And you shouldn't
-loan them out to strangers."* *---[Anonymous](http://security.calpoly.edu/sites/security/files/docs/posters/Passwords-Are-Like-Underwear-Poster.pdf
-)*
 
 ## Introduction 
 
@@ -19,33 +16,24 @@ security threats as much as possible.
 It may seem hard to believe, but people will still choose weak passwords
 if given the option. SplashData, a company that manages passwords, posts
 its most common passwords every year. Take a look at the most common
-passwords of 2013, according to SplashData:
+passwords of 2014, according to [SplashData][BadPasswords]
 
-1\. 123456
-
-2\. password
-
-3\. 12345678
-
-4\. qwerty
-
-5\. abc123
-
-6\. 12356789
-
-7\. 111111
-
-8\. 1234567
-
-9\. iloveyou
-
-10\. adobe1234
+   1. 123456    
+   1. password  
+   1. 12345     
+   1. 12345678  
+   1. qwerty    
+   1. 123456789 
+   1. 1234      
+   1. baseball  
+   1. dragon    
+   1. football  
 
 As you can see, weak passwords are still VERY prevalent on the
 interwebs. In this lab, we will explore what you can do with passwords
 and encryption.
 
-## Passwords 
+## Passwords (and how to crack them)
 
 
 The passwords on your system are stored in the `/etc/passwd` and
@@ -75,9 +63,9 @@ to determine the strength of their users' passwords. John checks your current
 passwords against its preloaded list of common passwords to
 see how secure your system's passwords are.
 
-As you know from the reading, John can run in regular, single, wordlist,
-and incremental modes. Just to elaborate, single mode uses a dictionary
-created out of a user's gecos fields, entries in the `/etc/passwd` file
+John can run in regular, single, wordlist,
+and incremental modes. Single mode uses a dictionary
+created out of a user's *gecos fields*, entries in the `/etc/passwd` file
 that contain general information about users like their real name and
 contact information. In incremental mode, John will try all possible
 variations of ASCII characters for passwords up to 13 characters long.
@@ -90,7 +78,7 @@ know if you are not doing it on your own machine.
 
 Now that you know a bit about John, try it out yourself!
 
-Navigate to the nfs-mounted directory `/mnt/local/passwordsLab`. In it, you 
+Navigate to the nfs-mounted directory `/mnt/sysadmin/passwordsLab`. In it, you 
 should see a file called jackson.txt in your home directory. Take a
 look at that file.
 
@@ -104,7 +92,7 @@ John will soon let you know it's completed its job. By default, John
 runs through single crack mode first, then uses a wordlist with rules,
 and finally goes for incremental mode. The first time John cracks a password, it
 will display the result. It also stores the result in the `.john/john.pot` file
-in your home directory. To show them, you'll can run:
+in your home directory. To show them again, you can run:
 
     /usr/sbin/john --show jackson.txt
 
@@ -154,7 +142,7 @@ the list of applications with `pam` support.
 
     sudo ldd /{,usr/}{bin,sbin}/* | grep -B 5 libpam | grep '^/'
 
-You can alternatively see the list of packages that depend on `pam`:
+You can also see the list of packages that depend on `pam`:
 
     equery depends pam
 
@@ -201,6 +189,9 @@ passwords. We will explore some of these actions now.
     `maninthemirror's` password. `cracklib` is thus a very powerful tool
     to secure your system.
 
+    (Remember, the `userdel` command removes users, if you don't want to keep
+    your new user around.)
+
 ### Aside: password dictionaries 
 
 
@@ -215,7 +206,7 @@ If you add another dictionary, you can have cracklib include this
 dictionary and all the other dictionaries when checking password
 strength simply by typing this command:
 
-    create-cracklib-dict /usr/share/dict/*
+    sudo create-cracklib-dict /usr/share/dict/*
 
 `create-cracklib-dict` takes wordlist files and converts them into
 `cracklib` dictionaries so that `cracklib` can use them. `cracklib`
@@ -275,10 +266,12 @@ OpenSSL encryption syntax looks like this:
 
     openssl [encryption type] -in file-to-encrypt -out encrypted-file
 
-Try it out for yourself. Create a file `file.txt` and write a secret
-message inside. Encrypt the file using OpenSSL.
+Try it out for yourself. In your home directory, create a file `file.txt` and 
+write a secret message inside. Encrypt the file using OpenSSL.
 
-    openssl enc -aes256 -in file.txt -out encrypted.txt
+    openssl enc -aes256 -in file.txt -out /mnt/sysadmin/passwordsLab/secrets/<name>_encrypted.txt
+
+where `<name>` is your user name.
 
 This will encrypt your file using AES with a 256-bit key. You'll be prompted
 to enter a passphrase. This is the phrase you'll use to decrypt the
@@ -287,7 +280,7 @@ file, and `less encrypted.txt`. You'll see you can't read your secret
 now that your file has been encrypted. Looks like you'll have to decrypt
 the file.
 
-    openssl enc -d -aes256 -in encrypted.txt -out normal.txt
+    openssl enc -d -aes256 -in /mnt/sysadmin/passwordsLab/secrets/<name>_encrypted.txt -out normal.txt
     cat normal.txt
 
 You can now read your secret!
@@ -327,9 +320,9 @@ deathbed, he asked that you retrieve some important data from the file
 `lastwords` on his account. Copy his home directory to yours, so that you can
 analyze it:
 
-`sudo cp -r /mnt/local/passwordLab/michael ~/`
+`sudo cp -r /mnt/sysadmin/passwordLab/michael ~/`
 
-**Be sure to copy the directory**, so you don't spoil everyone else's fun when you
+**Be sure to copy the directory**, so you don't spoil everyone else's fun if you
 modify the files
 
 Now see if you can read his last words!
