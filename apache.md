@@ -6,18 +6,18 @@
 [Elinks]: http://elinks.or.cz/documentation/html/manual.html-chunked/ch03.html
 
 This week, you'll configure and secure a web server on your VM that is capable
-serving multiple web sites. In all, you'll serve pages from three sites:
+of serving multiple web sites. In all, you'll serve pages from three sites:
 
    - `vm(num).sys.cs.hmc.edu`: the "default" website for your machine
-   - `www.(your server).net`: a virtual host that your machine can serve
-   - `admin.(your server).net`: a password-protected virtual host
+   - `www.(your-server).net`: a virtual host that your machine can serve
+   - `admin.(your-server).net`: a password-protected virtual host
 
 You'll also configure one of the sites to automatically serve pages via an
 encrypted channel, over SSL.
 
 ## Background information
 
-Here is some reading and background information that may be useful for this lab:
+Here is some background information that may be useful for this lab:
 
 Name resolution
   : [A nice article][Name resolution] and reminder about how name resolution works, plus
@@ -30,20 +30,26 @@ Apache
     frameworks and services. Learning Apache and Apache configuration is an
     essential part of any system administrator's training.
 
+Apache logs
+  : The webserver's logs can be useful for debugging. They're located in 
+  `/var/log/apache2`
+
 elinks
   : A [console-based web browser][Elinks] that you can use on your VM to visit web pages.
 
 ## Getting started
 
   1. Write down the URLs for the three websites you'll create. Fill in the
-  blanks with the appropriate information:
+  blanks with the appropriate information ("your-server" can be anything you'd
+  like):
 
-     - `vm(num).sys.cs.hmc.edu`
-     - `www.(your server).net`
-     - `admin.(your server).net`
+     - `http://vm(num).sys.cs.hmc.edu/`
+     - `http://www.(your-server).net/`
+     - `http://admin.(your-server).net/`
  
   1. On your VM, open elinks and visit each site. You should be able to confirm
-  that each site is unreachable.
+  that each site is unreachable (unless you decided to use an existing web 
+  site's name for "your-server")
 
 ## Configure and start the web server on your VM
 
@@ -62,14 +68,29 @@ elinks
     system by running the following command:
 
         sudo emerge --ask --changed-use --deep @world
+
+  *Note*: You can continue on with the rest of the lab (e.g., by logging in to
+  another session) while the `emerge` command is running.
+
+1. The default configuration for elinks sometimes makes it difficult to view
+webpages. You may want to change this configuration. To do so:
+   1. start up elinks (by running the `elinks` command)
+   1. click in the menu bar at the top of the window, and select **S**etup
+   1. select **T**erminal options
+   1. uncheck the option for Transparency
+   1. click **S**ave
+   1. click **O**K
         
-2. Apache uses localhost to connect internally, because of this, you 
-     need to make sure your /etc/hosts file is correctly configured.
+2. Apache uses two names to connect to the machine on which it's running:
+`localhost` and your machine's hostname (which you can compute by running the
+command `hostname`). You need to make sure your /etc/hosts file is correctly, so
+that it connects the `localhost` IP address to the `localhost` name and to your
+machine's hostname. 
      Open `/etc/hosts` and edit the line:
 
-        127.0.0.1       SysAdmin_VM[#] localhost ...
+        127.0.0.1       SysAdminVM1 localhost ...
         
-     Replace the `#` with your VM's number
+     Replace SysAdminVM1 with the output of the `hostname` command
 
 ### Configure apache
 Apache has two main configuration files in the system:
@@ -86,12 +107,8 @@ Take a look at `/etc/conf.d/apache2`. The only active line in this file is:
 
 *(the one on your system may be a bit different)*
 
-This line defines options that will be interpreted by the
-various configuration files using the `<IfDefine option-name>`
-statement to activate or deactivate some part of the whole
-configuration, usually modules. Modules are first and
-third-party patches to Apache that install more functions for
-Apache to use.
+The line defines options that will be interpreted by
+various configuration files.
 
   1. Modify `/etc/apache2/httpd.conf` to add a `ServerName` configuration
         ```      
@@ -101,19 +118,9 @@ Apache to use.
 
 Apache server's conventional configuration file, `httpd.conf`, 
 is actually only an entry file, or an entry point for
-users in a file form, since Apache's whole configuration is
+users in a file form, since Apache's complete configuration is
 split in many files in the `/etc/apache2/` directory, assembled
-and connected together using the **Include** directive.
-
-NOTE: Module configuration files (files in
-`/etc/apache2/modules.d`) almost always start with
-`<IfDefine module-name>`. For this reason, the content of those
-files will ONLY be assembled with the rest of the configuration
-if the `-D module-name` flag in the `APACHE2_OPTS` variable
-mentioned above is set to the matching option. The
-`00_default_settings.conf` configuration file is an exception to
-this rule since it doesn't start with an `IfDefine` statement
-and therefore is always included in the resulting configuration.
+and connected together by Apache.
 
 ### Start Apache
 
@@ -134,9 +141,9 @@ If you're not able to reach the website
 from your VM, try editing `/etc/hosts` so that it looks something like this:
 
     ```
-    127.0.0.1       localhost
-    ::1             localhost
-    (your IP)       vm(num).sys.cs.hmc.edu
+    127.0.0.1            localhost
+    ::1                  localhost
+    (your VM's IP)       vm(num).sys.cs.hmc.edu
     ```
 
 If you're not able to reach the website from your own computer, you can try
@@ -146,12 +153,11 @@ If you're not able to reach the website from your own computer, you can try
 
 "Name-based virtual hosts" is a fancy name for what we implement to
 allow our web servers to serve multiple websites. Without virtual hosts,
-your webserver would only respond to http://localhost and/or
-(your-vm).sys.cs.hmc.edu. We create name-based virtual hosts so that our server
+your webserver would only respond to http://localhost and
+http://vm(num).sys.cs.hmc.edu. We create name-based virtual hosts so that our server
 responds to other prefixes, like www.(your-server).net, or
 admin.(your-server).net. For (your-server), you can name it anything you
-want. *For more information visit:*
-[http://gentoovps.net/apache-vhost](http://gentoovps.net/apache-vhost/).
+want.
 
 Here's how to set up a virtual host on your machine:
 
@@ -160,17 +166,17 @@ Here's how to set up a virtual host on your machine:
 
         cd /etc/apache2/vhosts.d
 
-1.  Create the file `net.(your server).www.conf` and, in the file, type
+1.  Create the file `net.(your-server).www.conf` and, in the file, type
     the following. Try to think about the purpose of each line as you
     write them. Each line is explained below.
 
         <IfDefine DEFAULT_VHOST>
          <VirtualHost *:80>
-          ServerName www.(your server).net
-          ServerAlias (your server).net
-          ServerAdmin (name)@(your server).net
-          DocumentRoot "/var/www/net.(your server).www/htdocs"
-          <Directory "/var/www/net.(your server).www/htdocs">
+          ServerName www.(your-server).net
+          ServerAlias (your-server).net
+          ServerAdmin (name)@(your-server).net
+          DocumentRoot "/var/www/net.(your-server).www/htdocs"
+          <Directory "/var/www/net.(your-server).www/htdocs">
            Options Indexes FollowSymLinks
            AllowOverride All
            Order allow,deny
@@ -218,10 +224,10 @@ Here's how to set up a virtual host on your machine:
         -   `Allow` controls which hosts can access an area of the
             server, as its name suggests.
 
-    *For more detailed explanations and examples, visit:*\
-    <http://httpd.apache.org/docs/2.2/mod/core.html#ifdefine>\
-    *and*\
-    <http://httpd.apache.org/docs/2.2/mod/mod_authz_host.html#allow>
+    *For more detailed explanations and examples, visit:*
+       - [http://gentoovps.net/apache-vhost](http://gentoovps.net/apache-vhost/)
+       -  <http://httpd.apache.org/docs/2.2/mod/core.html#ifdefine>
+       - <http://httpd.apache.org/docs/2.2/mod/mod_authz_host.html#allow>
 
 1.  Make a directory/site root for the new server:
 
@@ -229,6 +235,8 @@ Here's how to set up a virtual host on your machine:
 
     NOTE: The `-p` option tells mkdir to create the parent directories
     of the target directory if they don't exist.
+
+    This directory is where the files for your server's site will live.
 
 1.  In that directory, create an easy `index.html` and add the following to
     the file:
@@ -243,9 +251,8 @@ Here's how to set up a virtual host on your machine:
         </html>
 
 1.  To locally associate the IP address with the server name, edit
-    `/etc/hosts` and add the following values for 127.0.0.1.
-
-        127.0.0.1 ...www.(your server).net
+    `/etc/hosts` and associate www.(your-server).net with the localhost IP
+    address (127.0.0.1)
 
 1.  Reload apache's configuration with the following command:
     ```
@@ -255,12 +262,12 @@ Here's how to set up a virtual host on your machine:
     .**
 
 1.  Check to see if everything's working by using a browser to
-    go to `www.(your server).net`. **You'll need to use a _local_ browser 
+    go to `www.(your-server).net`. **You'll need to use a _local_ browser 
     (i.e., a browser on your VM) to visit the site because only your VM can 
     resolve the URL.**
 
 Let's also create an administrator site that corresponds to the site you just
-created . Call it `admin.(your server).net`. **Follow the steps above to create
+created . Call it `admin.(your-server).net`. **Follow the steps above to create
 a virtual host for this site.** Remember to edit the new admin config file,
 specifically the **ServerName, DocumentRoot, *and* Directory** directives to
 reflect the change from a www page to an admin page. **ServerAlias** can be
@@ -270,14 +277,14 @@ well. When you're done, visit the site in a browser to make sure it's up.
 ## Activity with a parter
 Grab a partner. From your machine, make sure you can visit:
 
-   - your partner's VM website (`http://vm(number).sys.cs.hmc.edu`)
-   - your partner's virtual host (`http://www.(their server).net`)
-   - your partner's virtual admin host (`http://admin.(their server).net`)
+   - your partner's VM website (`http://vm(num).sys.cs.hmc.edu`)
+   - your partner's virtual host (`http://www.(their-server).net`)
+   - your partner's virtual admin host (`http://admin.(their-server).net`)
 
 If you're unable to visit any of these sites, edit `/etc/hosts` and add a line
 like the following:
 
-    partner-ip vm(number).sys.cs.hmc.edu www.(their server).net admin.(their server).net
+    partner-ip vm(num).sys.cs.hmc.edu www.(their-server).net admin.(their-server).net
 
 ## Apache Security Configurations
 
@@ -292,7 +299,7 @@ of the security vulnerabilities in existence today.
 
 ### Step 1: Restrict access based on IP address
 
-We'll restrict access to `admin.(your server).net` so that only certain IP
+We'll restrict access to `admin.(your-server).net` so that only certain IP
 addresses/machines can access the site. Since our website was just created, it
 has some of the weakest security measures available right now. As such, we'll
 just start with something simple and build up from there.
@@ -303,7 +310,7 @@ just start with something simple and build up from there.
   **127.0.0.1**. When you're done, reload apache. Now apache will only
   serve the site's files to the localhost address.
 
-  1.  Make sure that your partner can no longer access `admin.(your server).net`.
+  1.  Make sure that your partner can no longer access `admin.(your-server).net`.
 
   1. Add your partner's IP's to allow them to access your site. Make sure they
   can do it. Now apache will only serve the site's files to the localhost 
@@ -317,7 +324,7 @@ information (and passwords!).
 
 ### Step 2: Protect your site with a password
 
-  1. In `/var/www/net.(your server).admin/htdocs`, create a file called
+  1. In `/var/www/net.(your-server).admin/htdocs`, create a file called
   `.htaccess`. This file is located here instead of the traditional directory
   for config files because, as a rule of `.htaccess` files, they must be located
   in the directory they would be affecting. So it will go in the `htdocs`
@@ -327,7 +334,7 @@ information (and passwords!).
     below):
 
         ```
-        AuthUserFile /var/www/net.(your server).admin/conf/admin-auth
+        AuthUserFile /var/www/net.(your-server).admin/conf/admin-auth
         AuthGroupFile /dev/null
         AuthName "Admin only area"
         AuthType Basic
@@ -363,21 +370,24 @@ information (and passwords!).
   but only the owner can write in it. The backslash indicates that the line
   extends to the next line.
 
-            chgrp apache /var/www/net.(your server).admin/htdocs/.htaccess
+            chgrp apache /var/www/net.(your-server).admin/htdocs/.htaccess
 
-            chmod 640 /var/www/net.(your server).admin/htdocs/.htaccess
+            chmod 640 /var/www/net.(your-server).admin/htdocs/.htaccess
 
   4. Make the directory `conf` in the admin page's directory in `/var/www/net
   .(your-server).admin/`. Once that's done, we will create the password file
   that will contain all the user-password combinations.
         ```
-        htpasswd -c /var/www/net.(your server).admin/conf/admin-auth (USER)
+        htpasswd -c /var/www/net.(your-server).admin/conf/admin-auth (user)
         ```
+
+  where `(USER)` is a name you'd like people to be able to use to log into this
+  website.
 
   Later, if you'd like to add more users, you would use the same command but
   without the `-c` option.
         ```
-        htpasswd /var/www/net.(your server).admin/conf/admin-auth (USER)
+        htpasswd /var/www/net.(your-server).admin/conf/admin-auth (user)
         ```
 
   5.  Now, protect the password file the same way as you did for
@@ -399,11 +409,11 @@ to generating the encryption key and certificate:
 
   1. In your home directory, generate an SSL key
 
-              openssl genrsa 2048 > net.(your server).key
+              openssl genrsa 2048 > net.(your-server).key
 
   1. In your home directory, generate an SSL certificate
         ```
-        openssl req -new -x509 -nodes -sha1 -key net.(your server).key > net.(your server).crt
+        openssl req -new -x509 -nodes -sha1 -key net.(your-server).key > net.(your-server).crt
         ```
   
   In the above command, make sure that the option -sha1 contains the number one
@@ -438,10 +448,10 @@ to generating the encryption key and certificate:
              <IfModule ssl_module>
               <VirtualHost *:443>
                SSLEngine on
-               SSLCertificateFile /etc/apache2/net.(your server).crt
-               SSLCertificateKeyFile /etc/apache2/net.(your server).key
+               SSLCertificateFile /etc/apache2/net.(your-server).crt
+               SSLCertificateKeyFile /etc/apache2/net.(your-server).key
                
-               ServerName admin.(your server).net
+               ServerName admin.(your-server).net
                
                SSLOptions StrictRequire
                SSLProtocol all -SSLv2
@@ -449,8 +459,8 @@ to generating the encryption key and certificate:
                SSLCipherSuite RC4-SHA:AES128-SHA:HIGH:!aNULL:!MD5
                SSLHonorCipherOrder on
                
-               DocumentRoot "/var/www/net.(your server).admin/htdocs"
-               <Directory "/var/www/net.(your server).admin/htdocs">
+               DocumentRoot "/var/www/net.(your-server).admin/htdocs"
+               <Directory "/var/www/net.(your-server).admin/htdocs">
                 SSLRequireSSL
                 Options Indexes FollowSymLinks
                 AllowOverride All
