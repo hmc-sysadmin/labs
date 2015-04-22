@@ -633,86 +633,87 @@ webpages. You may want to change this configuration. To do so:
 <ol class="compact" data-line="8;apache.md:77">
 <li data-line="8;apache.md:77"><span data-line="8;apache.md:77"></span>start up elinks (by running the <span data-line="8;apache.md:77"></span><code class="code code1">elinks</code><span data-line="8;apache.md:77"></span> command)
 </li>
-<li data-line="8;apache.md:78"><span data-line="8;apache.md:78"></span>click in the menu bar at the top of the window, and select <span data-line="8;apache.md:78"></span><strong>S</strong><span data-line="8;apache.md:78"></span>etup
+<li data-line="8;apache.md:78"><span data-line="8;apache.md:78"></span>click in the menu bar at the top of the window, and select <span data-line="8;apache.md:78"></span><strong>S</strong><span data-line="8;apache.md:78"></span>etup <span data-line="8;apache.md:78"></span><em>(if
+clicking doesn&#39;t work, you should be able to press <code class="code code1">ESC</code> to bring up the menu)</em><span data-line="8;apache.md:79"></span>
 </li>
-<li data-line="8;apache.md:79"><span data-line="8;apache.md:79"></span>select <span data-line="8;apache.md:79"></span><strong>T</strong><span data-line="8;apache.md:79"></span>erminal options
+<li data-line="8;apache.md:80"><span data-line="8;apache.md:80"></span>select <span data-line="8;apache.md:80"></span><strong>T</strong><span data-line="8;apache.md:80"></span>erminal options
 </li>
-<li data-line="8;apache.md:80"><span data-line="8;apache.md:80"></span>uncheck the option for Transparency
+<li data-line="8;apache.md:81"><span data-line="8;apache.md:81"></span>uncheck the option for Transparency
 </li>
-<li data-line="8;apache.md:81"><span data-line="8;apache.md:81"></span>click <span data-line="8;apache.md:81"></span><strong>S</strong><span data-line="8;apache.md:81"></span>ave
+<li data-line="8;apache.md:82"><span data-line="8;apache.md:82"></span>click <span data-line="8;apache.md:82"></span><strong>S</strong><span data-line="8;apache.md:82"></span>ave
 </li>
-<li data-line="8;apache.md:82"><span data-line="8;apache.md:82"></span>click <span data-line="8;apache.md:82"></span><strong>O</strong><span data-line="8;apache.md:82"></span>K
-<span data-line="8;apache.md:83"></span> <span data-line="8;apache.md:83"></span> 
+<li data-line="8;apache.md:83"><span data-line="8;apache.md:83"></span>click <span data-line="8;apache.md:83"></span><strong>O</strong><span data-line="8;apache.md:83"></span>K
+<span data-line="8;apache.md:84"></span> <span data-line="8;apache.md:84"></span> 
 </li></ol></li>
-<li data-line="8;apache.md:84">
-<p data-line="8;apache.md:84"><span data-line="8;apache.md:84"></span>Apache uses two names to connect to the machine on which it<span data-line="8;apache.md:84"></span>&#39;<span data-line="8;apache.md:84"></span>s running:
-<span data-line="8;apache.md:85"></span><code class="code code1">localhost</code><span data-line="8;apache.md:85"></span> and your machine<span data-line="8;apache.md:85"></span>&#39;<span data-line="8;apache.md:85"></span>s hostname (which you can compute by running the
-command <span data-line="8;apache.md:86"></span><code class="code code1">hostname</code><span data-line="8;apache.md:86"></span>). You need to make sure your /etc/hosts file is correctly, so
-that it connects the <span data-line="8;apache.md:87"></span><code class="code code1">localhost</code><span data-line="8;apache.md:87"></span> IP address to the <span data-line="8;apache.md:87"></span><code class="code code1">localhost</code><span data-line="8;apache.md:87"></span> name and to your
-machine<span data-line="8;apache.md:88"></span>&#39;<span data-line="8;apache.md:88"></span>s hostname. 
-  Open <span data-line="8;apache.md:89"></span><code class="code code1">/etc/hosts</code><span data-line="8;apache.md:89"></span> and edit the line:
+<li data-line="8;apache.md:85">
+<p data-line="8;apache.md:85"><span data-line="8;apache.md:85"></span>Apache uses two names to connect to the machine on which it<span data-line="8;apache.md:85"></span>&#39;<span data-line="8;apache.md:85"></span>s running:
+<span data-line="8;apache.md:86"></span><code class="code code1">localhost</code><span data-line="8;apache.md:86"></span> and your machine<span data-line="8;apache.md:86"></span>&#39;<span data-line="8;apache.md:86"></span>s hostname (which you can compute by running the
+command <span data-line="8;apache.md:87"></span><code class="code code1">hostname</code><span data-line="8;apache.md:87"></span>). You need to make sure your /etc/hosts file is correctly, so
+that it connects the <span data-line="8;apache.md:88"></span><code class="code code1">localhost</code><span data-line="8;apache.md:88"></span> IP address to the <span data-line="8;apache.md:88"></span><code class="code code1">localhost</code><span data-line="8;apache.md:88"></span> name and to your
+machine<span data-line="8;apache.md:89"></span>&#39;<span data-line="8;apache.md:89"></span>s hostname. 
+  Open <span data-line="8;apache.md:90"></span><code class="code code1">/etc/hosts</code><span data-line="8;apache.md:90"></span> and edit the line:
 </p>
-<pre class="para-block pre-indented" data-line="8;apache.md:91"><code> 127.0.0.1       SysAdminVM1 localhost ...
+<pre class="para-block pre-indented" data-line="8;apache.md:92"><code> 127.0.0.1       SysAdminVM1 localhost ...
  </code></pre>
-<p data-line="8;apache.md:93"><span data-line="8;apache.md:93"></span>  Replace SysAdminVM1 with the output of the <span data-line="8;apache.md:93"></span><code class="code code1">hostname</code><span data-line="8;apache.md:93"></span> command
+<p data-line="8;apache.md:94"><span data-line="8;apache.md:94"></span>  Replace SysAdminVM1 with the output of the <span data-line="8;apache.md:94"></span><code class="code code1">hostname</code><span data-line="8;apache.md:94"></span> command
 </p></li></ol>
-<h3 id="sec-configure-apache"  data-line="8;apache.md:95"  style="bookmark:Configure apache"><span data-line="8;apache.md:95"></span>Configure apache</h3>
-<p class="para-continue" data-line="8;apache.md:96"><span data-line="8;apache.md:96"></span>Apache has two main configuration files in the system:
+<h3 id="sec-configure-apache"  data-line="8;apache.md:96"  style="bookmark:Configure apache"><span data-line="8;apache.md:96"></span>Configure apache</h3>
+<p class="para-continue" data-line="8;apache.md:97"><span data-line="8;apache.md:97"></span>Apache has two main configuration files in the system:
 </p>
-<ul class="list-dash loose" data-line="8;apache.md:98">
-<li data-line="8;apache.md:98">
-<p data-line="8;apache.md:98"><span data-line="8;apache.md:98"></span>Gentoo<span data-line="8;apache.md:98"></span>&#39;<span data-line="8;apache.md:98"></span>s apache2 init script configuration file
-  <span data-line="8;apache.md:99"></span><code class="code code1">/etc/conf.d/apache2</code><span data-line="8;apache.md:99"></span>
+<ul class="list-dash loose" data-line="8;apache.md:99">
+<li data-line="8;apache.md:99">
+<p data-line="8;apache.md:99"><span data-line="8;apache.md:99"></span>Gentoo<span data-line="8;apache.md:99"></span>&#39;<span data-line="8;apache.md:99"></span>s apache2 init script configuration file
+  <span data-line="8;apache.md:100"></span><code class="code code1">/etc/conf.d/apache2</code><span data-line="8;apache.md:100"></span>
 </p></li>
-<li data-line="8;apache.md:101">
-<p data-line="8;apache.md:101"><span data-line="8;apache.md:101"></span>Apache server<span data-line="8;apache.md:101"></span>&#39;<span data-line="8;apache.md:101"></span>s conventional configuration file
-  <span data-line="8;apache.md:102"></span><code class="code code1">/etc/apache2/httpd.conf</code><span data-line="8;apache.md:102"></span>
+<li data-line="8;apache.md:102">
+<p data-line="8;apache.md:102"><span data-line="8;apache.md:102"></span>Apache server<span data-line="8;apache.md:102"></span>&#39;<span data-line="8;apache.md:102"></span>s conventional configuration file
+  <span data-line="8;apache.md:103"></span><code class="code code1">/etc/apache2/httpd.conf</code><span data-line="8;apache.md:103"></span>
 </p></li></ul>
 
-<p data-line="8;apache.md:104"><span data-line="8;apache.md:104"></span>Take a look at <span data-line="8;apache.md:104"></span><code class="code code1">/etc/conf.d/apache2</code><span data-line="8;apache.md:104"></span>. The only active line in this file is:
+<p data-line="8;apache.md:105"><span data-line="8;apache.md:105"></span>Take a look at <span data-line="8;apache.md:105"></span><code class="code code1">/etc/conf.d/apache2</code><span data-line="8;apache.md:105"></span>. The only active line in this file is:
 </p>
-<pre class="para-block pre-indented" data-line="8;apache.md:106"><code>APACHE2_OPTS=&quot;-D DEFAULT_VHOST -D INFO -D SSL -D SSL_DEFAULT_VHOST -D LANGUAGE&quot; </code></pre>
-<p data-line="8;apache.md:108"><span data-line="8;apache.md:108"></span><em>(the one on your system may be a bit different)</em><span data-line="8;apache.md:108"></span>
+<pre class="para-block pre-indented" data-line="8;apache.md:107"><code>APACHE2_OPTS=&quot;-D DEFAULT_VHOST -D INFO -D SSL -D SSL_DEFAULT_VHOST -D LANGUAGE&quot; </code></pre>
+<p data-line="8;apache.md:109"><span data-line="8;apache.md:109"></span><em>(the one on your system may be a bit different)</em><span data-line="8;apache.md:109"></span>
 </p>
-<p class="indent para-continue" data-line="8;apache.md:110"><span data-line="8;apache.md:110"></span>The line defines options that will be interpreted by
+<p class="indent para-continue" data-line="8;apache.md:111"><span data-line="8;apache.md:111"></span>The line defines options that will be interpreted by
 various configuration files.
 </p>
-<ol class="compact" data-line="8;apache.md:113">
-<li data-line="8;apache.md:113"><span data-line="8;apache.md:113"></span>Modify <span data-line="8;apache.md:113"></span><code class="code code1">/etc/apache2/httpd.conf</code><span data-line="8;apache.md:113"></span> to add a <span data-line="8;apache.md:113"></span><code class="code code1">ServerName</code><span data-line="8;apache.md:113"></span> configuration
+<ol class="compact" data-line="8;apache.md:114">
+<li data-line="8;apache.md:114"><span data-line="8;apache.md:114"></span>Modify <span data-line="8;apache.md:114"></span><code class="code code1">/etc/apache2/httpd.conf</code><span data-line="8;apache.md:114"></span> to add a <span data-line="8;apache.md:114"></span><code class="code code1">ServerName</code><span data-line="8;apache.md:114"></span> configuration
 
-<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:114" data-line-code="8;apache.md:115"><code data-line="8;apache.md:115">   ServerName vm(num).sys.cs.hmc.edu</code></pre><span data-line="8;apache.md:117"></span>This line can go anywhere in the file.
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:115" data-line-code="8;apache.md:116"><code data-line="8;apache.md:116">   ServerName vm(num).sys.cs.hmc.edu</code></pre><span data-line="8;apache.md:118"></span>This line can go anywhere in the file.
 </li></ol>
 
-<p data-line="8;apache.md:119"><span data-line="8;apache.md:119"></span>Apache server<span data-line="8;apache.md:119"></span>&#39;<span data-line="8;apache.md:119"></span>s conventional configuration file, <span data-line="8;apache.md:119"></span><code class="code code1">httpd.conf</code><span data-line="8;apache.md:119"></span>, 
+<p data-line="8;apache.md:120"><span data-line="8;apache.md:120"></span>Apache server<span data-line="8;apache.md:120"></span>&#39;<span data-line="8;apache.md:120"></span>s conventional configuration file, <span data-line="8;apache.md:120"></span><code class="code code1">httpd.conf</code><span data-line="8;apache.md:120"></span>, 
 is actually only an entry file, or an entry point for
-users in a file form, since Apache<span data-line="8;apache.md:121"></span>&#39;<span data-line="8;apache.md:121"></span>s complete configuration is
-split in many files in the <span data-line="8;apache.md:122"></span><code class="code code1">/etc/apache2/</code><span data-line="8;apache.md:122"></span> directory, assembled
+users in a file form, since Apache<span data-line="8;apache.md:122"></span>&#39;<span data-line="8;apache.md:122"></span>s complete configuration is
+split in many files in the <span data-line="8;apache.md:123"></span><code class="code code1">/etc/apache2/</code><span data-line="8;apache.md:123"></span> directory, assembled
 and connected together by Apache.
-</p><h3 id="sec-start-apache"  data-line="8;apache.md:125"  style="bookmark:Start Apache"><span data-line="8;apache.md:125"></span>Start Apache</h3>
-<ol class="loose" data-line="8;apache.md:127">
-<li data-line="8;apache.md:127">
-<p data-line="8;apache.md:127"><span data-line="8;apache.md:127"></span>Run the following command to start up your web server
+</p><h3 id="sec-start-apache"  data-line="8;apache.md:126"  style="bookmark:Start Apache"><span data-line="8;apache.md:126"></span>Start Apache</h3>
+<ol class="loose" data-line="8;apache.md:128">
+<li data-line="8;apache.md:128">
+<p data-line="8;apache.md:128"><span data-line="8;apache.md:128"></span>Run the following command to start up your web server
 </p>
-<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:129" data-line-code="8;apache.md:130"><code data-line="8;apache.md:130">sudo rc-service apache2 start</code></pre></li></ol>
-<h2 id="sec-visit-your-website"  data-line="8;apache.md:133"  style="bookmark:Visit your website"><span data-line="8;apache.md:133"></span>Visit your website</h2>
-<p data-line="8;apache.md:134"><span data-line="8;apache.md:134"></span>Try to visit the URL for <span data-line="8;apache.md:134"></span><code class="code code1">vm(num).sys.cs.hmc.edu</code><span data-line="8;apache.md:134"></span>, both on your VM (using elinks)
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:130" data-line-code="8;apache.md:131"><code data-line="8;apache.md:131">sudo rc-service apache2 start</code></pre></li></ol>
+<h2 id="sec-visit-your-website"  data-line="8;apache.md:134"  style="bookmark:Visit your website"><span data-line="8;apache.md:134"></span>Visit your website</h2>
+<p data-line="8;apache.md:135"><span data-line="8;apache.md:135"></span>Try to visit the URL for <span data-line="8;apache.md:135"></span><code class="code code1">vm(num).sys.cs.hmc.edu</code><span data-line="8;apache.md:135"></span>, both on your VM (using elinks)
 and in a browser on your own machine. 
 </p>
-<p class="indent" data-line="8;apache.md:137"><span data-line="8;apache.md:137"></span><em>Note:</em><span data-line="8;apache.md:137"></span> The websites on the VMs are accessible only to visitors with a Claremont
+<p class="indent" data-line="8;apache.md:138"><span data-line="8;apache.md:138"></span><em>Note:</em><span data-line="8;apache.md:138"></span> The websites on the VMs are accessible only to visitors with a Claremont
 IP address.
 </p>
-<p class="indent" data-line="8;apache.md:140"><span data-line="8;apache.md:140"></span>If you<span data-line="8;apache.md:140"></span>&#39;<span data-line="8;apache.md:140"></span>re not able to reach the website
-from your VM, try editing <span data-line="8;apache.md:141"></span><code class="code code1">/etc/hosts</code><span data-line="8;apache.md:141"></span> so that it looks something like this:
+<p class="indent" data-line="8;apache.md:141"><span data-line="8;apache.md:141"></span>If you<span data-line="8;apache.md:141"></span>&#39;<span data-line="8;apache.md:141"></span>re not able to reach the website
+from your VM, try editing <span data-line="8;apache.md:142"></span><code class="code code1">/etc/hosts</code><span data-line="8;apache.md:142"></span> so that it looks something like this:
 </p>
-<pre class="para-block pre-indented" data-line="8;apache.md:143"><code>```
+<pre class="para-block pre-indented" data-line="8;apache.md:144"><code>```
 127.0.0.1            localhost
 ::1                  localhost
 (your VM&#39;s IP)       vm(num).sys.cs.hmc.edu
 ```</code></pre>
-<p data-line="8;apache.md:149"><span data-line="8;apache.md:149"></span>If you<span data-line="8;apache.md:149"></span>&#39;<span data-line="8;apache.md:149"></span>re not able to reach the website from your own computer, you can try
-<span data-line="8;apache.md:150"></span><a href="http://technet.microsoft.com/en-us/library/cc958812.aspx">configuring the local name database</a><span data-line="8;apache.md:150"></span> in a similar way.
-</p><h2 id="sec-creating-name-based-virtual-hosts"  data-line="8;apache.md:152"  style="bookmark:Creating Name-based Virtual Hosts"><span data-line="8;apache.md:152"></span>Creating Name-based Virtual Hosts</h2>
-<p data-line="8;apache.md:154"><span data-line="8;apache.md:154"></span>&#8220;Name-based virtual hosts&#8221;<span data-line="8;apache.md:154"></span> is a fancy name for what we implement to
+<p data-line="8;apache.md:150"><span data-line="8;apache.md:150"></span>If you<span data-line="8;apache.md:150"></span>&#39;<span data-line="8;apache.md:150"></span>re not able to reach the website from your own computer, you can try
+<span data-line="8;apache.md:151"></span><a href="http://technet.microsoft.com/en-us/library/cc958812.aspx">configuring the local name database</a><span data-line="8;apache.md:151"></span> in a similar way.
+</p><h2 id="sec-creating-name-based-virtual-hosts"  data-line="8;apache.md:153"  style="bookmark:Creating Name-based Virtual Hosts"><span data-line="8;apache.md:153"></span>Creating Name-based Virtual Hosts</h2>
+<p data-line="8;apache.md:155"><span data-line="8;apache.md:155"></span>&#8220;Name-based virtual hosts&#8221;<span data-line="8;apache.md:155"></span> is a fancy name for what we implement to
 allow our web servers to serve multiple websites. Without virtual hosts,
 your webserver would only respond to http://localhost and
 http://vm(num).sys.cs.hmc.edu. We create name-based virtual hosts so that our server
@@ -720,20 +721,20 @@ responds to other prefixes, like www.(your-server).net, or
 admin.(your-server).net. For (your-server), you can name it anything you
 want.
 </p>
-<p class="indent para-continue" data-line="8;apache.md:162"><span data-line="8;apache.md:162"></span>Here<span data-line="8;apache.md:162"></span>&#39;<span data-line="8;apache.md:162"></span>s how to set up a virtual host on your machine:
+<p class="indent para-continue" data-line="8;apache.md:163"><span data-line="8;apache.md:163"></span>Here<span data-line="8;apache.md:163"></span>&#39;<span data-line="8;apache.md:163"></span>s how to set up a virtual host on your machine:
 </p>
-<ol class="loose" data-line="8;apache.md:164">
-<li data-line="8;apache.md:164">
-<p data-line="8;apache.md:164"><span data-line="8;apache.md:164"></span>Go to the directory that stores all the configuration files of
+<ol class="loose" data-line="8;apache.md:165">
+<li data-line="8;apache.md:165">
+<p data-line="8;apache.md:165"><span data-line="8;apache.md:165"></span>Go to the directory that stores all the configuration files of
 virtual hosts.
 </p>
-<pre class="para-block pre-indented" data-line="8;apache.md:167"><code>cd /etc/apache2/vhosts.d</code></pre></li>
-<li data-line="8;apache.md:169">
-<p data-line="8;apache.md:169"><span data-line="8;apache.md:169"></span>Create the file <span data-line="8;apache.md:169"></span><code class="code code1">net.(your-server).www.conf</code><span data-line="8;apache.md:169"></span> and, in the file, type
+<pre class="para-block pre-indented" data-line="8;apache.md:168"><code>cd /etc/apache2/vhosts.d</code></pre></li>
+<li data-line="8;apache.md:170">
+<p data-line="8;apache.md:170"><span data-line="8;apache.md:170"></span>Create the file <span data-line="8;apache.md:170"></span><code class="code code1">net.(your-server).www.conf</code><span data-line="8;apache.md:170"></span> and, in the file, type
 the following. Try to think about the purpose of each line as you
 write them. Each line is explained below.
 </p>
-<pre class="para-block pre-indented" data-line="8;apache.md:173"><code>&lt;IfDefine DEFAULT_VHOST&gt;
+<pre class="para-block pre-indented" data-line="8;apache.md:174"><code>&lt;IfDefine DEFAULT_VHOST&gt;
  &lt;VirtualHost *:80&gt;
   ServerName www.(your-server).net
   ServerAlias (your-server).net
@@ -747,85 +748,85 @@ write them. Each line is explained below.
   &lt;/Directory&gt;
  &lt;/VirtualHost&gt;
 &lt;/IfDefine&gt;</code></pre>
-<ul class="list-dash loose" data-line="8;apache.md:188">
-<li data-line="8;apache.md:188">
-<p data-line="8;apache.md:188"><span data-line="8;apache.md:188"></span>The <span data-line="8;apache.md:188"></span><code class="code code1">&lt;IfDefine test&gt;...&lt;/IfDefine&gt;</code><span data-line="8;apache.md:188"></span> section is used to mark
+<ul class="list-dash loose" data-line="8;apache.md:189">
+<li data-line="8;apache.md:189">
+<p data-line="8;apache.md:189"><span data-line="8;apache.md:189"></span>The <span data-line="8;apache.md:189"></span><code class="code code1">&lt;IfDefine test&gt;...&lt;/IfDefine&gt;</code><span data-line="8;apache.md:189"></span> section is used to mark
 directives that are conditional. The directives within an
-<span data-line="8;apache.md:190"></span><code class="code code1">&lt;IfDefine&gt;</code><span data-line="8;apache.md:190"></span> section are only processed if the test is true. If
+<span data-line="8;apache.md:191"></span><code class="code code1">&lt;IfDefine&gt;</code><span data-line="8;apache.md:191"></span> section are only processed if the test is true. If
 test is false, everything between the start and end markers is
 ignored.
 </p></li>
-<li data-line="8;apache.md:194">
-<p data-line="8;apache.md:194"><span data-line="8;apache.md:194"></span>The <span data-line="8;apache.md:194"></span><code class="code code1">&lt;VirtualHost&gt;...&lt;/VirtualHost&gt;</code><span data-line="8;apache.md:194"></span> section encloses a group of
+<li data-line="8;apache.md:195">
+<p data-line="8;apache.md:195"><span data-line="8;apache.md:195"></span>The <span data-line="8;apache.md:195"></span><code class="code code1">&lt;VirtualHost&gt;...&lt;/VirtualHost&gt;</code><span data-line="8;apache.md:195"></span> section encloses a group of
 directives that apply only to a particular virtual host. It also
 states which IP address(es) the vhost replies to.
 </p>
-<ul class="list-dash loose" data-line="8;apache.md:198">
-<li data-line="8;apache.md:198">
-<p data-line="8;apache.md:198"><span data-line="8;apache.md:198"></span><code class="code code1">ServerName</code><span data-line="8;apache.md:198"></span> is pretty self-explanatory in that it
-establishes the name of the server. <span data-line="8;apache.md:199"></span><code class="code code1">ServerAlias</code><span data-line="8;apache.md:199"></span> is also
-self-explanatory in that it sets the other possible url<span data-line="8;apache.md:200"></span>&#39;<span data-line="8;apache.md:200"></span>s
+<ul class="list-dash loose" data-line="8;apache.md:199">
+<li data-line="8;apache.md:199">
+<p data-line="8;apache.md:199"><span data-line="8;apache.md:199"></span><code class="code code1">ServerName</code><span data-line="8;apache.md:199"></span> is pretty self-explanatory in that it
+establishes the name of the server. <span data-line="8;apache.md:200"></span><code class="code code1">ServerAlias</code><span data-line="8;apache.md:200"></span> is also
+self-explanatory in that it sets the other possible url<span data-line="8;apache.md:201"></span>&#39;<span data-line="8;apache.md:201"></span>s
 that can redirect to this particular virtual host.
 </p></li>
-<li data-line="8;apache.md:203">
-<p data-line="8;apache.md:203"><span data-line="8;apache.md:203"></span><code class="code code1">ServerAdmin</code><span data-line="8;apache.md:203"></span> sets the contact address that the server
+<li data-line="8;apache.md:204">
+<p data-line="8;apache.md:204"><span data-line="8;apache.md:204"></span><code class="code code1">ServerAdmin</code><span data-line="8;apache.md:204"></span> sets the contact address that the server
 includes in any error messages it returns to the client.
 </p></li>
-<li data-line="8;apache.md:206">
-<p data-line="8;apache.md:206"><span data-line="8;apache.md:206"></span><code class="code code1">DocumentRoot</code><span data-line="8;apache.md:206"></span> sets the directory from which httpd will
+<li data-line="8;apache.md:207">
+<p data-line="8;apache.md:207"><span data-line="8;apache.md:207"></span><code class="code code1">DocumentRoot</code><span data-line="8;apache.md:207"></span> sets the directory from which httpd will
 serve files.
 </p></li></ul>
 </li>
-<li data-line="8;apache.md:209">
-<p data-line="8;apache.md:209"><span data-line="8;apache.md:209"></span>The <span data-line="8;apache.md:209"></span><code class="code code1">&lt;Directory&gt;...&lt;/Directory&gt;</code><span data-line="8;apache.md:209"></span> section encloses directives
+<li data-line="8;apache.md:210">
+<p data-line="8;apache.md:210"><span data-line="8;apache.md:210"></span>The <span data-line="8;apache.md:210"></span><code class="code code1">&lt;Directory&gt;...&lt;/Directory&gt;</code><span data-line="8;apache.md:210"></span> section encloses directives
 that will apply to the named directory, sub-directories of that
 directory, and the files within the respective directories.
 </p>
-<ul class="list-dash loose" data-line="8;apache.md:213">
-<li data-line="8;apache.md:213">
-<p data-line="8;apache.md:213"><span data-line="8;apache.md:213"></span>The <span data-line="8;apache.md:213"></span><code class="code code1">Options</code><span data-line="8;apache.md:213"></span> directive controls which server features,
+<ul class="list-dash loose" data-line="8;apache.md:214">
+<li data-line="8;apache.md:214">
+<p data-line="8;apache.md:214"><span data-line="8;apache.md:214"></span>The <span data-line="8;apache.md:214"></span><code class="code code1">Options</code><span data-line="8;apache.md:214"></span> directive controls which server features,
 usually those considered extra features, are available in a
 particular directory.
 </p></li>
-<li data-line="8;apache.md:217">
-<p data-line="8;apache.md:217"><span data-line="8;apache.md:217"></span><code class="code code1">AllowOverride</code><span data-line="8;apache.md:217"></span> establishes which directives in <span data-line="8;apache.md:217"></span><code class="code code1">.htaccess</code><span data-line="8;apache.md:217"></span>
+<li data-line="8;apache.md:218">
+<p data-line="8;apache.md:218"><span data-line="8;apache.md:218"></span><code class="code code1">AllowOverride</code><span data-line="8;apache.md:218"></span> establishes which directives in <span data-line="8;apache.md:218"></span><code class="code code1">.htaccess</code><span data-line="8;apache.md:218"></span>
 files are allowed to override earlier configurations.
 </p></li>
-<li data-line="8;apache.md:220">
-<p data-line="8;apache.md:220"><span data-line="8;apache.md:220"></span>The <span data-line="8;apache.md:220"></span><code class="code code1">Order</code><span data-line="8;apache.md:220"></span> directive controls the default access state of
-the site/page, and the order in which the <span data-line="8;apache.md:221"></span><code class="code code1">Allow</code><span data-line="8;apache.md:221"></span> and <span data-line="8;apache.md:221"></span><code class="code code1">Deny</code><span data-line="8;apache.md:221"></span>
+<li data-line="8;apache.md:221">
+<p data-line="8;apache.md:221"><span data-line="8;apache.md:221"></span>The <span data-line="8;apache.md:221"></span><code class="code code1">Order</code><span data-line="8;apache.md:221"></span> directive controls the default access state of
+the site/page, and the order in which the <span data-line="8;apache.md:222"></span><code class="code code1">Allow</code><span data-line="8;apache.md:222"></span> and <span data-line="8;apache.md:222"></span><code class="code code1">Deny</code><span data-line="8;apache.md:222"></span>
 directives are evaluated.
 </p></li>
-<li data-line="8;apache.md:224">
-<p data-line="8;apache.md:224"><span data-line="8;apache.md:224"></span><code class="code code1">Allow</code><span data-line="8;apache.md:224"></span> controls which hosts can access an area of the
+<li data-line="8;apache.md:225">
+<p data-line="8;apache.md:225"><span data-line="8;apache.md:225"></span><code class="code code1">Allow</code><span data-line="8;apache.md:225"></span> controls which hosts can access an area of the
 server, as its name suggests.
 </p></li></ul>
 </li></ul>
 
-<p data-line="8;apache.md:227"><span data-line="8;apache.md:227"></span><em>For more detailed explanations and examples, visit:</em><span data-line="8;apache.md:227"></span>
+<p data-line="8;apache.md:228"><span data-line="8;apache.md:228"></span><em>For more detailed explanations and examples, visit:</em><span data-line="8;apache.md:228"></span>
 </p>
-<ul class="list-dash compact" data-line="8;apache.md:228">
-<li data-line="8;apache.md:228"><span data-line="8;apache.md:228"></span><a href="http://gentoovps.net/apache-vhost/">http://gentoovps.net/apache-vhost</a><span data-line="8;apache.md:228"></span>
+<ul class="list-dash compact" data-line="8;apache.md:229">
+<li data-line="8;apache.md:229"><span data-line="8;apache.md:229"></span><a href="http://gentoovps.net/apache-vhost/">http://gentoovps.net/apache-vhost</a><span data-line="8;apache.md:229"></span>
 </li>
-<li data-line="8;apache.md:229"><span data-line="8;apache.md:229"></span><a href="http://httpd.apache.org/docs/2.2/mod/core.html#ifdefine">http://httpd.apache.org/docs/2.2/mod/core.html#ifdefine</a><span data-line="8;apache.md:229"></span>
+<li data-line="8;apache.md:230"><span data-line="8;apache.md:230"></span><a href="http://httpd.apache.org/docs/2.2/mod/core.html#ifdefine">http://httpd.apache.org/docs/2.2/mod/core.html#ifdefine</a><span data-line="8;apache.md:230"></span>
 </li>
-<li data-line="8;apache.md:230"><span data-line="8;apache.md:230"></span><a href="http://httpd.apache.org/docs/2.2/mod/mod_authz_host.html#allow">http://httpd.apache.org/docs/2.2/mod/mod_authz_host.html#allow</a><span data-line="8;apache.md:230"></span>
+<li data-line="8;apache.md:231"><span data-line="8;apache.md:231"></span><a href="http://httpd.apache.org/docs/2.2/mod/mod_authz_host.html#allow">http://httpd.apache.org/docs/2.2/mod/mod_authz_host.html#allow</a><span data-line="8;apache.md:231"></span>
 </li></ul>
 </li>
-<li data-line="8;apache.md:232">
-<p data-line="8;apache.md:232"><span data-line="8;apache.md:232"></span>Make a directory/site root for the new server:
+<li data-line="8;apache.md:233">
+<p data-line="8;apache.md:233"><span data-line="8;apache.md:233"></span>Make a directory/site root for the new server:
 </p>
-<pre class="para-block pre-indented" data-line="8;apache.md:234"><code>mkdir -p /var/www/net.(your-server).www/htdocs</code></pre>
-<p data-line="8;apache.md:236"><span data-line="8;apache.md:236"></span>NOTE: The <span data-line="8;apache.md:236"></span><code class="code code1">-p</code><span data-line="8;apache.md:236"></span> option tells mkdir to create the parent directories
-of the target directory if they don<span data-line="8;apache.md:237"></span>&#39;<span data-line="8;apache.md:237"></span>t exist.
+<pre class="para-block pre-indented" data-line="8;apache.md:235"><code>mkdir -p /var/www/net.(your-server).www/htdocs</code></pre>
+<p data-line="8;apache.md:237"><span data-line="8;apache.md:237"></span>NOTE: The <span data-line="8;apache.md:237"></span><code class="code code1">-p</code><span data-line="8;apache.md:237"></span> option tells mkdir to create the parent directories
+of the target directory if they don<span data-line="8;apache.md:238"></span>&#39;<span data-line="8;apache.md:238"></span>t exist.
 </p>
-<p data-line="8;apache.md:239"><span data-line="8;apache.md:239"></span>This directory is where the files for your server<span data-line="8;apache.md:239"></span>&#39;<span data-line="8;apache.md:239"></span>s site will live.
+<p data-line="8;apache.md:240"><span data-line="8;apache.md:240"></span>This directory is where the files for your server<span data-line="8;apache.md:240"></span>&#39;<span data-line="8;apache.md:240"></span>s site will live.
 </p></li>
-<li data-line="8;apache.md:241">
-<p data-line="8;apache.md:241"><span data-line="8;apache.md:241"></span>In that directory, create an easy <span data-line="8;apache.md:241"></span><code class="code code1">index.html</code><span data-line="8;apache.md:241"></span> and add the following to
+<li data-line="8;apache.md:242">
+<p data-line="8;apache.md:242"><span data-line="8;apache.md:242"></span>In that directory, create an easy <span data-line="8;apache.md:242"></span><code class="code code1">index.html</code><span data-line="8;apache.md:242"></span> and add the following to
 the file:
 </p>
-<pre class="para-block pre-indented" data-line="8;apache.md:244"><code>&lt;html&gt;
+<pre class="para-block pre-indented" data-line="8;apache.md:245"><code>&lt;html&gt;
  &lt;head&gt; 
   &lt;title&gt;www&lt;/title&gt;
  &lt;/head&gt;
@@ -833,96 +834,96 @@ the file:
  &lt;h1&gt;This is the www page&lt;/h1&gt;
  &lt;/body&gt;
 &lt;/html&gt;</code></pre></li>
-<li data-line="8;apache.md:253">
-<p data-line="8;apache.md:253"><span data-line="8;apache.md:253"></span>To locally associate the IP address with the server name, edit
-<span data-line="8;apache.md:254"></span><code class="code code1">/etc/hosts</code><span data-line="8;apache.md:254"></span> and associate www.(your-server).net with the localhost IP
+<li data-line="8;apache.md:254">
+<p data-line="8;apache.md:254"><span data-line="8;apache.md:254"></span>To locally associate the IP address with the server name, edit
+<span data-line="8;apache.md:255"></span><code class="code code1">/etc/hosts</code><span data-line="8;apache.md:255"></span> and associate www.(your-server).net with the localhost IP
 address (127.0.0.1)
 </p></li>
-<li data-line="8;apache.md:257">
-<p data-line="8;apache.md:257"><span data-line="8;apache.md:257"></span>Reload apache<span data-line="8;apache.md:257"></span>&#39;<span data-line="8;apache.md:257"></span>s configuration with the following command:
+<li data-line="8;apache.md:258">
+<p data-line="8;apache.md:258"><span data-line="8;apache.md:258"></span>Reload apache<span data-line="8;apache.md:258"></span>&#39;<span data-line="8;apache.md:258"></span>s configuration with the following command:
 </p>
-<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:258" data-line-code="8;apache.md:259"><code data-line="8;apache.md:259">sudo rc-service apache2 reload</code></pre>
-<p data-line="8;apache.md:261"><span data-line="8;apache.md:261"></span><strong>Every time you reconfigure apache, you&#39;ll need to reload the configuration
-.</strong><span data-line="8;apache.md:262"></span>
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:259" data-line-code="8;apache.md:260"><code data-line="8;apache.md:260">sudo rc-service apache2 reload</code></pre>
+<p data-line="8;apache.md:262"><span data-line="8;apache.md:262"></span><strong>Every time you reconfigure apache, you&#39;ll need to reload the configuration
+.</strong><span data-line="8;apache.md:263"></span>
 </p></li>
-<li data-line="8;apache.md:264">
-<p data-line="8;apache.md:264"><span data-line="8;apache.md:264"></span>Check to see if everything<span data-line="8;apache.md:264"></span>&#39;<span data-line="8;apache.md:264"></span>s working by using a browser to
-go to <span data-line="8;apache.md:265"></span><code class="code code1">www.(your-server).net</code><span data-line="8;apache.md:265"></span>. <span data-line="8;apache.md:265"></span><strong>You&#39;ll need to use a <em>local</em> browser 
+<li data-line="8;apache.md:265">
+<p data-line="8;apache.md:265"><span data-line="8;apache.md:265"></span>Check to see if everything<span data-line="8;apache.md:265"></span>&#39;<span data-line="8;apache.md:265"></span>s working by using a browser to
+go to <span data-line="8;apache.md:266"></span><code class="code code1">www.(your-server).net</code><span data-line="8;apache.md:266"></span>. <span data-line="8;apache.md:266"></span><strong>You&#39;ll need to use a <em>local</em> browser 
 (i.e., a browser on your VM) to visit the site because only your VM can 
-resolve the URL.</strong><span data-line="8;apache.md:267"></span>
+resolve the URL.</strong><span data-line="8;apache.md:268"></span>
 </p></li></ol>
 
-<p data-line="8;apache.md:269"><span data-line="8;apache.md:269"></span>Let<span data-line="8;apache.md:269"></span>&#39;<span data-line="8;apache.md:269"></span>s also create an administrator site that corresponds to the site you just
-created . Call it <span data-line="8;apache.md:270"></span><code class="code code1">admin.(your-server).net</code><span data-line="8;apache.md:270"></span>. <span data-line="8;apache.md:270"></span><strong>Follow the steps above to create
-a virtual host for this site.</strong><span data-line="8;apache.md:271"></span> Remember to edit the new admin config file,
-specifically the <span data-line="8;apache.md:272"></span><strong>ServerName, DocumentRoot, <em>and</em> Directory</strong><span data-line="8;apache.md:272"></span> directives to
-reflect the change from a www page to an admin page. <span data-line="8;apache.md:273"></span><strong>ServerAlias</strong><span data-line="8;apache.md:273"></span> can be
-deleted. Also, don<span data-line="8;apache.md:274"></span>&#39;<span data-line="8;apache.md:274"></span>t forget to make the necessary changes to the HTML file as
-well. When you<span data-line="8;apache.md:275"></span>&#39;<span data-line="8;apache.md:275"></span>re done, visit the site in a browser to make sure it<span data-line="8;apache.md:275"></span>&#39;<span data-line="8;apache.md:275"></span>s up.
-</p><h2 id="sec-activity-with-a-parter"  data-line="8;apache.md:277"  style="bookmark:Activity with a parter"><span data-line="8;apache.md:277"></span>Activity with a parter</h2>
-<p class="para-continue" data-line="8;apache.md:278"><span data-line="8;apache.md:278"></span>Grab a partner. From your machine, make sure you can visit:
+<p data-line="8;apache.md:270"><span data-line="8;apache.md:270"></span>Let<span data-line="8;apache.md:270"></span>&#39;<span data-line="8;apache.md:270"></span>s also create an administrator site that corresponds to the site you just
+created . Call it <span data-line="8;apache.md:271"></span><code class="code code1">admin.(your-server).net</code><span data-line="8;apache.md:271"></span>. <span data-line="8;apache.md:271"></span><strong>Follow the steps above to create
+a virtual host for this site.</strong><span data-line="8;apache.md:272"></span> Remember to edit the new admin config file,
+specifically the <span data-line="8;apache.md:273"></span><strong>ServerName, DocumentRoot, <em>and</em> Directory</strong><span data-line="8;apache.md:273"></span> directives to
+reflect the change from a www page to an admin page. <span data-line="8;apache.md:274"></span><strong>ServerAlias</strong><span data-line="8;apache.md:274"></span> can be
+deleted. Also, don<span data-line="8;apache.md:275"></span>&#39;<span data-line="8;apache.md:275"></span>t forget to make the necessary changes to the HTML file as
+well. When you<span data-line="8;apache.md:276"></span>&#39;<span data-line="8;apache.md:276"></span>re done, visit the site in a browser to make sure it<span data-line="8;apache.md:276"></span>&#39;<span data-line="8;apache.md:276"></span>s up.
+</p><h2 id="sec-activity-with-a-parter"  data-line="8;apache.md:278"  style="bookmark:Activity with a parter"><span data-line="8;apache.md:278"></span>Activity with a parter</h2>
+<p class="para-continue" data-line="8;apache.md:279"><span data-line="8;apache.md:279"></span>Grab a partner. From your machine, make sure you can visit:
 </p>
-<ul class="list-dash compact" data-line="8;apache.md:280">
-<li data-line="8;apache.md:280"><span data-line="8;apache.md:280"></span>your partner<span data-line="8;apache.md:280"></span>&#39;<span data-line="8;apache.md:280"></span>s VM website (<span data-line="8;apache.md:280"></span><code class="code code1">http://vm(num).sys.cs.hmc.edu</code><span data-line="8;apache.md:280"></span>)
+<ul class="list-dash compact" data-line="8;apache.md:281">
+<li data-line="8;apache.md:281"><span data-line="8;apache.md:281"></span>your partner<span data-line="8;apache.md:281"></span>&#39;<span data-line="8;apache.md:281"></span>s VM website (<span data-line="8;apache.md:281"></span><code class="code code1">http://vm(num).sys.cs.hmc.edu</code><span data-line="8;apache.md:281"></span>)
 </li>
-<li data-line="8;apache.md:281"><span data-line="8;apache.md:281"></span>your partner<span data-line="8;apache.md:281"></span>&#39;<span data-line="8;apache.md:281"></span>s virtual host (<span data-line="8;apache.md:281"></span><code class="code code1">http://www.(their-server).net</code><span data-line="8;apache.md:281"></span>)
+<li data-line="8;apache.md:282"><span data-line="8;apache.md:282"></span>your partner<span data-line="8;apache.md:282"></span>&#39;<span data-line="8;apache.md:282"></span>s virtual host (<span data-line="8;apache.md:282"></span><code class="code code1">http://www.(their-server).net</code><span data-line="8;apache.md:282"></span>)
 </li>
-<li data-line="8;apache.md:282"><span data-line="8;apache.md:282"></span>your partner<span data-line="8;apache.md:282"></span>&#39;<span data-line="8;apache.md:282"></span>s virtual admin host (<span data-line="8;apache.md:282"></span><code class="code code1">http://admin.(their-server).net</code><span data-line="8;apache.md:282"></span>)
+<li data-line="8;apache.md:283"><span data-line="8;apache.md:283"></span>your partner<span data-line="8;apache.md:283"></span>&#39;<span data-line="8;apache.md:283"></span>s virtual admin host (<span data-line="8;apache.md:283"></span><code class="code code1">http://admin.(their-server).net</code><span data-line="8;apache.md:283"></span>)
 </li></ul>
 
-<p data-line="8;apache.md:284"><span data-line="8;apache.md:284"></span>If you<span data-line="8;apache.md:284"></span>&#39;<span data-line="8;apache.md:284"></span>re unable to visit any of these sites, edit <span data-line="8;apache.md:284"></span><code class="code code1">/etc/hosts</code><span data-line="8;apache.md:284"></span> and add a line
+<p data-line="8;apache.md:285"><span data-line="8;apache.md:285"></span>If you<span data-line="8;apache.md:285"></span>&#39;<span data-line="8;apache.md:285"></span>re unable to visit any of these sites, edit <span data-line="8;apache.md:285"></span><code class="code code1">/etc/hosts</code><span data-line="8;apache.md:285"></span> and add a line
 like the following:
 </p>
-<pre class="para-block pre-indented" data-line="8;apache.md:287"><code>partner-ip vm(num).sys.cs.hmc.edu www.(their-server).net admin.(their-server).net</code></pre><h2 id="sec-apache-security-configurations"  data-line="8;apache.md:289"  style="bookmark:Apache Security Configurations"><span data-line="8;apache.md:289"></span>Apache Security Configurations</h2>
-<p data-line="8;apache.md:291"><span data-line="8;apache.md:291"></span><em>Note: you&#39;ll need your partner for part of this work</em><span data-line="8;apache.md:291"></span>
+<pre class="para-block pre-indented" data-line="8;apache.md:288"><code>partner-ip vm(num).sys.cs.hmc.edu www.(their-server).net admin.(their-server).net</code></pre><h2 id="sec-apache-security-configurations"  data-line="8;apache.md:290"  style="bookmark:Apache Security Configurations"><span data-line="8;apache.md:290"></span>Apache Security Configurations</h2>
+<p data-line="8;apache.md:292"><span data-line="8;apache.md:292"></span><em>Note: you&#39;ll need your partner for part of this work</em><span data-line="8;apache.md:292"></span>
 </p>
-<p class="indent" data-line="8;apache.md:293"><span data-line="8;apache.md:293"></span>As a system administrator it is your job to not only make sure that the
+<p class="indent" data-line="8;apache.md:294"><span data-line="8;apache.md:294"></span>As a system administrator it is your job to not only make sure that the
 system is fully functioning, but also to make sure the system is secure
 and safe. There are a wide variety of nefarious exploits and incorrect
 usages that open up when your system is hosting a web service, including
 Apache. But if properly configured, it is possible to prevent a majority
 of the security vulnerabilities in existence today.
-</p><h3 id="sec-step-1--restrict-access-based-on-ip-address"  data-line="8;apache.md:300"  style="bookmark:Step 1: Restrict access based on IP address"><span data-line="8;apache.md:300"></span>Step 1: Restrict access based on IP address</h3>
-<p class="para-continue" data-line="8;apache.md:302"><span data-line="8;apache.md:302"></span>We<span data-line="8;apache.md:302"></span>&#39;<span data-line="8;apache.md:302"></span>ll restrict access to <span data-line="8;apache.md:302"></span><code class="code code1">admin.(your-server).net</code><span data-line="8;apache.md:302"></span> so that only certain IP
+</p><h3 id="sec-step-1--restrict-access-based-on-ip-address"  data-line="8;apache.md:301"  style="bookmark:Step 1: Restrict access based on IP address"><span data-line="8;apache.md:301"></span>Step 1: Restrict access based on IP address</h3>
+<p class="para-continue" data-line="8;apache.md:303"><span data-line="8;apache.md:303"></span>We<span data-line="8;apache.md:303"></span>&#39;<span data-line="8;apache.md:303"></span>ll restrict access to <span data-line="8;apache.md:303"></span><code class="code code1">admin.(your-server).net</code><span data-line="8;apache.md:303"></span> so that only certain IP
 addresses/machines can access the site. Since our website was just created, it
-has some of the weakest security measures available right now. As such, we<span data-line="8;apache.md:304"></span>&#39;<span data-line="8;apache.md:304"></span>ll
+has some of the weakest security measures available right now. As such, we<span data-line="8;apache.md:305"></span>&#39;<span data-line="8;apache.md:305"></span>ll
 just start with something simple and build up from there.
 </p>
-<ol class="loose" data-line="8;apache.md:307">
-<li data-line="8;apache.md:307">
-<p data-line="8;apache.md:307"><span data-line="8;apache.md:307"></span>Edit the configuration file for the admin virtual host. In the
-<span data-line="8;apache.md:308"></span><code class="code code1">&lt;Directory...&gt;</code><span data-line="8;apache.md:308"></span> section, change the <span data-line="8;apache.md:308"></span><code class="code code1">Allow</code><span data-line="8;apache.md:308"></span> directive from <span data-line="8;apache.md:308"></span><strong>all</strong><span data-line="8;apache.md:308"></span> to the  IP
+<ol class="loose" data-line="8;apache.md:308">
+<li data-line="8;apache.md:308">
+<p data-line="8;apache.md:308"><span data-line="8;apache.md:308"></span>Edit the configuration file for the admin virtual host. In the
+<span data-line="8;apache.md:309"></span><code class="code code1">&lt;Directory...&gt;</code><span data-line="8;apache.md:309"></span> section, change the <span data-line="8;apache.md:309"></span><code class="code code1">Allow</code><span data-line="8;apache.md:309"></span> directive from <span data-line="8;apache.md:309"></span><strong>all</strong><span data-line="8;apache.md:309"></span> to the  IP
 addresses that you want to allow access. In this case, change it to
-<span data-line="8;apache.md:310"></span><strong>127.0.0.1</strong><span data-line="8;apache.md:310"></span>. When you<span data-line="8;apache.md:310"></span>&#39;<span data-line="8;apache.md:310"></span>re done, reload apache. Now apache will only
-serve the site<span data-line="8;apache.md:311"></span>&#39;<span data-line="8;apache.md:311"></span>s files to the localhost address.
+<span data-line="8;apache.md:311"></span><strong>127.0.0.1</strong><span data-line="8;apache.md:311"></span>. When you<span data-line="8;apache.md:311"></span>&#39;<span data-line="8;apache.md:311"></span>re done, reload apache. Now apache will only
+serve the site<span data-line="8;apache.md:312"></span>&#39;<span data-line="8;apache.md:312"></span>s files to the localhost address.
 </p></li>
-<li data-line="8;apache.md:313">
-<p data-line="8;apache.md:313"><span data-line="8;apache.md:313"></span>Make sure that your partner can no longer access <span data-line="8;apache.md:313"></span><code class="code code1">admin.(your-server).net</code><span data-line="8;apache.md:313"></span>.
+<li data-line="8;apache.md:314">
+<p data-line="8;apache.md:314"><span data-line="8;apache.md:314"></span>Make sure that your partner can no longer access <span data-line="8;apache.md:314"></span><code class="code code1">admin.(your-server).net</code><span data-line="8;apache.md:314"></span>.
 </p></li>
-<li data-line="8;apache.md:315">
-<p data-line="8;apache.md:315"><span data-line="8;apache.md:315"></span>Add your partner<span data-line="8;apache.md:315"></span>&#39;<span data-line="8;apache.md:315"></span>s IP<span data-line="8;apache.md:315"></span>&#39;<span data-line="8;apache.md:315"></span>s to allow them to access your site. Make sure they
-can do it. Now apache will only serve the site<span data-line="8;apache.md:316"></span>&#39;<span data-line="8;apache.md:316"></span>s files to the localhost 
-address and to your partner<span data-line="8;apache.md:317"></span>&#39;<span data-line="8;apache.md:317"></span>s IP address.
+<li data-line="8;apache.md:316">
+<p data-line="8;apache.md:316"><span data-line="8;apache.md:316"></span>Add your partner<span data-line="8;apache.md:316"></span>&#39;<span data-line="8;apache.md:316"></span>s IP<span data-line="8;apache.md:316"></span>&#39;<span data-line="8;apache.md:316"></span>s to allow them to access your site. Make sure they
+can do it. Now apache will only serve the site<span data-line="8;apache.md:317"></span>&#39;<span data-line="8;apache.md:317"></span>s files to the localhost 
+address and to your partner<span data-line="8;apache.md:318"></span>&#39;<span data-line="8;apache.md:318"></span>s IP address.
 </p></li></ol>
 
-<p data-line="8;apache.md:320"><span data-line="8;apache.md:320"></span>Because of how simple it is to change one<span data-line="8;apache.md:320"></span>&#39;<span data-line="8;apache.md:320"></span>s own IP address, this form of
+<p data-line="8;apache.md:321"><span data-line="8;apache.md:321"></span>Because of how simple it is to change one<span data-line="8;apache.md:321"></span>&#39;<span data-line="8;apache.md:321"></span>s own IP address, this form of
 security is almost useless unless combined with with password protection and
 encrypted traffic, to make sure no one else can overhear the exchange of
 information (and passwords!).
-</p><h3 id="sec-step-2--protect-your-site-with-a-password"  data-line="8;apache.md:325"  style="bookmark:Step 2: Protect your site with a password"><span data-line="8;apache.md:325"></span>Step 2: Protect your site with a password</h3>
-<ol class="loose" data-line="8;apache.md:327">
-<li data-line="8;apache.md:327">
-<p data-line="8;apache.md:327"><span data-line="8;apache.md:327"></span>In <span data-line="8;apache.md:327"></span><code class="code code1">/var/www/net.(your-server).admin/htdocs</code><span data-line="8;apache.md:327"></span>, create a file called
-<span data-line="8;apache.md:328"></span><code class="code code1">.htaccess</code><span data-line="8;apache.md:328"></span>. This file is located here instead of the traditional directory
-for config files because, as a rule of <span data-line="8;apache.md:329"></span><code class="code code1">.htaccess</code><span data-line="8;apache.md:329"></span> files, they must be located
-in the directory they would be affecting. So it will go in the <span data-line="8;apache.md:330"></span><code class="code code1">htdocs</code><span data-line="8;apache.md:330"></span>
+</p><h3 id="sec-step-2--protect-your-site-with-a-password"  data-line="8;apache.md:326"  style="bookmark:Step 2: Protect your site with a password"><span data-line="8;apache.md:326"></span>Step 2: Protect your site with a password</h3>
+<ol class="loose" data-line="8;apache.md:328">
+<li data-line="8;apache.md:328">
+<p data-line="8;apache.md:328"><span data-line="8;apache.md:328"></span>In <span data-line="8;apache.md:328"></span><code class="code code1">/var/www/net.(your-server).admin/htdocs</code><span data-line="8;apache.md:328"></span>, create a file called
+<span data-line="8;apache.md:329"></span><code class="code code1">.htaccess</code><span data-line="8;apache.md:329"></span>. This file is located here instead of the traditional directory
+for config files because, as a rule of <span data-line="8;apache.md:330"></span><code class="code code1">.htaccess</code><span data-line="8;apache.md:330"></span> files, they must be located
+in the directory they would be affecting. So it will go in the <span data-line="8;apache.md:331"></span><code class="code code1">htdocs</code><span data-line="8;apache.md:331"></span>
 directory, where the HTML files will keep it company.
 </p></li>
-<li data-line="8;apache.md:333">
-<p data-line="8;apache.md:333"><span data-line="8;apache.md:333"></span>In <span data-line="8;apache.md:333"></span><code class="code code1">.htaccess</code><span data-line="8;apache.md:333"></span>, type the following (each line is explained
+<li data-line="8;apache.md:334">
+<p data-line="8;apache.md:334"><span data-line="8;apache.md:334"></span>In <span data-line="8;apache.md:334"></span><code class="code code1">.htaccess</code><span data-line="8;apache.md:334"></span>, type the following (each line is explained
 below):
 </p>
-<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:336" data-line-code="8;apache.md:337"><code data-line="8;apache.md:337">  AuthUserFile /var/www/net.(your-server).admin/conf/admin-auth
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:337" data-line-code="8;apache.md:338"><code data-line="8;apache.md:338">  AuthUserFile /var/www/net.(your-server).admin/conf/admin-auth
   AuthGroupFile /dev/null
   AuthName &quot;Admin only area&quot;
   AuthType Basic
@@ -930,113 +931,113 @@ below):
   &lt;Limit GET POST&gt;
    require valid-user
   &lt;/Limit&gt;</code></pre>
-<ul class="list-dash loose" data-line="8;apache.md:347">
-<li data-line="8;apache.md:347">
-<p data-line="8;apache.md:347"><span data-line="8;apache.md:347"></span><code class="code code1">AuthUserFile</code><span data-line="8;apache.md:347"></span> tells the server which text file contains the
+<ul class="list-dash loose" data-line="8;apache.md:348">
+<li data-line="8;apache.md:348">
+<p data-line="8;apache.md:348"><span data-line="8;apache.md:348"></span><code class="code code1">AuthUserFile</code><span data-line="8;apache.md:348"></span> tells the server which text file contains the
   list of users and passwords for authentication.
-  <span data-line="8;apache.md:349"></span><code class="code code1">AuthGroupFile</code><span data-line="8;apache.md:349"></span> has a similar function but for groups
+  <span data-line="8;apache.md:350"></span><code class="code code1">AuthGroupFile</code><span data-line="8;apache.md:350"></span> has a similar function but for groups
   instead.
 </p></li>
-<li data-line="8;apache.md:352">
-<p data-line="8;apache.md:352"><span data-line="8;apache.md:352"></span>The <span data-line="8;apache.md:352"></span><code class="code code1">AuthName</code><span data-line="8;apache.md:352"></span> directive sets the name of the authorization
+<li data-line="8;apache.md:353">
+<p data-line="8;apache.md:353"><span data-line="8;apache.md:353"></span>The <span data-line="8;apache.md:353"></span><code class="code code1">AuthName</code><span data-line="8;apache.md:353"></span> directive sets the name of the authorization
   realm for a directory, giving the client a hint as to which
   user-password combinations to use.
 </p></li>
-<li data-line="8;apache.md:356">
-<p data-line="8;apache.md:356"><span data-line="8;apache.md:356"></span>Like its name suggests, <span data-line="8;apache.md:356"></span><code class="code code1">AuthType</code><span data-line="8;apache.md:356"></span> sets the type of
+<li data-line="8;apache.md:357">
+<p data-line="8;apache.md:357"><span data-line="8;apache.md:357"></span>Like its name suggests, <span data-line="8;apache.md:357"></span><code class="code code1">AuthType</code><span data-line="8;apache.md:357"></span> sets the type of
   configuration the server would have.
 </p></li>
-<li data-line="8;apache.md:359">
-<p data-line="8;apache.md:359"><span data-line="8;apache.md:359"></span><code class="code code1">&lt;Limit&gt;</code><span data-line="8;apache.md:359"></span> and <span data-line="8;apache.md:359"></span><code class="code code1">&lt;/Limit&gt;</code><span data-line="8;apache.md:359"></span> restrict enclosed access controls
-  to only certain HTTP methods. <span data-line="8;apache.md:360"></span><em>Require</em><span data-line="8;apache.md:360"></span> selects which
+<li data-line="8;apache.md:360">
+<p data-line="8;apache.md:360"><span data-line="8;apache.md:360"></span><code class="code code1">&lt;Limit&gt;</code><span data-line="8;apache.md:360"></span> and <span data-line="8;apache.md:360"></span><code class="code code1">&lt;/Limit&gt;</code><span data-line="8;apache.md:360"></span> restrict enclosed access controls
+  to only certain HTTP methods. <span data-line="8;apache.md:361"></span><em>Require</em><span data-line="8;apache.md:361"></span> selects which
   authenticated users can access a resource.
 </p>
-<p data-line="8;apache.md:363"><span data-line="8;apache.md:363"></span><em>For more information and examples, visit:</em><span data-line="8;apache.md:363"></span><br>
-<span data-line="8;apache.md:364"></span><a href="http://httpd.apache.org/docs/2.2/mod/mod_authn_file.html">http://httpd.apache.org/docs/2.2/mod/mod_authn_file.html</a><span data-line="8;apache.md:364"></span><br>
-<span data-line="8;apache.md:365"></span><em>and</em><span data-line="8;apache.md:365"></span><br>
-<span data-line="8;apache.md:366"></span><a href="http://httpd.apache.org/docs/2.2/mod/core.html#require">http://httpd.apache.org/docs/2.2/mod/core.html#require</a><span data-line="8;apache.md:366"></span>
+<p data-line="8;apache.md:364"><span data-line="8;apache.md:364"></span><em>For more information and examples, visit:</em><span data-line="8;apache.md:364"></span><br>
+<span data-line="8;apache.md:365"></span><a href="http://httpd.apache.org/docs/2.2/mod/mod_authn_file.html">http://httpd.apache.org/docs/2.2/mod/mod_authn_file.html</a><span data-line="8;apache.md:365"></span><br>
+<span data-line="8;apache.md:366"></span><em>and</em><span data-line="8;apache.md:366"></span><br>
+<span data-line="8;apache.md:367"></span><a href="http://httpd.apache.org/docs/2.2/mod/core.html#require">http://httpd.apache.org/docs/2.2/mod/core.html#require</a><span data-line="8;apache.md:367"></span>
 </p></li></ul>
 </li>
-<li data-line="8;apache.md:368">
-<p data-line="8;apache.md:368"><span data-line="8;apache.md:368"></span>Security of files is important too. So, as a precaution, change the
+<li data-line="8;apache.md:369">
+<p data-line="8;apache.md:369"><span data-line="8;apache.md:369"></span>Security of files is important too. So, as a precaution, change the
 permissions and ownership of .htaccess so you and apache can access the file,
 but only the owner can write in it. The backslash indicates that the line
 extends to the next line.
 </p>
-<pre class="para-block pre-indented" data-line="8;apache.md:373"><code>   chgrp apache /var/www/net.(your-server).admin/htdocs/.htaccess
+<pre class="para-block pre-indented" data-line="8;apache.md:374"><code>   chgrp apache /var/www/net.(your-server).admin/htdocs/.htaccess
 
    chmod 640 /var/www/net.(your-server).admin/htdocs/.htaccess</code></pre></li>
-<li data-line="8;apache.md:377">
-<p data-line="8;apache.md:377"><span data-line="8;apache.md:377"></span>Make the directory <span data-line="8;apache.md:377"></span><code class="code code1">conf</code><span data-line="8;apache.md:377"></span> in the admin page<span data-line="8;apache.md:377"></span>&#39;<span data-line="8;apache.md:377"></span>s directory in <span data-line="8;apache.md:377"></span><code class="code code1">/var/www/net
-.(your-server).admin/</code><span data-line="8;apache.md:378"></span>. Once that<span data-line="8;apache.md:378"></span>&#39;<span data-line="8;apache.md:378"></span>s done, we will create the password file
+<li data-line="8;apache.md:378">
+<p data-line="8;apache.md:378"><span data-line="8;apache.md:378"></span>Make the directory <span data-line="8;apache.md:378"></span><code class="code code1">conf</code><span data-line="8;apache.md:378"></span> in the admin page<span data-line="8;apache.md:378"></span>&#39;<span data-line="8;apache.md:378"></span>s directory in <span data-line="8;apache.md:378"></span><code class="code code1">/var/www/net
+.(your-server).admin/</code><span data-line="8;apache.md:379"></span>. Once that<span data-line="8;apache.md:379"></span>&#39;<span data-line="8;apache.md:379"></span>s done, we will create the password file
 that will contain all the user-password combinations.
 </p>
-<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:380" data-line-code="8;apache.md:381"><code data-line="8;apache.md:381">   htpasswd -c /var/www/net.(your-server).admin/conf/admin-auth (user)</code></pre>
-<p data-line="8;apache.md:384"><span data-line="8;apache.md:384"></span>where <span data-line="8;apache.md:384"></span><code class="code code1">(USER)</code><span data-line="8;apache.md:384"></span> is a name you<span data-line="8;apache.md:384"></span>&#39;<span data-line="8;apache.md:384"></span>d like people to be able to use to log into this
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:381" data-line-code="8;apache.md:382"><code data-line="8;apache.md:382">   htpasswd -c /var/www/net.(your-server).admin/conf/admin-auth (user)</code></pre>
+<p data-line="8;apache.md:385"><span data-line="8;apache.md:385"></span>where <span data-line="8;apache.md:385"></span><code class="code code1">(USER)</code><span data-line="8;apache.md:385"></span> is a name you<span data-line="8;apache.md:385"></span>&#39;<span data-line="8;apache.md:385"></span>d like people to be able to use to log into this
 website.
 </p>
-<p data-line="8;apache.md:387"><span data-line="8;apache.md:387"></span>Later, if you<span data-line="8;apache.md:387"></span>&#39;<span data-line="8;apache.md:387"></span>d like to add more users, you would use the same command but
-without the <span data-line="8;apache.md:388"></span><code class="code code1">-c</code><span data-line="8;apache.md:388"></span> option.
+<p data-line="8;apache.md:388"><span data-line="8;apache.md:388"></span>Later, if you<span data-line="8;apache.md:388"></span>&#39;<span data-line="8;apache.md:388"></span>d like to add more users, you would use the same command but
+without the <span data-line="8;apache.md:389"></span><code class="code code1">-c</code><span data-line="8;apache.md:389"></span> option.
 </p>
-<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:389" data-line-code="8;apache.md:390"><code data-line="8;apache.md:390">   htpasswd /var/www/net.(your-server).admin/conf/admin-auth (user)</code></pre></li>
-<li data-line="8;apache.md:393">
-<p data-line="8;apache.md:393"><span data-line="8;apache.md:393"></span>Now, protect the password file the same way as you did for
-  <span data-line="8;apache.md:394"></span><code class="code code1">.htaccess</code><span data-line="8;apache.md:394"></span>
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:390" data-line-code="8;apache.md:391"><code data-line="8;apache.md:391">   htpasswd /var/www/net.(your-server).admin/conf/admin-auth (user)</code></pre></li>
+<li data-line="8;apache.md:394">
+<p data-line="8;apache.md:394"><span data-line="8;apache.md:394"></span>Now, protect the password file the same way as you did for
+  <span data-line="8;apache.md:395"></span><code class="code code1">.htaccess</code><span data-line="8;apache.md:395"></span>
 </p></li>
-<li data-line="8;apache.md:396">
-<p data-line="8;apache.md:396"><span data-line="8;apache.md:396"></span>Now try it out! You should be greeted with a login page instead this time
+<li data-line="8;apache.md:397">
+<p data-line="8;apache.md:397"><span data-line="8;apache.md:397"></span>Now try it out! You should be greeted with a login page instead this time
 around, meaning that the configuration changes worked. P.S. You may have to
 reload the page (ctrl-R) in order for the page to reflect the fact that your
 user-password combination was correct.
 </p></li></ol>
-<h3 id="sec-step-3--provide-an-encrypted-connection-to-the-site"  data-line="8;apache.md:401"  style="bookmark:Step 3: Provide an encrypted connection to the site."><span data-line="8;apache.md:401"></span>Step 3: Provide an encrypted connection to the site.</h3>
-<p class="para-continue" data-line="8;apache.md:403"><span data-line="8;apache.md:403"></span>Though your page is now somewhat secure, the connection between a machine and
+<h3 id="sec-step-3--provide-an-encrypted-connection-to-the-site"  data-line="8;apache.md:402"  style="bookmark:Step 3: Provide an encrypted connection to the site."><span data-line="8;apache.md:402"></span>Step 3: Provide an encrypted connection to the site.</h3>
+<p class="para-continue" data-line="8;apache.md:404"><span data-line="8;apache.md:404"></span>Though your page is now somewhat secure, the connection between a machine and
 the server is still unguarded. A secure, encrypted ssl connection is called on
-by typing <span data-line="8;apache.md:405"></span><code class="code code1">https://</code><span data-line="8;apache.md:405"></span> in the url. However, if you try it now, you would only get
+by typing <span data-line="8;apache.md:406"></span><code class="code code1">https://</code><span data-line="8;apache.md:406"></span> in the url. However, if you try it now, you would only get
 the localhost default page since the admin page is not configured to listen to
 port 443. Now, since OpenSSL should already be installed, we can go straight
 to generating the encryption key and certificate:
 </p>
-<ol class="loose" data-line="8;apache.md:410">
-<li data-line="8;apache.md:410">
-<p data-line="8;apache.md:410"><span data-line="8;apache.md:410"></span>In your home directory, generate an SSL key
+<ol class="loose" data-line="8;apache.md:411">
+<li data-line="8;apache.md:411">
+<p data-line="8;apache.md:411"><span data-line="8;apache.md:411"></span>In your home directory, generate an SSL key
 </p>
-<pre class="para-block pre-indented" data-line="8;apache.md:412"><code>     openssl genrsa 2048 &gt; net.(your-server).key</code></pre></li>
-<li data-line="8;apache.md:414">
-<p data-line="8;apache.md:414"><span data-line="8;apache.md:414"></span>In your home directory, generate an SSL certificate
+<pre class="para-block pre-indented" data-line="8;apache.md:413"><code>     openssl genrsa 2048 &gt; net.(your-server).key</code></pre></li>
+<li data-line="8;apache.md:415">
+<p data-line="8;apache.md:415"><span data-line="8;apache.md:415"></span>In your home directory, generate an SSL certificate
 </p>
-<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:415" data-line-code="8;apache.md:416"><code data-line="8;apache.md:416">   openssl req -new -x509 -nodes -sha1 -key net.(your-server).key &gt; net.(your-server).crt</code></pre>
-<p data-line="8;apache.md:419"><span data-line="8;apache.md:419"></span>In the above command, make sure that the option<span data-line="8;apache.md:419"></span> <span data-line="8;apache.md:419"></span>-sha1 contains the number one
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:416" data-line-code="8;apache.md:417"><code data-line="8;apache.md:417">   openssl req -new -x509 -nodes -sha1 -key net.(your-server).key &gt; net.(your-server).crt</code></pre>
+<p data-line="8;apache.md:420"><span data-line="8;apache.md:420"></span>In the above command, make sure that the option<span data-line="8;apache.md:420"></span> <span data-line="8;apache.md:420"></span>-sha1 contains the number one
 and not a lowercase l. When it asks for information, you can fill in however
 much you want.
 </p></li>
-<li data-line="8;apache.md:423">
-<p data-line="8;apache.md:423"><span data-line="8;apache.md:423"></span>Move the key and certificate files to <span data-line="8;apache.md:423"></span><code class="code code1">/etc/apache2</code><span data-line="8;apache.md:423"></span>
+<li data-line="8;apache.md:424">
+<p data-line="8;apache.md:424"><span data-line="8;apache.md:424"></span>Move the key and certificate files to <span data-line="8;apache.md:424"></span><code class="code code1">/etc/apache2</code><span data-line="8;apache.md:424"></span>
 </p></li>
-<li data-line="8;apache.md:425">
-<p data-line="8;apache.md:425"><span data-line="8;apache.md:425"></span>Check to make sure <span data-line="8;apache.md:425"></span><code class="code code1">APACHE2_OPTS</code><span data-line="8;apache.md:425"></span> in <span data-line="8;apache.md:425"></span><code class="code code1">/etc/conf.d/apache2</code><span data-line="8;apache.md:425"></span> has
-   <span data-line="8;apache.md:426"></span><code class="code code1">SSL</code><span data-line="8;apache.md:426"></span> and <span data-line="8;apache.md:426"></span><code class="code code1">SSL_DEFAULT_VHOST</code><span data-line="8;apache.md:426"></span>.
+<li data-line="8;apache.md:426">
+<p data-line="8;apache.md:426"><span data-line="8;apache.md:426"></span>Check to make sure <span data-line="8;apache.md:426"></span><code class="code code1">APACHE2_OPTS</code><span data-line="8;apache.md:426"></span> in <span data-line="8;apache.md:426"></span><code class="code code1">/etc/conf.d/apache2</code><span data-line="8;apache.md:426"></span> has
+   <span data-line="8;apache.md:427"></span><code class="code code1">SSL</code><span data-line="8;apache.md:427"></span> and <span data-line="8;apache.md:427"></span><code class="code code1">SSL_DEFAULT_VHOST</code><span data-line="8;apache.md:427"></span>.
 </p></li>
-<li data-line="8;apache.md:428">
-<p data-line="8;apache.md:428"><span data-line="8;apache.md:428"></span><code class="code code1">NameVirtualHost</code><span data-line="8;apache.md:428"></span> is a required directive if one wants to configure name-
+<li data-line="8;apache.md:429">
+<p data-line="8;apache.md:429"><span data-line="8;apache.md:429"></span><code class="code code1">NameVirtualHost</code><span data-line="8;apache.md:429"></span> is a required directive if one wants to configure name-
 based virtual hosts. It specifies the IP address on which the server will
 receive and answer requests for the virtual hosts, usually used when more than
 one vhost listens to the same IP address. So, in
-<span data-line="8;apache.md:432"></span><code class="code code1">/etc/apache2/vhosts.d/00_default_ssl_vhost.conf</code><span data-line="8;apache.md:432"></span>, under the <span data-line="8;apache.md:432"></span><strong>Listen</strong><span data-line="8;apache.md:432"></span> line
+<span data-line="8;apache.md:433"></span><code class="code code1">/etc/apache2/vhosts.d/00_default_ssl_vhost.conf</code><span data-line="8;apache.md:433"></span>, under the <span data-line="8;apache.md:433"></span><strong>Listen</strong><span data-line="8;apache.md:433"></span> line
 in the file, add the following:
 </p>
-<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:434" data-line-code="8;apache.md:435"><code data-line="8;apache.md:435">   NameVirtualHost *:443</code></pre></li>
-<li data-line="8;apache.md:438">
-<p data-line="8;apache.md:438"><span data-line="8;apache.md:438"></span>Next, we need to configure the admin page to actually have a
+<pre class="para-block pre-fenced pre-fenced3" data-line="8;apache.md:435" data-line-code="8;apache.md:436"><code data-line="8;apache.md:436">   NameVirtualHost *:443</code></pre></li>
+<li data-line="8;apache.md:439">
+<p data-line="8;apache.md:439"><span data-line="8;apache.md:439"></span>Next, we need to configure the admin page to actually have a
   virtual host to answer an SSL connection request. This is
   because the virtual host that is already established only listens to
   requests on port 80, while SSL connections use port 443. Also,
-  with its different configurations, the <span data-line="8;apache.md:442"></span>&#8220;non-secure&#8221;<span data-line="8;apache.md:442"></span> vhost and
+  with its different configurations, the <span data-line="8;apache.md:443"></span>&#8220;non-secure&#8221;<span data-line="8;apache.md:443"></span> vhost and
   the SSL vhost have to remain separate. So, enter the config file
   for the admin page and, directly after the line
-  <span data-line="8;apache.md:445"></span><code class="code code1">&lt;/VirtualHost&gt;</code><span data-line="8;apache.md:445"></span>, add the following:
+  <span data-line="8;apache.md:446"></span><code class="code code1">&lt;/VirtualHost&gt;</code><span data-line="8;apache.md:446"></span>, add the following:
 </p>
-<pre class="para-block pre-indented" data-line="8;apache.md:447"><code>  &lt;IfDefine SSL&gt;
+<pre class="para-block pre-indented" data-line="8;apache.md:448"><code>  &lt;IfDefine SSL&gt;
    &lt;IfModule ssl_module&gt;
     &lt;VirtualHost *:443&gt;
      SSLEngine on
@@ -1062,109 +1063,109 @@ in the file, add the following:
     &lt;/VirtualHost&gt;
    &lt;/IfModule&gt;
   &lt;/IfDefine&gt;</code></pre>
-<ul class="list-dash loose" data-line="8;apache.md:474">
-<li data-line="8;apache.md:474">
-<p data-line="8;apache.md:474"><span data-line="8;apache.md:474"></span>The <span data-line="8;apache.md:474"></span><code class="code code1">&lt;IfDefine&gt;</code><span data-line="8;apache.md:474"></span> is mentioned before, and the <span data-line="8;apache.md:474"></span><code class="code code1">&lt;IfModule&gt;</code><span data-line="8;apache.md:474"></span>
+<ul class="list-dash loose" data-line="8;apache.md:475">
+<li data-line="8;apache.md:475">
+<p data-line="8;apache.md:475"><span data-line="8;apache.md:475"></span>The <span data-line="8;apache.md:475"></span><code class="code code1">&lt;IfDefine&gt;</code><span data-line="8;apache.md:475"></span> is mentioned before, and the <span data-line="8;apache.md:475"></span><code class="code code1">&lt;IfModule&gt;</code><span data-line="8;apache.md:475"></span>
   section encloses directives that are conditional on the
   presence of a specific module.
 </p></li>
-<li data-line="8;apache.md:478">
-<p data-line="8;apache.md:478"><span data-line="8;apache.md:478"></span><code class="code code1">VirtualHost</code><span data-line="8;apache.md:478"></span> still has the same function, though in this
+<li data-line="8;apache.md:479">
+<p data-line="8;apache.md:479"><span data-line="8;apache.md:479"></span><code class="code code1">VirtualHost</code><span data-line="8;apache.md:479"></span> still has the same function, though in this
   case it considers the SSL default port of 443 instead.
 </p>
-<ul class="list-dash loose" data-line="8;apache.md:481">
-<li data-line="8;apache.md:481">
-<p data-line="8;apache.md:481"><span data-line="8;apache.md:481"></span>The <span data-line="8;apache.md:481"></span><code class="code code1">SSLEngine</code><span data-line="8;apache.md:481"></span> directive toggles the usage of the
+<ul class="list-dash loose" data-line="8;apache.md:482">
+<li data-line="8;apache.md:482">
+<p data-line="8;apache.md:482"><span data-line="8;apache.md:482"></span>The <span data-line="8;apache.md:482"></span><code class="code code1">SSLEngine</code><span data-line="8;apache.md:482"></span> directive toggles the usage of the
 SSL/TLS Protocol Engine, which is responsible for
 creating SSL/TLS connections.
 </p></li>
-<li data-line="8;apache.md:485">
-<p data-line="8;apache.md:485"><span data-line="8;apache.md:485"></span>For <span data-line="8;apache.md:485"></span><code class="code code1">SSLCertificateFile</code><span data-line="8;apache.md:485"></span> and <span data-line="8;apache.md:485"></span><code class="code code1">SSLCertificateKeyFile</code><span data-line="8;apache.md:485"></span>,
+<li data-line="8;apache.md:486">
+<p data-line="8;apache.md:486"><span data-line="8;apache.md:486"></span>For <span data-line="8;apache.md:486"></span><code class="code code1">SSLCertificateFile</code><span data-line="8;apache.md:486"></span> and <span data-line="8;apache.md:486"></span><code class="code code1">SSLCertificateKeyFile</code><span data-line="8;apache.md:486"></span>,
 their names are self-explanatory. They establish the
 full path to the SSL key and certificate files created
 earlier.
 </p></li>
-<li data-line="8;apache.md:490">
-<p data-line="8;apache.md:490"><span data-line="8;apache.md:490"></span><code class="code code1">SSLOptions</code><span data-line="8;apache.md:490"></span> is used to control various run-time options
+<li data-line="8;apache.md:491">
+<p data-line="8;apache.md:491"><span data-line="8;apache.md:491"></span><code class="code code1">SSLOptions</code><span data-line="8;apache.md:491"></span> is used to control various run-time options
 on a per-directory basis
 </p></li>
-<li data-line="8;apache.md:493">
-<p data-line="8;apache.md:493"><span data-line="8;apache.md:493"></span>Just like its name, <span data-line="8;apache.md:493"></span><code class="code code1">SSLProtocol</code><span data-line="8;apache.md:493"></span> is used to control
-which SSL protocol mod<span data-line="8;apache.md:494"></span>_<span data-line="8;apache.md:494"></span>ssl would use when establishing
+<li data-line="8;apache.md:494">
+<p data-line="8;apache.md:494"><span data-line="8;apache.md:494"></span>Just like its name, <span data-line="8;apache.md:494"></span><code class="code code1">SSLProtocol</code><span data-line="8;apache.md:494"></span> is used to control
+which SSL protocol mod<span data-line="8;apache.md:495"></span>_<span data-line="8;apache.md:495"></span>ssl would use when establishing
 the server environment.
 </p></li>
-<li data-line="8;apache.md:497">
-<p data-line="8;apache.md:497"><span data-line="8;apache.md:497"></span><code class="code code1">SSLCipherSuite</code><span data-line="8;apache.md:497"></span> establishes which Cipher Suites are
+<li data-line="8;apache.md:498">
+<p data-line="8;apache.md:498"><span data-line="8;apache.md:498"></span><code class="code code1">SSLCipherSuite</code><span data-line="8;apache.md:498"></span> establishes which Cipher Suites are
 available for negotiation in a SSL handshake. Meanwhile,
-<span data-line="8;apache.md:499"></span><code class="code code1">SSLHonorCipherOrder</code><span data-line="8;apache.md:499"></span>, when enabled, means that
-connections will prefer the server<span data-line="8;apache.md:500"></span>&#39;<span data-line="8;apache.md:500"></span>s cipher preference
+<span data-line="8;apache.md:500"></span><code class="code code1">SSLHonorCipherOrder</code><span data-line="8;apache.md:500"></span>, when enabled, means that
+connections will prefer the server<span data-line="8;apache.md:501"></span>&#39;<span data-line="8;apache.md:501"></span>s cipher preference
 order when choosing a cipher.
 </p></li></ul>
 </li>
-<li data-line="8;apache.md:503">
-<p data-line="8;apache.md:503"><span data-line="8;apache.md:503"></span>In the <span data-line="8;apache.md:503"></span><code class="code code1">&lt;Directory&gt;</code><span data-line="8;apache.md:503"></span> section, whose file condition should
-  stay the same, the <span data-line="8;apache.md:504"></span><code class="code code1">SSLRequireSSL</code><span data-line="8;apache.md:504"></span> directory denies the
+<li data-line="8;apache.md:504">
+<p data-line="8;apache.md:504"><span data-line="8;apache.md:504"></span>In the <span data-line="8;apache.md:504"></span><code class="code code1">&lt;Directory&gt;</code><span data-line="8;apache.md:504"></span> section, whose file condition should
+  stay the same, the <span data-line="8;apache.md:505"></span><code class="code code1">SSLRequireSSL</code><span data-line="8;apache.md:505"></span> directory denies the
   client access when SSL is not used for the HTTP request
-  a.k.a. HTTPS is not used, though it isn<span data-line="8;apache.md:506"></span>&#39;<span data-line="8;apache.md:506"></span>t as effective as
+  a.k.a. HTTPS is not used, though it isn<span data-line="8;apache.md:507"></span>&#39;<span data-line="8;apache.md:507"></span>t as effective as
   the next configuration.
 </p>
-<p data-line="8;apache.md:509"><span data-line="8;apache.md:509"></span>  <span data-line="8;apache.md:509"></span><strong>Warning</strong><span data-line="8;apache.md:509"></span>: Notice that you allow connections over SSL from <span data-line="8;apache.md:509"></span><em>all</em><span data-line="8;apache.md:509"></span>
-  IP addresses. You can change <span data-line="8;apache.md:510"></span><code class="code code1">Allow from all</code><span data-line="8;apache.md:510"></span> to allow from only
+<p data-line="8;apache.md:510"><span data-line="8;apache.md:510"></span>  <span data-line="8;apache.md:510"></span><strong>Warning</strong><span data-line="8;apache.md:510"></span>: Notice that you allow connections over SSL from <span data-line="8;apache.md:510"></span><em>all</em><span data-line="8;apache.md:510"></span>
+  IP addresses. You can change <span data-line="8;apache.md:511"></span><code class="code code1">Allow from all</code><span data-line="8;apache.md:511"></span> to allow from only
   certain IPs, as you did for the non-SSL version.
 </p>
-<p data-line="8;apache.md:513"><span data-line="8;apache.md:513"></span>NOTE: There should be two lines of <span data-line="8;apache.md:513"></span><code class="code code1">&lt;/IfDefine&gt;</code><span data-line="8;apache.md:513"></span> at the end of
-the config file. This is because the new <span data-line="8;apache.md:514"></span><code class="code code1">&lt;IfDefine&gt;</code><span data-line="8;apache.md:514"></span> section is
-nested within our <span data-line="8;apache.md:515"></span><code class="code code1">&lt;IfDefine DEFAULT_VHOST&gt;</code><span data-line="8;apache.md:515"></span> section.<span data-line="8;apache.md:515"></span><br>
-<span data-line="8;apache.md:516"></span><em>For more information and examples, visit:</em><span data-line="8;apache.md:516"></span><br>
-<span data-line="8;apache.md:517"></span><a href="http://httpd.apache.org/docs/2.2/mod/mod_ssl.html">http://httpd.apache.org/docs/2.2/mod/mod_ssl.html</a><span data-line="8;apache.md:517"></span>
+<p data-line="8;apache.md:514"><span data-line="8;apache.md:514"></span>NOTE: There should be two lines of <span data-line="8;apache.md:514"></span><code class="code code1">&lt;/IfDefine&gt;</code><span data-line="8;apache.md:514"></span> at the end of
+the config file. This is because the new <span data-line="8;apache.md:515"></span><code class="code code1">&lt;IfDefine&gt;</code><span data-line="8;apache.md:515"></span> section is
+nested within our <span data-line="8;apache.md:516"></span><code class="code code1">&lt;IfDefine DEFAULT_VHOST&gt;</code><span data-line="8;apache.md:516"></span> section.<span data-line="8;apache.md:516"></span><br>
+<span data-line="8;apache.md:517"></span><em>For more information and examples, visit:</em><span data-line="8;apache.md:517"></span><br>
+<span data-line="8;apache.md:518"></span><a href="http://httpd.apache.org/docs/2.2/mod/mod_ssl.html">http://httpd.apache.org/docs/2.2/mod/mod_ssl.html</a><span data-line="8;apache.md:518"></span>
 </p></li></ul>
 </li></ol>
 
-<p data-line="8;apache.md:519"><span data-line="8;apache.md:519"></span>Now you can try this out by using <span data-line="8;apache.md:519"></span><code class="code code1">https://</code><span data-line="8;apache.md:519"></span> in place of <span data-line="8;apache.md:519"></span><code class="code code1">http://</code><span data-line="8;apache.md:519"></span>. Since the
+<p data-line="8;apache.md:520"><span data-line="8;apache.md:520"></span>Now you can try this out by using <span data-line="8;apache.md:520"></span><code class="code code1">https://</code><span data-line="8;apache.md:520"></span> in place of <span data-line="8;apache.md:520"></span><code class="code code1">http://</code><span data-line="8;apache.md:520"></span>. Since the
 certificate created is extremely sketchy, some browsers might ask if you really
 want to continue. Follow the steps to progress, and you should find yourself at
 the admin page once again. With the current settings, you will only go through a
-ssl-secured network when <span data-line="8;apache.md:523"></span><code class="code code1">https://</code><span data-line="8;apache.md:523"></span> is used. <span data-line="8;apache.md:523"></span><code class="code code1">http://</code><span data-line="8;apache.md:523"></span> will still go through
+ssl-secured network when <span data-line="8;apache.md:524"></span><code class="code code1">https://</code><span data-line="8;apache.md:524"></span> is used. <span data-line="8;apache.md:524"></span><code class="code code1">http://</code><span data-line="8;apache.md:524"></span> will still go through
 normal, unsecure connections.
 </p>
-<p class="indent" data-line="8;apache.md:526"><span data-line="8;apache.md:526"></span>If you encounter the SSL error <span data-line="8;apache.md:526"></span>&#8220;unable to get local
-issuer certificate,&#8221;<span data-line="8;apache.md:527"></span> there is a way to fix it! Go to the file
-<span data-line="8;apache.md:528"></span><code class="code code1">00_default_ssl_vhost.conf</code><span data-line="8;apache.md:528"></span> and change the
-<span data-line="8;apache.md:529"></span><code class="code code1">SSLCertificateKeyFile</code><span data-line="8;apache.md:529"></span> and <span data-line="8;apache.md:529"></span><code class="code code1">SSLCertificateFile</code><span data-line="8;apache.md:529"></span> to the path of
+<p class="indent" data-line="8;apache.md:527"><span data-line="8;apache.md:527"></span>If you encounter the SSL error <span data-line="8;apache.md:527"></span>&#8220;unable to get local
+issuer certificate,&#8221;<span data-line="8;apache.md:528"></span> there is a way to fix it! Go to the file
+<span data-line="8;apache.md:529"></span><code class="code code1">00_default_ssl_vhost.conf</code><span data-line="8;apache.md:529"></span> and change the
+<span data-line="8;apache.md:530"></span><code class="code code1">SSLCertificateKeyFile</code><span data-line="8;apache.md:530"></span> and <span data-line="8;apache.md:530"></span><code class="code code1">SSLCertificateFile</code><span data-line="8;apache.md:530"></span> to the path of
 certificate and key you created.
 </p>
-<p class="indent para-continue" data-line="8;apache.md:532"><span data-line="8;apache.md:532"></span>Now you can set up your site so that <span data-line="8;apache.md:532"></span><strong>all attempts to access the site will go
-through SSL.</strong><span data-line="8;apache.md:533"></span>
+<p class="indent para-continue" data-line="8;apache.md:533"><span data-line="8;apache.md:533"></span>Now you can set up your site so that <span data-line="8;apache.md:533"></span><strong>all attempts to access the site will go
+through SSL.</strong><span data-line="8;apache.md:534"></span>
 </p>
-<ol class="loose" data-line="8;apache.md:535">
-<li data-line="8;apache.md:535">
-<p data-line="8;apache.md:535"><span data-line="8;apache.md:535"></span>In the <span data-line="8;apache.md:535"></span><code class="code code1">&lt;VirtualHost *:80&gt;</code><span data-line="8;apache.md:535"></span>
-  section of the admin<span data-line="8;apache.md:536"></span>&#39;<span data-line="8;apache.md:536"></span>s conf file, add the following lines:
+<ol class="loose" data-line="8;apache.md:536">
+<li data-line="8;apache.md:536">
+<p data-line="8;apache.md:536"><span data-line="8;apache.md:536"></span>In the <span data-line="8;apache.md:536"></span><code class="code code1">&lt;VirtualHost *:80&gt;</code><span data-line="8;apache.md:536"></span>
+  section of the admin<span data-line="8;apache.md:537"></span>&#39;<span data-line="8;apache.md:537"></span>s conf file, add the following lines:
 </p>
-<pre class="para-block pre-indented" data-line="8;apache.md:538"><code>  RewriteEngine On
+<pre class="para-block pre-indented" data-line="8;apache.md:539"><code>  RewriteEngine On
   RewriteCond %{HTTPS} !on
   RewriteRule ^/(.*) https://%{SERVER_NAME}%{REQUEST_URI} [R]</code></pre>
-<ul class="list-dash loose" data-line="8;apache.md:542">
-<li data-line="8;apache.md:542">
-<p data-line="8;apache.md:542"><span data-line="8;apache.md:542"></span>Like SSLEngine, the <span data-line="8;apache.md:542"></span><code class="code code1">RewriteEngine</code><span data-line="8;apache.md:542"></span> directive enables or
+<ul class="list-dash loose" data-line="8;apache.md:543">
+<li data-line="8;apache.md:543">
+<p data-line="8;apache.md:543"><span data-line="8;apache.md:543"></span>Like SSLEngine, the <span data-line="8;apache.md:543"></span><code class="code code1">RewriteEngine</code><span data-line="8;apache.md:543"></span> directive enables or
   disables the runtime rewriting engine.
 </p></li>
-<li data-line="8;apache.md:545">
-<p data-line="8;apache.md:545"><span data-line="8;apache.md:545"></span><code class="code code1">RewriteCond</code><span data-line="8;apache.md:545"></span> defines the condition under which rewriting
-  will take place, while <span data-line="8;apache.md:546"></span><code class="code code1">RewriteRule</code><span data-line="8;apache.md:546"></span> defines the rules for
+<li data-line="8;apache.md:546">
+<p data-line="8;apache.md:546"><span data-line="8;apache.md:546"></span><code class="code code1">RewriteCond</code><span data-line="8;apache.md:546"></span> defines the condition under which rewriting
+  will take place, while <span data-line="8;apache.md:547"></span><code class="code code1">RewriteRule</code><span data-line="8;apache.md:547"></span> defines the rules for
   the rewriting engine.
 </p>
-<p data-line="8;apache.md:549"><span data-line="8;apache.md:549"></span><em>For more information and examples, visit:</em><span data-line="8;apache.md:549"></span><br>
-<span data-line="8;apache.md:550"></span><a href="http://httpd.apache.org/docs/current/mod/mod_rewrite.html">http://httpd.apache.org/docs/current/mod/mod_rewrite.html</a><span data-line="8;apache.md:550"></span>
+<p data-line="8;apache.md:550"><span data-line="8;apache.md:550"></span><em>For more information and examples, visit:</em><span data-line="8;apache.md:550"></span><br>
+<span data-line="8;apache.md:551"></span><a href="http://httpd.apache.org/docs/current/mod/mod_rewrite.html">http://httpd.apache.org/docs/current/mod/mod_rewrite.html</a><span data-line="8;apache.md:551"></span>
 </p></li></ul>
 </li>
-<li data-line="8;apache.md:552">
-<p data-line="8;apache.md:552"><span data-line="8;apache.md:552"></span>Now, when you try to access <span data-line="8;apache.md:552"></span><code class="code code1">http://...</code><span data-line="8;apache.md:552"></span>, it should
-  automatically connect to <span data-line="8;apache.md:553"></span><code class="code code1">https://...</code><span data-line="8;apache.md:553"></span>. In other words, you will
+<li data-line="8;apache.md:553">
+<p data-line="8;apache.md:553"><span data-line="8;apache.md:553"></span>Now, when you try to access <span data-line="8;apache.md:553"></span><code class="code code1">http://...</code><span data-line="8;apache.md:553"></span>, it should
+  automatically connect to <span data-line="8;apache.md:554"></span><code class="code code1">https://...</code><span data-line="8;apache.md:554"></span>. In other words, you will
   always go through a secure connection!
 </p></li></ol>
 
-<p data-line="8;apache.md:556"><span data-line="8;apache.md:556"></span>Great! Now you have configured a (relatively) secure website, with an
+<p data-line="8;apache.md:557"><span data-line="8;apache.md:557"></span>Great! Now you have configured a (relatively) secure website, with an
 even more secure admin site. 
 </p>
 <div class="madokologo block" data-line="11" style="text-align:right;font-size:xx-small;margin-top:4em"><span data-line="12"></span>Created with&nbsp;<a href="https://www.madoko.net">Madoko.net</a>.</div>

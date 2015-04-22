@@ -75,7 +75,8 @@ elinks
 1. The default configuration for elinks sometimes makes it difficult to view
 webpages. You may want to change this configuration. To do so:
    1. start up elinks (by running the `elinks` command)
-   1. click in the menu bar at the top of the window, and select **S**etup
+   1. click in the menu bar at the top of the window, and select **S**etup _(if
+   clicking doesn't work, you should be able to press `ESC` to bring up the menu)_
    1. select **T**erminal options
    1. uncheck the option for Transparency
    1. click **S**ave
